@@ -1,0 +1,50 @@
+.contenLogin {
+    height: 100vh;
+}
+
+.sectionLogin {
+    width: 35%;
+}
+
+.contenCarrusel {
+    width: 100%;
+    max-width: 800px;
+    height: 500px;
+    margin: 0 auto;
+}
+
+.carousel-inner {
+    height: 100%;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.carousel-item {
+    height: 100%;
+}
+
+.carousel-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+    width: 5%;
+}
+
+.carousel-indicators {
+    margin-bottom: 1rem;
+}
+
+.carousel-caption {
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+    padding: 15px;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+}
+
