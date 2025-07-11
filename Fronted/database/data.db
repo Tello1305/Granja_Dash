@@ -1,0 +1,98 @@
+CREATE DATABASE GranjaDashboard;
+USE GranjaDashboard;
+
+CREATE TABLE role (
+    id_role INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE users (
+    id_user INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(100) NOT NULL,
+    username VARCHAR(100) NOT NULL,
+    password VARCHAR(100) NOT NULL,
+    id_role INT NOT NULL,
+    date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (id_role) REFERENCES role(id_role)
+);
+
+CREATE TABLE category_animal (
+    id_category INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(100) NOT NULL,
+    description VARCHAR(200) NOT NULL
+);
+
+CREATE TABLE products (
+    id_product INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(100) NOT NULL,
+    description VARCHAR(200) NOT NULL,
+    price DECIMAL(10, 2) NOT NULL,
+    id_category INT NOT NULL,
+    photo VARCHAR(200) NOT NULL,
+    FOREIGN KEY (id_category) REFERENCES category_animal(id_category)
+);
+
+CREATE TABLE animals (
+    id_animal INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(100) NOT NULL,
+    description VARCHAR(200) NOT NULL,
+    date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE food (
+    id_food INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(100) NOT NULL,
+    description VARCHAR(200) NOT NULL,
+    price DECIMAL(10, 2) NOT NULL,
+    kilograms INT NOT NULL,
+    date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    photo VARCHAR(200) NOT NULL,
+    id_category INT NOT NULL,
+    FOREIGN KEY (id_category) REFERENCES category_animal(id_category)
+);
+
+CREATE TABLE quotes (
+    id_quote INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(100) NOT NULL,
+    description VARCHAR(200) NOT NULL,
+    date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    id_category INT NOT NULL,
+    FOREIGN KEY (id_category) REFERENCES category_animal(id_category)
+);
+
+-- Insertar roles
+INSERT INTO role (name) VALUES
+('admin'),
+('worker');
+
+-- Insertar usuarios
+INSERT INTO users (name, username, password, id_role) VALUES
+('Carlos Ramírez', 'carlos_admin', 'admin123', 1),
+('Laura Gómez', 'laura_worker', 'worker123', 2);
+
+-- Insertar categorías de animales
+INSERT INTO category_animal (name, description) VALUES
+('Gallinas', 'Aves de corral criadas para producción de huevos'),
+('Cuyes', 'Roedores criados para consumo'), 
+('Patos', 'Aves criadas en ambientes húmedos');
+
+-- Insertar productos
+INSERT INTO products (name, description, price, id_category, photo) VALUES
+('Huevos rojos', 'Docena de huevos frescos', 8.50, 1, 'uploads/huevos_rojos.jpg'),
+('Bebedero para cuyes', 'Plástico resistente, 1L', 12.00, 2, 'uploads/bebedero_cuyes.jpg'),
+('Alimento balanceado', 'Alimento para aves, 5kg', 18.00, 1, 'uploads/alimento_aves.jpg');
+
+-- Insertar animales
+INSERT INTO animals (name, description) VALUES
+('Gallinas Leghorn', 'Gallinas ponedoras blancas'),
+('Cuyes Andinos', 'Cuyes criollos peruanos');
+
+-- Insertar alimentos
+INSERT INTO food (name, description, price, kilograms, photo, id_category) VALUES
+('Maíz molido', 'Maíz seco y triturado', 30.00, 25, 'uploads/maiz_molido.jpg', 1),
+('Concentrado premium', 'Alimento enriquecido para cuyes', 42.00, 15, 'uploads/concentrado_cuyes.jpg', 2);
+
+-- Insertar citas o eventos
+INSERT INTO quotes (name, description, id_category) VALUES
+('Vacunación contra Newcastle', 'Campaña de vacunación mensual para aves', 1),
+('Revisión veterinaria cuyes', 'Chequeo general de cuyes', 2);

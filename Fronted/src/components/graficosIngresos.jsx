@@ -1,6 +1,6 @@
 // Charts.jsx
 import './chartSetup' // Asegúrate de importar la configuración
-import { Bar, Line, Pie, Doughnut } from 'react-chartjs-2'
+import { Bar, Line, } from 'react-chartjs-2'
 
 const data = {
   labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo'],
@@ -47,15 +47,21 @@ const options = {
 
 export default function Graficos() {
   return (
-    <div className="d-flex justify-content-center gap-3 d-flex flex-wrap mt-5" >
-      <div style={{width: "600px"}}>
-        <strong className="text-center">Resumen de Ingresos</strong>
-        <Bar data={data} options={options} />
-      </div>
-      <div style={{width: "600px"}}>
-        <strong className="text-center">Proyeccion - Ganancias</strong>
-        <Line data={data} options={{ ...options, tension: 0.3 }} />
-      </div>
+    <div className="d-flex justify-content-center gap-4 d-flex flex-wrap ">
+      <fieldset className="border p-3 rounded-3" style={{width: "530px"}}>
+        <legend className="float-none w-auto px-2 fs-5 fw-semibold">Resumen de Ingresos</legend>
+        <div className="p-2">
+          <Bar data={data} options={options} />
+        </div>
+      </fieldset>
+      
+      <fieldset className="border p-3 rounded-3" style={{width: "530px"}}>
+        <legend className="float-none w-auto px-2 fs-5 fw-semibold">Proyección de Ganancias</legend>
+        <div className="p-2">
+          <Line data={data} options={{ ...options, tension: 0.3 }} />
+        </div>
+      </fieldset>
     </div>
   )
 }
+

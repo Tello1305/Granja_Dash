@@ -1,0 +1,16 @@
+.acciones {
+    vertical-align: middle !important;
+}
+
+.acciones td {
+    height: 100%;
+}
+
+.acciones .btn-container {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    padding: 2px 0;
+}

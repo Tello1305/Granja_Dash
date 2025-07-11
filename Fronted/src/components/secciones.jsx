@@ -1,21 +1,19 @@
 import "../assets/css/main.css"
-import Graficos from './graficos.jsx'
+
 
 export function Secciones({dataGeneral}) {
 
     const secciones = [
         {
-            titulo: "Total de ventas",      
+            titulo: "Total de Categorias",          
         },
         {
-            titulo: "Total de productos",
+            titulo: "Total de Ganado",
         },
         {
-            titulo: "Total de servicios",
+            titulo: "Total de Productos",
         },
-        {
-            titulo: "Total de categorias",
-        },
+        
     ]
     return (
         <>
@@ -23,7 +21,9 @@ export function Secciones({dataGeneral}) {
         <section className=" d-flex justify-content-center gap-3 mt-4 flex-wrap">
             {secciones.map((seccion, index) => (
                 <div key={index} className="rounded-5 border p-2 sections d-flex justify-content-center align-items-center">
-                    <span>{"$" + dataGeneral + " - "}</span>
+                    <div className="circle circleTotal rounded-5 p-2">
+                    <span>{dataGeneral }</span>
+                    </div>
                     
                     <span>{seccion.titulo}</span>
                 </div>
@@ -33,9 +33,7 @@ export function Secciones({dataGeneral}) {
             
         </section>
         <br />
-        <section className="d-flex justify-content-center align-items-center gap-2">
-            <Graficos/>
-        </section>
+        
         </main>
         
         </>

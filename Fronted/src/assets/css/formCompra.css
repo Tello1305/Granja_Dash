@@ -7,3 +7,22 @@
     width: 300px !important;
 }
 
+.contenImagen {
+    width: 300px;
+    height: 150px;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 2px solid #b19393;
+}
+
+.contenImagenPrevia {
+    width: 300px !important;
+    height: 150px;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 2px solid #b19393;
+}
+
+
+
+

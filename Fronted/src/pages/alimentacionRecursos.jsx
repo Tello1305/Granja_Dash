@@ -2,7 +2,7 @@
 import {Header} from '../components/header.jsx'
 import {Nav} from '../components/nav.jsx'
 import {RegistroCompra} from '../components/registroCompra.jsx'
-import Graficos from '../components/graficos.jsx'
+import Graficos from '../components/graficosIngresos.jsx'
 import '../assets/css/formCompra.css'
 
 export function AlimentacionRecursos() {

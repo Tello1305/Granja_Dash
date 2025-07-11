@@ -1,0 +1,27 @@
+/*
+  layout.css: Define la estructura principal de la aplicación para evitar
+  el desbordamiento y los scrolls no deseados.
+*/
+
+/* Contenedor principal de la página */
+.main-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* Ocupa toda la altura de la pantalla */
+  overflow: hidden; /* Previene el scroll en el body */
+}
+
+/* Contenedor para el contenido principal (Nav y la página) */
+.content-wrapper {
+  display: flex;
+  flex-grow: 1; /* Ocupa el espacio restante */
+  overflow: hidden; /* Previene scrolls intermedios */
+}
+
+/* Área de contenido principal donde irá la tabla */
+.page-content {
+  flex-grow: 1; /* Ocupa todo el espacio disponible a lo ancho */
+  overflow-y: auto; /* AÑADE UN SCROLL INTERNO SÓLO SI ES NECESARIO */
+  padding: 2rem; /* Espaciado interno */
+  background-color: #f4f7f6;
+}

@@ -4,33 +4,30 @@ import "../assets/css/header.css";
 export function Nav() {
   const links = [
     {
-      to: "/ingresosTotales",
+      to: "/api/ingresosTotales",
       label: <i className="bi bi-house-gear-fill iconNav"></i>,
     },
     {
-      to: "/reportes",
+      to: "/api/categorias",
       label: <i className="bi bi-graph-up iconNav"></i>,
     },
     {
-      to: "/configuracion",
+      to: "/api/alimentacionRecursos",
       label: <i className="bi bi-gear-fill iconNav"></i>,
     },
     {
-      to: "/ayuda",
+      to: "/api/comidaAnimales",
       label: <i className="bi bi-question-circle-fill iconNav"></i>,
     },
     {
-      to: "/ayuda",
+      to: "/api/categoriaProductos",
       label: <i className="bi bi-question-circle-fill iconNav"></i>,
     },
     {
-      to: "/ayuda",
+      to: "/api/historialDeProductos",
       label: <i className="bi bi-question-circle-fill iconNav"></i>,
     },
-    {
-      to: "/ayuda",
-      label: <i className="bi bi-question-circle-fill iconNav"></i>,
-    },
+    
 
   ];
 
