@@ -12,9 +12,7 @@ export function RegistroCompra({ mostrarCancelar = false }) {
   const handleCrear = async (form) => {
     const data = new FormData();
     data.append("nombre", form.nombre);
-    data.append("cantidad", form.cantidad);
-    data.append("costo", form.costo);
-    data.append("id_categoria", form.id_categoria);
+    data.append("descripcion", form.descripcion);
     if (form.imagen) {
       data.append("imagen", form.imagen);
     } 
@@ -23,7 +21,7 @@ export function RegistroCompra({ mostrarCancelar = false }) {
       const response = await axios.post(`${RUTAJAVA}/api/alimentacion`, data);
       console.log(response.data);
       alert("Alimento creado correctamente");
-      setFormKey(prevKey => prevKey + 1);
+      setFormKey(prevKey => prevKey + 1); 
     }catch(error){
       console.log(error);
       alert("Error al crear el alimento");

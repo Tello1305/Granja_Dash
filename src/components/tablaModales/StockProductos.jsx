@@ -1,5 +1,5 @@
-import ModalStockCrearAlimentos from '../modales/modalCrearStock.jsx'
-import ModalStockEditarAlimentos from '../modales/modalEditarStock.jsx'
+import ModalStockCrearProducto from '../modales/modalCrearStockProducto.jsx'
+import ModalStockEditarProducto from '../modales/modalEditarStockProductos.jsx'
 import TablaGenerica from '../TablaGenerica'
 import axios from 'axios';
 import { useState, useEffect } from 'react';
@@ -7,16 +7,16 @@ import { useAuth } from '../../auth/authContext.jsx';
 
 const RUTAJAVA = import.meta.env.VITE_RUTAJAVA;
 
-export default function StockAlimentos({ onUpdated, alimentos }) {
+export default function StockpProductos({ onUpdated, productos }) {
 
     const [stock, setStock] = useState([])
     const { auth } = useAuth();
-    const [alimentoSeleccionado, setAlimentoSeleccionado] = useState(null);
+    const [productoSeleccionado, setProductoSeleccionado] = useState(null);
     
 
     const fetchStock = async () => {
         try {
-            const response = await axios.get(`${RUTAJAVA}/api/stockAlimentos`,
+            const response = await axios.get(`${RUTAJAVA}/api/stockProductos`,
                 
             );
             console.log('Stocks de la tabla: ' , response.data);
@@ -30,12 +30,7 @@ export default function StockAlimentos({ onUpdated, alimentos }) {
         fetchStock();
     }, []);
 
-    const handleStockUpdate = () => {
-        fetchStock();
-        if (onUpdated) {
-            onUpdated();
-        }
-    };
+    
 
     const columns = [
       {
@@ -46,17 +41,12 @@ export default function StockAlimentos({ onUpdated, alimentos }) {
         size: 50
       },
       {
-        header: "ALIMENTO",
-        accessorKey: "nombreAlimento",
+        header: "PRODUCTO",
+        accessorKey: "nombreProducto",
         enableSorting: true,
 
       },
-      {
-        header: "RAZA",
-        accessorKey: "nombreRaza",
-        enableSorting: true,
-        cell: (info) => info.getValue() || "--------"
-      },
+      
       {
         header: "TIPO",
         accessorKey: "tipo",
@@ -69,14 +59,20 @@ export default function StockAlimentos({ onUpdated, alimentos }) {
         enableSorting: true,
       },
       {
-        header: "COSTO",
-        accessorKey: "costo",
+        header: "FECHA",
+        accessorKey: "fecha",
         enableSorting: true,
         cell: (info) => {
-          const value = info.getValue();
-          return (value != null && !isNaN(value)) ? `S/ ${parseFloat(value).toFixed(2)}` : "--------";
-        }
-      },
+            const date = new Date(info.getValue());
+            return date.toLocaleString("es-PE", {
+              day: "2-digit",
+              month: "2-digit",
+              year: "numeric",
+              hour: "2-digit",
+              minute: "2-digit"
+            });
+          }
+    },
       {
         header: "ACCIÓN",
         enableSorting: false,
@@ -86,8 +82,8 @@ export default function StockAlimentos({ onUpdated, alimentos }) {
               type="button"
               className="btn btn-warning btn-sm"
               data-bs-toggle="modal"
-              data-bs-target="#modalStockEditarAlimentos"
-              onClick={() => setAlimentoSeleccionado(info.row.original)}
+              data-bs-target="#modalStockEditarProducto"
+              onClick={() => setProductoSeleccionado(info.row.original)}
             >
               Editar
             </button>
@@ -102,7 +98,7 @@ export default function StockAlimentos({ onUpdated, alimentos }) {
                 <div className="modal-dialog modal-lg">
                     <div className="modal-content">
                         <div className="modal-header">
-                            <h1 className="modal-title fs-5" id="modalPrincipalStockLabel">Gestión de Stock de Alimentos</h1>
+                            <h1 className="modal-title fs-5" id="modalPrincipalStockLabel">Gestión de Stock de Productos</h1>
                             <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div className="modal-body">
@@ -112,9 +108,9 @@ export default function StockAlimentos({ onUpdated, alimentos }) {
                                      showSearch={true}
                                      showPagination={true}
                                      showtock={false}
-                                     stockModalId="#modalPrincipalStock"
+                                     stockModalId="#modalPrincipalStockProducto"
                                      onStock={() => document.activeElement.blur()}
-                                     createModalId="#modalStockCrearAlimentos"
+                                     createModalId="#modalStockCrearProducto"
                                      onCreate={() => document.activeElement.blur()}
                             
                                      />
@@ -124,8 +120,8 @@ export default function StockAlimentos({ onUpdated, alimentos }) {
                 </div>
             </div>
 
-            <ModalStockCrearAlimentos onUpdated={handleStockUpdate} alimentos={alimentos} />
-            <ModalStockEditarAlimentos onUpdated={handleStockUpdate} stockSeleccionado={alimentoSeleccionado} alimentos={alimentos} />
+            <ModalStockCrearProducto onUpdated={onUpdated} productos={productos} />
+            <ModalStockEditarProducto onUpdated={onUpdated} stockSeleccionado={productoSeleccionado} productos={productos} />
            
         </>
     )

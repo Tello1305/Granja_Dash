@@ -14,19 +14,19 @@ export function RouterSystem() {
         <Routes>
             <Route path='/' element={<AppLogin />} />
             <Route path='/GranjaDash/ingresosTotales' 
-            element={/*<AuthRoute roles={[1,2]}>*/<IngresosTotales />/*</AuthRoute>*/} />
+            element={ <AuthRoute roles={[1,2]}> <IngresosTotales /> </AuthRoute>} />
             <Route path='/GranjaDash/alimentacionRecursos' 
-            element={/*<AuthRoute roles={[1,2]}>*/<AlimentacionRecursos />/*</AuthRoute>*/} />
+            element={<AuthRoute roles={[1,2]}><AlimentacionRecursos /></AuthRoute>} />
             <Route path='/GranjaDash/comidaAnimales' 
-            element={/*<AuthRoute roles={[1,2]}>*/<ComidaAnimales />/*</AuthRoute>*/} />
+            element={<AuthRoute roles={[1,2]}><ComidaAnimales /></AuthRoute>} />
             <Route path='/GranjaDash/categorias' 
-            element={/*<AuthRoute roles={[1,2]}>*/<Categorias />/*</AuthRoute>*/} />
+            element={<AuthRoute roles={[1,2]}><Categorias /></AuthRoute>} />
             <Route path='/GranjaDash/categoriaRazas' 
-            element={/*<AuthRoute roles={[1,2]}>*/<CategoriaRazas />/*</AuthRoute>*/} />
+            element={<AuthRoute roles={[1,2]}><CategoriaRazas /></AuthRoute>} />
             <Route path='/GranjaDash/LoteAnimales' 
-            element={/*<AuthRoute roles={[1,2]}>*/<LoteAnimales />/*</AuthRoute>*/} />
+            element={<AuthRoute roles={[1,2]}><LoteAnimales /></AuthRoute>} />
             <Route path='/GranjaDash/ProductoAnimales' 
-            element={/*<AuthRoute roles={[1,2]}>*/<ProductoAnimales />/*</AuthRoute>*/} />
+            element={<AuthRoute roles={[1,2]}><ProductoAnimales /></AuthRoute>} />
             
         </Routes>
     )

@@ -13,7 +13,7 @@ export function AuthRoute({ children, roles }) {
   const UsuarioAutenticado = token && nombre && id_rol;
 
   if (!UsuarioAutenticado || !roles.includes(id_rol)) {
-    return <Navigate to="/GranjaDash/login" />;
+    return <Navigate to="/" />;
   }
   return children;
 }

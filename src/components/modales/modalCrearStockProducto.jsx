@@ -1,17 +1,16 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useAuth } from "../../auth/authContext.jsx";
-import FormStock from "../form/formStock.jsx";
+import FormStockProductos from "../form/formStockProductos.jsx";
 
 const RUTAJAVA = import.meta.env.VITE_RUTAJAVA;
 
-export default function ModalStockCrearAlimentos({ onUpdated, onUpdateStock, alimentos }) {
+export default function ModalStockCrearProducto({ onUpdated, productos }) {
   const [form, setForm] = useState({
-    id_alimento: "",
+    id_producto: "",
     tipo: "ENTRADA",
     cantidad: "",
-    costo: "",
-    id_raza: ""
+    
   });
 
   const { auth } = useAuth();
@@ -26,32 +25,20 @@ export default function ModalStockCrearAlimentos({ onUpdated, onUpdateStock, ali
     e.preventDefault();
 
     // VALIDACIONES FRONTEND
-    if (!form.id_alimento || !form.tipo || !form.cantidad) {
-      alert("Debes completar Alimento, Tipo y Cantidad");
-      return;
-    }
-
-    if (form.tipo === "ENTRADA" && !form.costo) {
-      alert("El costo es obligatorio en una entrada.");
-      return;
-    }
-
-    if (form.tipo === "SALIDA" && !form.id_raza) {
-      alert("Debes seleccionar una raza en la salida.");
+    if (!form.id_producto || !form.tipo || !form.cantidad) {
+      alert("Debes completar Producto, Tipo y Cantidad");
       return;
     }
 
     // ARMAR JSON según el tipo
     const data = {
-      id_alimento: form.id_alimento,
+      id_producto: form.id_producto,
       tipo: form.tipo,
       cantidad: parseInt(form.cantidad),
-      costo: form.tipo === "ENTRADA" ? parseFloat(form.costo) : null,
-      id_raza: form.tipo === "SALIDA" ? form.id_raza : null
     };
 
     try {
-      const response = await axios.post(`${RUTAJAVA}/api/stockAlimentos`, data, {
+      const response = await axios.post(`${RUTAJAVA}/api/stockProductos`, data, {
         headers: {
           Authorization: `Bearer ${auth.token}`,
         },
@@ -64,11 +51,9 @@ export default function ModalStockCrearAlimentos({ onUpdated, onUpdateStock, ali
 
       // Limpiar formulario
       setForm({
-        id_alimento: "",
+        id_producto: "",
         tipo: "ENTRADA",
         cantidad: "",
-        costo: "",
-        id_raza: ""
       });
 
     } catch (error) {
@@ -77,7 +62,7 @@ export default function ModalStockCrearAlimentos({ onUpdated, onUpdateStock, ali
     }
 
     const closeButton = document.querySelector(
-      "#modalStockCrearAlimentos .btn-close"
+      "#modalStockCrearProducto .btn-close"
     );
     if (closeButton) {
       closeButton.click();
@@ -90,7 +75,7 @@ export default function ModalStockCrearAlimentos({ onUpdated, onUpdateStock, ali
   return (
     <div
       className="modal fade"
-      id="modalStockCrearAlimentos"
+      id="modalStockCrearProducto"
       tabIndex="-1"
       aria-labelledby="exampleModalLabel"
       aria-hidden="true"
@@ -109,13 +94,13 @@ export default function ModalStockCrearAlimentos({ onUpdated, onUpdateStock, ali
             ></button>
           </div>
           <div className="modal-body">
-            <FormStock
+            <FormStockProductos
               onSubmit={handleCrear}
               mostrarCancelar={true}
               form={form}
               handleChange={handleChange}
               disabled={false}
-              alimentos={alimentos}
+              productos={productos}
             />
           </div>
         </div>

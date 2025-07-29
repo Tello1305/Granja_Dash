@@ -18,6 +18,7 @@ export function FormLogin({onSubmit}) {
     const handleSubmit = (e) => {
         e.preventDefault();
         onSubmit(form);
+        
     }
 
     return(
@@ -35,11 +36,11 @@ export function FormLogin({onSubmit}) {
             </div>
             <br />
             <div>
-                <label htmlFor="contrasena" className="form-label">contraseña</label>
+                <label htmlFor="password" className="form-label">contraseña</label>
                 <input 
                 className="form-control"
                 type="password"
-                id="contrasena"
+                id="password"
                 name="password"
                 value = {form.password} 
                 onChange={handleChange}

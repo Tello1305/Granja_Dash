@@ -1,39 +1,35 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useAuth } from "../../auth/authContext";
-import FormStock from "../form/formStock";
+import FormStockProductos from "../form/formStockProductos";
 
 const RUTAJAVA = import.meta.env.VITE_RUTAJAVA;
 
-export default function ModalStockEditarAlimentos({ onUpdated, stockSeleccionado, alimentos }) {
+export default function ModalStockEditarProducto({ onUpdated, stockSeleccionado, productos }) {
   const { auth } = useAuth();
   const [formKey, setFormKey] = useState(0);
 
   const [stock, setStock] = useState({
-    id_stockAlimento: "",
-    id_alimento: "",
+    id_stock: "",
+    id_producto: "",
     tipo: "",
-    id_raza: "",
     cantidad: "",
-    costo: ""
   });
 
   useEffect(() => {
     if (stockSeleccionado) {
       setStock({
-        id_stockAlimento: stockSeleccionado.id_stockAlimento || "",
-        id_alimento: stockSeleccionado.id_alimento || "",
+        id_stock: stockSeleccionado.id_stock || "",
+        id_producto: stockSeleccionado.id_producto || "",
         tipo: stockSeleccionado.tipo || "",
-        id_raza: stockSeleccionado.id_raza || "",
-        cantidad: stockSeleccionado.cantidad || "",
-        costo: stockSeleccionado.costo || ""
+        cantidad: stockSeleccionado.cantidad || ""
       });
     }
   }, [stockSeleccionado]);
 
   const handleChange = (e) => {
     const { id, name, value } = e.target;
-    const field = id || name;  
+    const field = id || name;  // Para inputs tipo radio (name="tipo") y otros
     setStock((prev) => ({ ...prev, [field]: value }));
   };
 
@@ -42,16 +38,13 @@ export default function ModalStockEditarAlimentos({ onUpdated, stockSeleccionado
     document.activeElement?.blur();
 
     const payload = {
-      id_alimento: stock.id_alimento,
-      id_raza: stock.id_raza || null,
+      id_producto: stock.id_producto,
       cantidad: parseInt(stock.cantidad),
       tipo: stock.tipo,
-      costo: stock.costo === "" ? null : parseFloat(stock.costo)
     };
 
     try {
-      const response = await axios.put(
-        `${RUTAJAVA}/api/stockAlimentos/${stock.id_stockAlimento}`,
+      const response = await axios.put(`${RUTAJAVA}/api/stockProductos/${stock.id_stock}`,
         payload,
         {
           headers: {
@@ -68,16 +61,16 @@ export default function ModalStockEditarAlimentos({ onUpdated, stockSeleccionado
       alert("Error al editar el stock");
     }
 
-    const closeButton = document.querySelector("#modalStockEditarAlimentos .btn-close");
+    const closeButton = document.querySelector("#modalStockEditarProducto .btn-close");
     if (closeButton) closeButton.click();
     if (document.activeElement) document.activeElement.blur();
-    setFormKey((prevKey) => prevKey + 1); 
+    setFormKey((prevKey) => prevKey + 1);  // Resetear formulario (si es necesario)
   };
 
   return (
     <div
       className="modal fade"
-      id="modalStockEditarAlimentos"
+      id="modalStockEditarProducto"
       tabIndex="-1"
       aria-labelledby="exampleModalLabel"
       aria-hidden="true"
@@ -86,7 +79,7 @@ export default function ModalStockEditarAlimentos({ onUpdated, stockSeleccionado
         <div className="modal-content">
           <div className="modal-header">
             <h1 className="modal-title fs-5" id="exampleModalLabel">
-              Editar Stock
+              Editar Stock Producto
             </h1>
             <button
               type="button"
@@ -96,14 +89,13 @@ export default function ModalStockEditarAlimentos({ onUpdated, stockSeleccionado
             ></button>
           </div>
           <div className="modal-body">
-            <FormStock
+            <FormStockProductos
               onSubmit={handleEditar}
               mostrarCancelar={true}
               key={formKey}
               handleChange={handleChange}
               form={stock}
-              alimentos={alimentos}
-              modo="editar"        // Modo Edición
+              productos={productos}
             />
           </div>
         </div>

@@ -3,25 +3,20 @@ import { useEffect, useState } from "react";
 
 const RUTAJAVA = import.meta.env.VITE_RUTAJAVA;
 
-export default function FormStock({ form, handleChange, onSubmit, mostrarCancelar, modo = "crear", disabled = false }) {
-  const [alimentos, setAlimentos] = useState([]);
+export default function FormStock({ form, handleChange, onSubmit, mostrarCancelar, modo = "crear", disabled = false, alimentos = [] }) {
   const [razas, setRazas] = useState([]);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchRazas = async () => {
       try {
-        const [resAlimentos, resRazas] = await Promise.all([
-          axios.get(`${RUTAJAVA}/api/alimentacion`),
-          axios.get(`${RUTAJAVA}/api/razaAnimales`)
-        ]);
-        setAlimentos(resAlimentos.data);
-        setRazas(resRazas.data);
+        const response = await axios.get(`${RUTAJAVA}/api/razaAnimales`);
+        setRazas(response.data);
       } catch (error) {
-        console.error("Error al obtener los datos:", error);
+        console.error("Error al obtener las razas:", error);
       }
     };
 
-    fetchData();
+    fetchRazas();
   }, []);
 
   const handleSubmit = (e) => {
@@ -58,7 +53,7 @@ export default function FormStock({ form, handleChange, onSubmit, mostrarCancela
           <div className="form-check">
             <input
               className="form-check-input"
-              type="radio"
+              type="checkbox"
               name="tipo"
               id="entrada"
               value="ENTRADA"
@@ -73,7 +68,7 @@ export default function FormStock({ form, handleChange, onSubmit, mostrarCancela
           <div className="form-check">
             <input
               className="form-check-input"
-              type="radio"
+              type="checkbox"
               name="tipo"
               id="salida"
               value="SALIDA"

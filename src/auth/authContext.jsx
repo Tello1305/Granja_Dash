@@ -3,6 +3,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 const authContext = createContext();
 
 export function ContextoAuth({ children }) {
+
   const [auth, setAuth] = useState({ token: null, nombre: null, id_rol: null });
   const [loading, setLoading] = useState(true);
 
@@ -14,7 +15,6 @@ export function ContextoAuth({ children }) {
     if (token && nombre && id_rol) {
       setAuth({ token, nombre, id_rol: Number(id_rol) });
     } else {
-      // Si falta algún dato, limpia localStorage para consistencia
       localStorage.removeItem("token");
       localStorage.removeItem("nombre");
       localStorage.removeItem("id_rol");

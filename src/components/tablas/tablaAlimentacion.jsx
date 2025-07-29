@@ -5,7 +5,8 @@ import ModalEditarTablaAlimentos from "../modales/modalEditarTablaAlimentos";
 import ModalCrearTablaAlimentos from "../modales/modalCrearTablaAlimentos";
 import StockAlimentos from "../tablaModales/StockAlimentos";
 import ModalStockAlimentos from "../modales/modalCrearStock";
-import { useAuth } from "../../auth/authContext.jsx";
+import { useAuth } from '../../auth/authContext.jsx';
+import '../../assets/css/ToggleSwitch.css';
 
 const RUTAJAVA = import.meta.env.VITE_RUTAJAVA;
 
@@ -30,23 +31,56 @@ export default function AlimentacionList() {
   }, []);
 
   const handleDelete = async (id_alimento) => {
-   
-      try {
-        await axios.delete(`${RUTAJAVA}/api/alimentacion/${id_alimento}`,
-          {
-            headers: {
-              Authorization: `Bearer ${auth.token}`
-            }
-          }
-        );
-        console.log("Alimento eliminado correctamente: ", id_alimento);
-        setAlimentos(prev => prev.filter(alimento => alimento.id_alimento !== id_alimento));
-      } catch (error) { 
-        console.error("Error al eliminar:", error);
+    try {
+      await axios.delete(`${RUTAJAVA}/api/alimentacion/${id_alimento}`, {
+        headers: {
+          Authorization: `Bearer ${auth.token}`
+        }
+      });
+  
+      console.log("Alimento eliminado correctamente: ", id_alimento);
+      setAlimentos(prev => prev.filter(alimento => alimento.id_alimento !== id_alimento));
+  
+    } catch (error) {
+      console.error("Error al eliminar:", error);
+  
+      if (error.response && error.response.status === 400 && error.response.data.includes("historial")) {
+        if (confirm("Este alimento tiene historial de movimientos. ¿Deseas inactivarlo?")) {
+          handleToggleEstado(id_alimento, "ACTIVO"); // Lo inactivas directamente
+        }
+      } else {
         alert("No se pudo eliminar el alimento. Intente nuevamente.");
       }
-    
+    }
   };
+  
+  const handleToggleEstado = async (id_alimento, estadoActual) => {
+    const nuevoEstado = estadoActual === "ACTIVO" ? "INACTIVO" : "ACTIVO";
+  
+    try {
+      await axios.put(`${RUTAJAVA}/api/alimentacion/${id_alimento}/estado`, 
+        { estado: nuevoEstado },
+        {
+          headers: {
+            Authorization: `Bearer ${auth.token}`
+          }
+        }
+      );
+  
+      const alimentosActualizados = alimentos.map(alimento => 
+        alimento.id_alimento === id_alimento
+          ? { ...alimento, estado: nuevoEstado }
+          : alimento
+      );
+  
+      setAlimentos(alimentosActualizados);
+  
+    } catch (error) {
+      console.error("Error al cambiar estado:", error);
+      alert("No se pudo cambiar el estado. Inténtalo nuevamente.");
+    }
+  };
+  
 
   const columns = [
     {
@@ -106,29 +140,54 @@ export default function AlimentacionList() {
       )
     },
     {
+      header: "ESTADO",
+      accessorKey: "estado",
+      enableSorting: false,
+      cell: (info) => {
+        const alimento = info.row.original;
+        return (
+          <label className="toggle-switch">
+            <input 
+              type="checkbox" 
+              checked={alimento.estado === "ACTIVO"}
+              onChange={() => handleToggleEstado(alimento.id_alimento, alimento.estado)}
+            />
+            <span className="slider"></span>
+          </label>
+        );
+      }
+    },
+    
+    {
       header: "ACCIÓN",
       enableSorting: false,
-      cell: (info) => (
-        <div className="d-flex gap-2">
-          <button
-            type="button"
-            className="btn btn-danger btn-sm"
-            onClick={() => handleDelete(info.row.original.id_alimento)}
+      cell: (info) => {
+        const alimento = info.row.original;
+        const isInactive = alimento.estado === "INACTIVO";
 
-          >
-            Eliminar
-          </button>
-          <button
-            type="button"
-            className="btn btn-warning btn-sm"
-            data-bs-toggle="modal"
-            data-bs-target="#ModalEditarTablaAlimentos"
-            onClick={() => setAlimentoSeleccionado(info.row.original)}
-          >
-            Editar
-          </button>
-        </div>
-      )
+        return (
+          <div className="d-flex gap-2">
+            <button
+              type="button"
+              className="btn btn-warning btn-sm"
+              data-bs-toggle="modal"
+              data-bs-target="#ModalEditarTablaAlimentos"
+              onClick={() => setAlimentoSeleccionado(alimento)}
+              disabled={isInactive}
+            >
+              Editar
+            </button>
+            <button
+              type="button"
+              className="btn btn-danger btn-sm"
+              onClick={() => handleDelete(alimento.id_alimento)}
+              disabled={isInactive}
+            >
+              Eliminar
+            </button>
+          </div>
+        );
+      }
     }
   ];
 
@@ -156,7 +215,7 @@ export default function AlimentacionList() {
         onUpdated={fetchAlimentos}
       />
       <ModalCrearTablaAlimentos onUpdated={fetchAlimentos} />
-      <StockAlimentos onUpdated={fetchAlimentos} />
+      <StockAlimentos onUpdated={fetchAlimentos} alimentos={alimentos} />
     </div>
   );
 }

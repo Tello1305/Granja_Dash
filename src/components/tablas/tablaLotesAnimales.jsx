@@ -29,7 +29,7 @@ export default function TablaLotesAnimales() {
   }, []);
 
   const handleDelete = async (id_lote) => {
-    if (window.confirm("¿Estás seguro de que deseas eliminar esta raza?")) {
+  
       try {
         const response = await axios.delete(`${RUTAJAVA}/api/lotesDeAnimales/${id_lote}`,
           {
@@ -44,7 +44,7 @@ export default function TablaLotesAnimales() {
         console.error("Error al eliminar:", error);
         alert("No se pudo eliminar la raza. Intente nuevamente.");
       }
-    }
+    
   };
 
   const columns = [
