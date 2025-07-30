@@ -1,26 +1,339 @@
-.sections {
-    width: 350px;
-    height: 80px;
+/* Dashboard Header */
+.dashboard-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: var(--spacing-lg);
+    margin-bottom: var(--spacing-xl);
 }
 
-.circleTotal{
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    border: 2px solid #b19393;
+.weather-card {
+    background: var(--bg-white);
+    border-radius: var(--border-radius-xl);
+    padding: var(--spacing-lg);
+    box-shadow: var(--shadow-md);
+}
+
+.weather-info {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    margin-right: 10px;
+    margin-bottom: var(--spacing-md);
 }
 
-.fade-in {
-    animation: fadeIn 0.3s ease-in-out;
+.weather-label {
+    font-size: var(--font-size-xs);
+    color: var(--text-light);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+
+.weather-title {
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--text-dark);
+    margin: var(--spacing-xs) 0;
 }
-.transition-opacity {
-    transition: opacity 0.3s ease-in-out;
+
+.weather-date {
+    font-size: var(--font-size-sm);
+    color: var(--text-light);
+}
+
+.temp-circle {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: conic-gradient(var(--light-orange) 0deg 270deg, #e9ecef 270deg 360deg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.temp-circle::before {
+    content: '';
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: var(--bg-white);
+    position: absolute;
+}
+
+.temp-value {
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--text-dark);
+    z-index: 1;
+}
+
+.weather-stats {
+    display: flex;
+    justify-content: space-between;
+    margin-top: var(--spacing-lg);
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-xs);
+    font-size: var(--font-size-sm);
+    color: var(--text-light);
+}
+
+.growth-activity-card {
+    background: var(--bg-white);
+    border-radius: var(--border-radius-xl);
+    padding: var(--spacing-lg);
+    box-shadow: var(--shadow-md);
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-lg);
+}
+
+.card-header h3 {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-dark);
+    margin: 0;
+}
+
+.period-badge {
+    background: var(--light-orange);
+    color: var(--text-white);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--border-radius-sm);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-medium);
+}
+
+.growth-chart {
+    margin: var(--spacing-lg) 0;
+}
+
+.growth-line {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    margin: var(--spacing-lg) 0;
+}
+
+.growth-line::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--light-orange) 0%, var(--accent-orange) 50%, #e9ecef 100%);
+    z-index: 1;
+}
+
+.growth-point {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--bg-white);
+    border: 3px solid #e9ecef;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 2;
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-bold);
+}
+
+.growth-point.active {
+    border-color: var(--light-orange);
+    background: var(--light-orange);
+    color: var(--text-white);
+}
+
+.growth-legend {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    font-size: var(--font-size-sm);
+}
+
+.legend-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+.legend-dot.seed {
+    background: var(--light-orange);
+}
+
+.legend-dot.fruit {
+    background: var(--accent-orange);
+}
+
+.legend-dot.vegetation {
+    background: var(--secondary-orange);
+}
+
+.farm-illustration {
+    background: linear-gradient(135deg, var(--light-orange) 0%, var(--accent-orange) 100%);
+    border-radius: var(--border-radius-xl);
+    padding: var(--spacing-lg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.farm-scene {
+    text-align: center;
+    color: var(--text-white);
+}
+
+.farmer-character {
+    font-size: 3rem;
+    margin-bottom: var(--spacing-md);
+}
+
+.plants {
+    font-size: 2rem;
+    letter-spacing: var(--spacing-sm);
+}
+
+/* Summary Cards */
+.summary-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--spacing-lg);
+
+}
+
+.summary-card {
+    display: flex;
+    align-items: center;
+    padding: var(--spacing-lg);
+    background: var(--bg-white);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-md);
+    transition: all var(--transition-normal);
+    position: relative;
+    overflow: hidden;
+}
+
+.summary-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: var(--light-orange);
+}
+
+.summary-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+}
+
+.card-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: var(--border-radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: var(--spacing-lg);
+    flex-shrink: 0;
+}
+
+.card-icon i {
+    font-size: var(--font-size-xl);
+    color: var(--text-white);
+}
+
+.card-content {
+    flex: 1;
+}
+
+.card-value {
+    font-size: var(--font-size-3xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--text-dark);
+    line-height: 1;
+    margin-bottom: var(--spacing-xs);
+}
+
+.card-title {
+    font-size: var(--font-size-sm);
+    color: var(--text-light);
+    font-weight: var(--font-weight-medium);
+}
+
+.card-trend {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(243, 156, 18, 0.1);
+    flex-shrink: 0;
+}
+
+.trend-icon {
+    color: var(--light-orange);
+    font-size: var(--font-size-base);
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+    .dashboard-header {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .farm-illustration {
+        grid-column: 1 / -1;
+    }
+}
+
+@media (max-width: 768px) {
+    .dashboard-header {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-md);
+        padding: 0 var(--spacing-md);
+    }
+
+    .summary-cards {
+        grid-template-columns: 1fr;
+        margin: var(--spacing-lg) var(--spacing-md);
+        gap: var(--spacing-md);
+    }
+
+    .weather-info {
+        flex-direction: column;
+        text-align: center;
+        gap: var(--spacing-md);
+    }
+
+    .temp-circle {
+        width: 60px;
+        height: 60px;
+    }
+
+    .temp-circle::before {
+        width: 45px;
+        height: 45px;
+    }
 }

@@ -1,69 +1,85 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import "../assets/css/header.css";
-import {useAuth} from "../auth/authContext";
+import { useAuth } from "../auth/authContext";
 import { useNavigate } from "react-router-dom";
 
-export function Nav() {
-
+export function Nav({ isOpen, onClose }) {
   const navigate = useNavigate();
-  const {logout} = useAuth();
+  const location = useLocation();
+  const { logout } = useAuth();
 
   const handleLogout = () => {
     logout();
     navigate("/GranjaDash/login");
   };
-
-
   const links = [
     {
       to: "/GranjaDash/ingresosTotales",
-      label: <i className="iconNav">Ingresos</i>,
+      label: "Dashboard",
+      icon: "bi bi-speedometer2",
     },
     {
       to: "/GranjaDash/categorias",
-      label: <i className="iconNav">Categorias</i>,
+      label: "Categorías",
+      icon: "bi bi-tags",
     },
     {
       to: "/GranjaDash/alimentacionRecursos",
-      label: <i className="iconNav">Alimentacion</i>,
+      label: "Alimentación",
+      icon: "bi bi-cup-straw",
     },
     {
       to: "/GranjaDash/categoriaRazas",
-      label: <i className="iconNav">Razas</i>,
+      label: "Razas",
+      icon: "bi bi-collection",
     },
     {
       to: "/GranjaDash/LoteAnimales",
-      label: <i className="iconNav">Lotes</i>,
+      label: "Lotes",
+      icon: "bi bi-grid-3x3",
     },
     {
       to: "/GranjaDash/ProductoAnimales",
-      label: <i className="iconNav">Productos</i>,
+      label: "Productos",
+      icon: "bi bi-box-seam",
     },
     {
       to: "/GranjaDash/comidaAnimales",
-      label: <i className="iconNav">Comida</i>,
+      label: "Comida",
+      icon: "bi bi-egg-fried",
     },
   ];
 
-
   return (
-    <nav className="p-2">
-      <ul className="d-flex justify-content-center flex-column p-0 gap-3 mt-4">
-        {links.map((link, index) => (
-          <li
-            key={index}
-            className="list-unstyled d-flex justify-content-center"
-          >
-            <Link
-              to={link.to}
-              className="text-decoration-none p-2 d-flex align-items-center justify-content-center rounded border contenLink">
-              {link.label}
-            </Link>
-            
-          </li>
-        ))}
-        <button className="btn btn-danger btn-sm" onClick={handleLogout}> <i className="bi bi-box-arrow-right"></i></button>
-      </ul>
-    </nav>
+    <>
+      {isOpen && <div className="sidebar-overlay" onClick={onClose}></div>}
+      <nav className={`sidebar ${isOpen ? 'sidebar-open' : ''}`} >
+        <div className="nav-brand">
+          <h3 className="nav-brand-text">Granja Dash</h3>
+        </div>
+
+        <div className="nav-menu">
+          {links.map((link, index) => (
+            <div key={index} className="nav-item">
+              <Link
+                to={link.to}
+                className={`nav-link ${location.pathname === link.to ? 'active' : ''}`}
+                onClick={onClose}
+              >
+                <i className={`nav-icon ${link.icon}`}></i>
+                <span className="nav-text">{link.label}</span>
+              </Link>
+            </div>
+          ))}
+        </div>
+
+        <div className="nav-logout">
+          <button className="logout-btn" onClick={handleLogout}>
+            <i className="bi bi-box-arrow-right me-2"></i>
+            Cerrar Sesión
+          </button>
+        </div>
+      </nav>
+    </>
   );
 }

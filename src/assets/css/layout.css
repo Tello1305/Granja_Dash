@@ -1,27 +1,150 @@
-/*
-  layout.css: Define la estructura principal de la aplicación para evitar
-  el desbordamiento y los scrolls no deseados.
-*/
-
-/* Contenedor principal de la página */
-.main-container {
-  display: flex;
-  flex-direction: column;
-  height: 100vh; /* Ocupa toda la altura de la pantalla */
-  overflow: hidden; /* Previene el scroll en el body */
+/* Layout principal de la aplicación */
+.app-layout {
+  min-height: 100vh;
+  background-color: var(--bg-primary);
 }
 
-/* Contenedor para el contenido principal (Nav y la página) */
+.main-layout {
+  display: flex;
+  min-height: calc(100vh - 80px);
+}
+
+.main-content {
+  flex: 1;
+  margin-left: 0;
+  background-color: var(--bg-primary);
+  transition: margin-left var(--transition-normal);
+}
+
 .content-wrapper {
-  display: flex;
-  flex-grow: 1; /* Ocupa el espacio restante */
-  overflow: hidden; /* Previene scrolls intermedios */
+  padding: var(--spacing-xl);
+  max-width: 100%;
+  margin: 0 auto;
 }
 
-/* Área de contenido principal donde irá la tabla */
-.page-content {
-  flex-grow: 1; /* Ocupa todo el espacio disponible a lo ancho */
-  overflow-y: auto; /* AÑADE UN SCROLL INTERNO SÓLO SI ES NECESARIO */
-  padding: 2rem; /* Espaciado interno */
-  background-color: #f4f7f6;
+.charts-section {
+  margin-top: var(--spacing-xl);
+  background: var(--bg-white);
+  border-radius: var(--border-radius-xl);
+  padding: var(--spacing-xl);
+  box-shadow: var(--shadow-md);
+}
+
+/* Responsive adjustments */
+@media (min-width: 1024px) {
+  .main-content {
+    margin-left: 240px;
+  }
+}
+
+@media (max-width: 768px) {
+  .content-wrapper {
+    padding: var(--spacing-md);
+  }
+  
+  .charts-section {
+    padding: var(--spacing-lg);
+    margin-top: var(--spacing-lg);
+  }
+}
+
+@media (max-width: 576px) {
+  .content-wrapper {
+    padding: var(--spacing-sm);
+  }
+}
+
+/* Estilos globales mejorados */
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-dark);
+  line-height: 1.6;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Mejoras para elementos de Bootstrap */
+.container {
+  max-width: 100%;
+  padding: 0;
+}
+
+/* Scrollbar personalizado */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--light-orange);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--secondary-orange);
+}
+* Ajustes adicionales para tablas y formularios */
+.content-wrapper .table-responsive {
+  background: var(--bg-white);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: var(--spacing-lg);
+  margin-top: var(--spacing-lg);
+}
+
+.content-wrapper .card {
+  border: none;
+  box-shadow: var(--shadow-md);
+  border-radius: var(--border-radius-lg);
+}
+
+.content-wrapper .btn-primary {
+  background-color: var(--primary-orange);
+  border-color: var(--primary-orange);
+  transition: all var(--transition-fast);
+}
+
+.content-wrapper .btn-primary:hover {
+  background-color: var(--secondary-orange);
+  border-color: var(--secondary-orange);
+  transform: translateY(-1px);
+}
+
+/* Mejoras para formularios */
+.content-wrapper .form-control {
+  border-radius: var(--border-radius-md);
+  border: 1px solid #e9ecef;
+  transition: all var(--transition-fast);
+}
+
+.content-wrapper .form-control:focus {
+  border-color: var(--light-orange);
+  box-shadow: 0 0 0 0.2rem rgba(243, 156, 18, 0.25);
+}
+
+/* Estilos para gráficos */
+.charts-section canvas {
+  border-radius: var(--border-radius-md);
+}
+
+/* Animaciones suaves */
+.main-content {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

@@ -37,26 +37,28 @@
   border-radius: 50%;
 }
 
-input:checked + .slider {
-  background-color: #28a745; /* Verde de éxito de Bootstrap */
+input:checked+.slider {
+  background-color: #28a745;
+  /* Verde de éxito de Bootstrap */
 }
 
-input:focus + .slider {
+input:focus+.slider {
   box-shadow: 0 0 1px #28a745;
 }
 
-input:checked + .slider:before {
+input:checked+.slider:before {
   -webkit-transform: translateX(22px);
   -ms-transform: translateX(22px);
   transform: translateX(22px);
 }
 
 /* Estilo para cuando el switch está desactivado */
-input:disabled + .slider {
-  background-color: #e9ecef; /* Un gris más claro */
+input:disabled+.slider {
+  background-color: #e9ecef;
+  /* Un gris más claro */
   cursor: not-allowed;
 }
 
-input:disabled + .slider:before {
+input:disabled+.slider:before {
   background-color: #adb5bd;
 }
