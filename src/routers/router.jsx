@@ -8,6 +8,8 @@ import { LoteAnimales } from '../pages/loteAnimales.jsx'
 import { ProductoAnimales } from '../pages/productoAnimales.jsx'
 import { Routes, Route } from "react-router-dom";
 import { AuthRoute } from "../auth/protectedRouter";
+import { Reportes } from '../pages/reportesSistema.jsx'
+import { HistorialProductos } from '../pages/historialProductos.jsx'
 
 export function RouterSystem() {
     return (
@@ -36,6 +38,8 @@ export function RouterSystem() {
             <Route path='/GranjaDash/categoriaRazas' element={<CategoriaRazas />} />
             <Route path='/GranjaDash/LoteAnimales' element={<LoteAnimales />} />
             <Route path='/GranjaDash/ProductoAnimales' element={<ProductoAnimales />} />
+            <Route path='/GranjaDash/Reportes' element={<Reportes />} />
+            <Route path='/GranjaDash/Bitacora' element={<HistorialProductos />} />
         </Routes>
     )
 }

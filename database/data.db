@@ -98,16 +98,7 @@ CREATE TABLE citas (
     FOREIGN KEY (id_lote) REFERENCES lote_animales(id_lote)
 );
 
--- Tabla de historial mensual
-CREATE TABLE historial_mensual (
-    id_historial INT AUTO_INCREMENT PRIMARY KEY,
-    mes_anio VARCHAR(20) NOT NULL,
-    total_animales INT,
-    total_alimentos INT,
-    total_productos INT,
-    resumen TEXT,
-    fecha DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-);
+
 
 -- ---------------------------------------
 -- INSERTAR DATOS DE PRUEBA

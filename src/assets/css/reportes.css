@@ -1,0 +1,12 @@
+
+
+.articleReportes{
+    background-color: var(--bg-white);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-md);
+    padding: var(--spacing-lg);
+    margin-top: var(--spacing-xs);
+    margin-bottom: var(--spacing-xs);
+    width: 300px;
+    height: 200px;
+}

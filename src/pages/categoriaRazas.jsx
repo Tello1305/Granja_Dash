@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { useAuth } from "../auth/authContext.jsx";
 import { Header } from "../components/header.jsx";
 import { Nav } from "../components/nav.jsx";
 import "../assets/css/layout.css";
@@ -10,33 +9,24 @@ import TablaRazaAnimal from "../components/tablas/tablaRazaAnimal.jsx";
 const RUTAJAVA = import.meta.env.VITE_RUTAJAVA;
 
 export function CategoriaRazas() {
-  const { auth } = useAuth();
   const [categorias, setCategorias] = useState([]);
   const [razas, setRazas] = useState([]);
 
   const fetchCategorias = async () => {
-    if (!auth.token) return;
     try {
-      const response = await axios.get(`${RUTAJAVA}/api/CategoriaProductos`, {
-        headers: {
-          Authorization: `Bearer ${auth.token}`,
-        },
-      });
+      const response = await axios.get(`${RUTAJAVA}/api/CategoriaProductos`);
       setCategorias(response.data);
+      console.log('datos de la categoria', response.data)
     } catch (error) {
       console.error("Error al obtener las categorías:", error);
     }
   };
 
   const fetchRazas = async () => {
-    if (!auth.token) return;
     try {
-      const response = await axios.get(`${RUTAJAVA}/api/razaAnimales`, {
-        headers: {
-          Authorization: `Bearer ${auth.token}`,
-        },
-      });
+      const response = await axios.get(`${RUTAJAVA}/api/razaAnimales`);
       setRazas(response.data);
+      console.log('datos de la raza', response.data)
     } catch (error) {
       console.error("Error al obtener las razas:", error);
     }
@@ -45,12 +35,13 @@ export function CategoriaRazas() {
   useEffect(() => {
     fetchCategorias();
     fetchRazas();
-  }, [auth.token]);
+  }, []);
 
   const handleDataUpdate = () => {
     fetchCategorias();
     fetchRazas();
   };
+
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const toggleSidebar = () => {

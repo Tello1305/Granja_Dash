@@ -1,26 +1,49 @@
 import "../assets/css/main.css"
+import {useState, useEffect} from "react"
+import axios from "axios";
+
+const RUTAJAVA = import.meta.env.VITE_RUTAJAVA;
+
+export function Secciones() {
+
+    const [total, SetTotal] = useState([])
+
+    useEffect(() => {
+
+        const fetchTotal = async () => {
+            try {
+               const  response = await axios.get(`${RUTAJAVA}/api/sumaDelSistema/conteoSistema`)
+                SetTotal(response.data)
+                console.log("Total",response.data)
+            } catch (error) {
+                console.log(error)
+            }
+        };
+        fetchTotal();
+    },[])
 
 
-export function Secciones({ dataGeneral }) {
+
+
 
     const secciones = [
         {
-            titulo: "Total de Categorías",
+            titulo: "Total de Categorias",
             icon: "bi bi-tags",
             color: "#e67e22",
-            value: "95%"
+            value: total.Categoria
         },
         {
             titulo: "Total de Ganado",
             icon: "bi bi-collection",
             color: "#f39c12",
-            value: "89%"
+            value: total.Animal
         },
         {
-            titulo: "Total de Productos",
+            titulo: "Total de Razas",
             icon: "bi bi-box-seam",
             color: "#d35400",
-            value: "76%"
+            value: total.Raza
         },
     ]
     return (
@@ -105,7 +128,7 @@ export function Secciones({ dataGeneral }) {
                             <i className={seccion.icon}></i>
                         </div>
                         <div className="card-content">
-                            <div className="card-value">{dataGeneral || seccion.value}</div>
+                            <div className="card-value">{seccion.value}</div>
                             <div className="card-title">{seccion.titulo}</div>
                         </div>
                         <div className="card-trend">

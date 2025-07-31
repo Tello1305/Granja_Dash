@@ -11,6 +11,8 @@ export default function TablaCategoria({ categoriasData, onDataUpdate }) {
     const { auth } = useAuth();
     const [categoriaSeleccionada, setCategoriaSeleccionada] = useState(null);
 
+    console.log('categoriasDataaaaas', categoriasData)
+
     const handleDelete = async (id_categoria) => {
         
             try {

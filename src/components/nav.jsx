@@ -10,7 +10,7 @@ export function Nav({ isOpen, onClose }) {
 
   const handleLogout = () => {
     logout();
-    navigate("/GranjaDash/login");
+    navigate("/");
   };
   const links = [
     {
@@ -48,6 +48,16 @@ export function Nav({ isOpen, onClose }) {
       label: "Comida",
       icon: "bi bi-egg-fried",
     },
+    {
+      to: "/GranjaDash/Reportes",
+      label: "Reportes",
+      icon: "bi bi-file-text",
+    },
+    {
+      to: "/GranjaDash/Bitacora",
+      label: "Bitacora",
+      icon: "bi bi-file-text",
+    }
   ];
 
   return (

@@ -1,88 +1,125 @@
-// Charts.jsx
-import '../chartSetup' // Asegúrate de importar la configuración
-import { Bar, Line, } from 'react-chartjs-2'
+import { useState, useEffect } from "react";
+import axios from "axios";
+import { Bar, Line } from 'react-chartjs-2';
+import {
+  Chart as ChartJS,
+  CategoryScale, LinearScale, BarElement, PointElement, LineElement, Title, Tooltip, Legend
+} from 'chart.js';
 
-const data = {
-  labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo'],
-  datasets: [
-    {
-      label: 'Ventas 2024',
-      data: [65, 59, 80, 81, 56],
-      backgroundColor: [
-        'rgba(255, 99, 132, 0.5)',
-        'rgba(54, 162, 235, 0.5)',
-        'rgba(255, 206, 86, 0.5)',
-        'rgba(75, 192, 192, 0.5)',
-        'rgba(153, 102, 255, 0.5)',
-      ],
-      borderColor: [
-        'rgba(255, 99, 132, 1)',
-        'rgba(54, 162, 235, 1)',
-        'rgba(255, 206, 86, 1)',
-        'rgba(75, 192, 192, 1)',
-        'rgba(153, 102, 255, 1)',
-      ],
-      borderWidth: 1,
-    },
-  ],
-}
+// Es buena práctica registrar explícitamente los componentes de Chart.js que usarás
+ChartJS.register(
+  CategoryScale, LinearScale, BarElement, PointElement, LineElement, Title, Tooltip, Legend
+);
 
-const options = {
-  responsive: true,
-  plugins: {
-    legend: {
-      position: 'top',
-    },
-    title: {
-      display: true,
-      text: 'Resumen de Ventas 2024',
-    },
-  },
-  scales: {
-    y: {
-      beginAtZero: true,
-    },
-  },
-}
+// Usamos la variable de entorno que definiste
+const RUTAJAVA = import.meta.env.VITE_RUTAJAVA || 'http://localhost:8080';
 
 export default function Graficos() {
-  const lineChartOptions = {
-    ...options,
-    tension: 0.3,
-    plugins: {
-      ...options.plugins,
-      title: {
-        ...options.plugins.title,
-        text: 'Proyección de Ganancias'
-      }
+    // 1. Estados para los datos, la carga y los errores
+    const [barChartData, setBarChartData] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+      const fetchData = async () => {
+        try {
+          // Usamos la URL correcta de tu backend para este gráfico
+          const response = await axios.get(`${RUTAJAVA}/api/sumaDelSistema/movimientosSemana`);
+          const apiData = response.data;
+  
+          const labels = Object.keys(apiData);
+          const entradas = labels.map(label => apiData[label].entrada);
+          const salidas = labels.map(label => apiData[label].salida);
+  
+          // 2. Renombrado para mayor claridad
+          setBarChartData({
+            labels: labels,
+            datasets: [
+              {
+                label: 'Entradas',
+                data: entradas,
+                backgroundColor: 'rgba(54, 162, 235, 0.7)',
+              },
+              {
+                label: 'Salidas',
+                data: salidas,
+                backgroundColor: 'rgba(255, 99, 132, 0.7)',
+              },
+            ],
+          });
+        } catch (err) {
+          setError('No se pudieron cargar los datos para el gráfico.');
+          console.error('Error al obtener los datos:', err);
+        } finally {
+          // 3. El estado de carga termina, sin importar si hubo éxito o error
+          setLoading(false);
+        }
+      };
+  
+      fetchData();
+    }, []);
+  
+    const barChartOptions = {
+      responsive: true,
+      plugins: {
+        legend: { position: 'top' },
+        title: {
+          display: true,
+          text: 'Movimientos de Stock Entradas y Salidas',
+        },
+      },
+      scales: {
+        y: { beginAtZero: true },
+      },
+    };
+
+    // 4. Datos de ejemplo para el segundo gráfico para no mezclar la información
+    const lineChartDataExample = {
+        labels: ['Hoy', 'Ayer', 'Hace una Semana'],
+        datasets: [{
+            label: 'Proyección de Stock',
+            data: [150, 180, 160], 
+            fill: false,
+            borderColor: 'rgb(75, 192, 192)',
+            tension: 0.1
+        }]
+    };
+
+    // 5. Renderizado condicional para mostrar un estado de carga y evitar errores
+    if (loading) {
+        return <p className="text-center p-5">Cargando gráficos...</p>;
     }
-  };
 
-  return (
-    <div className="container-fluid p-0">
-      <div className="row g-3">
-        <div className="col-12 col-lg-6">
-          <div className="card h-100 shadow-sm">
-            <div className="card-header bg-white border-0">
-              <h5 className="card-title mb-0">Resumen de Ingresos</h5>
+    if (error) {
+        return <p className="text-center text-danger p-5">{error}</p>;
+    }
+
+    return (
+        <div className="container-fluid p-0">
+            <div className="row g-3">
+                <div className="col-12 col-lg-6">
+                    <div className="card h-100 shadow-sm">
+                        <div className="card-header bg-white border-0">
+                            <h5 className="card-title mb-0">Resumen Semanal</h5>
+                        </div>
+                        <div className="card-body p-2" style={{ minHeight: '300px' }}>
+                         
+                            {barChartData && <Bar data={barChartData} options={barChartOptions} />}
+                        </div>
+                    </div>
+                </div>
+                <div className="col-12 col-lg-6">
+                    <div className="card h-100 shadow-sm">
+                        <div className="card-header bg-white border-0">
+                            <h5 className="card-title mb-0">Proyección de Ganancias</h5>
+                        </div>
+                        <div className="card-body p-2" style={{ minHeight: '300px' }}>
+                           
+                            <Line data={lineChartDataExample} options={{...barChartOptions, plugins: {...barChartOptions.plugins, title: {display: true, text:'Proyección'}}}} />
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div className="card-body p-2" style={{ minHeight: '300px' }}>
-              <Bar data={data} options={options} />
-            </div>
-          </div>
         </div>
-        <div className="col-12 col-lg-6">
-          <div className="card h-100 shadow-sm">
-            <div className="card-header bg-white border-0">
-              <h5 className="card-title mb-0">Proyección de Ganancias</h5>
-            </div>
-            <div className="card-body p-2" style={{ minHeight: '300px' }}>
-              <Line data={data} options={lineChartOptions} />
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  )
+    );
 }
-

@@ -4,7 +4,6 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import { format, parse, startOfWeek, getDay } from "date-fns";
 import esES from "date-fns/locale/es";
 import axios from "axios";
-import { useAuth } from "../auth/authContext.jsx";
 import ModalCita from "./modales/modalCita.jsx";
 
 const RUTAJAVA = import.meta.env.VITE_RUTAJAVA;
@@ -28,16 +27,11 @@ export function Calendario() {
   const [date, setDate] = useState(new Date());
   const [view, setView] = useState("month");
   const [eventoSeleccionado, setEventoSeleccionado] = useState(null);
-  const { auth } = useAuth();
   const triggerModal = useRef(null);
 
   const fetchEvents = useCallback(async () => {
-    if (!auth?.token) return;
     try {
-      // CORRECCIÓN: Se añadió el token de autorización a la carga de eventos.
-      const response = await axios.get(`${RUTAJAVA}/api/citasAnimales`, {
-        headers: { Authorization: `Bearer ${auth.token}` },
-      });
+      const response = await axios.get(`${RUTAJAVA}/api/citasAnimales`);
       const citas = response.data.map((cita) => ({
         ...cita,
         id: cita.id_cita,
@@ -51,7 +45,7 @@ export function Calendario() {
     } catch (error) {
       console.error("Error al obtener las citas:", error);
     }
-  }, [auth?.token]); // CORRECCIÓN: La dependencia correcta es el token.
+  }, []);
 
   useEffect(() => {
     fetchEvents();

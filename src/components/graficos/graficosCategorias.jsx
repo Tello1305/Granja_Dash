@@ -45,7 +45,7 @@ const options = {
 }
 
 const lineData = {
-  labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo'],
+  labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
   datasets: [
     {
       label: 'Crecimiento del Ganado',
@@ -78,15 +78,31 @@ const lineOptions = {
 
 export default function GraficoHorizontalSeparado() {
   return (
-    <div className="d-flex justify-content-center gap-4 d-flex flex-wrap ">
-      <fieldset className="border p-3 rounded-3" style={{ width: '550px', height: '350px' }}>
-        <legend className="float-none w-auto px-2 fs-5 fw-semibold">Raza de animales</legend>
-        <Bar data={data} options={options} />
-      </fieldset>
-            <fieldset className="border p-3 rounded-3" style={{ width: '550px', height: '350px' }}>
-        <legend className="float-none w-auto px-2 fs-5 fw-semibold">Crecimiento del Ganado</legend>
-        <Line data={lineData} options={lineOptions} />
-      </fieldset>
-    </div>
+    <div className="container-fluid p-0">
+            <div className="row g-3">
+                <div className="col-12 col-lg-6">
+                    <div className="card h-100 shadow-sm">
+                        <div className="card-header bg-white border-0">
+                            <h5 className="card-title mb-0">Resumen Semanal</h5>
+                        </div>
+                        <div className="card-body p-2" >
+                         
+                            {data && <Bar data={data} options={options} />}
+                        </div>
+                    </div>
+                </div>
+                <div className="col-12 col-lg-6">
+                    <div className="card h-100 shadow-sm">
+                        <div className="card-header bg-white border-0">
+                            <h5 className="card-title mb-0">Proyección de Ganancias</h5>
+                        </div>
+                        <div className="card-body p-2" >
+                           
+                            <Line data={lineData} options={lineOptions} />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
   )
 }
