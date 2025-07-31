@@ -73,7 +73,7 @@ export function CategoriaRazas() {
                 <hr />
                 <TablaRazaAnimal
                   razasData={razas}
-                  onDataUpdate={handleDataUpdate}
+                  onDataUpdate={handleDataUpdate} 
                 />
               </section>
             </div>
