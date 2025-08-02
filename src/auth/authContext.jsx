@@ -7,7 +7,6 @@ export function ContextoAuth({ children }) {
   const [auth, setAuth] = useState({ token: null });
   const [loading, setLoading] = useState(true);
 
-  // 2. Modifica el useEffect para que lea y decodifique solo el token
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -30,7 +29,7 @@ export function ContextoAuth({ children }) {
   
 
 
-  // 3. Modifica la función de login
+  
   const login = (token) => {
     // Guarda SOLO el token en localStorage
     localStorage.setItem("token", token);
@@ -44,7 +43,7 @@ export function ContextoAuth({ children }) {
 
   };
 
-  // 4. La función de logout solo necesita quitar el token
+  
   const logout = () => {
     localStorage.removeItem("token");
     setAuth({ token: null });
