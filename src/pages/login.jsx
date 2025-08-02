@@ -1,5 +1,4 @@
 import "../assets/css/login.css";
-import { CarruselLogin } from "../components/carruselLogin.jsx";
 import { FormLogin } from "../components/form/formLogin.jsx";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
