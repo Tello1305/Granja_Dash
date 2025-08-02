@@ -59,7 +59,7 @@ export function CategoriaRazas() {
         <Nav isOpen={sidebarOpen} onClose={closeSidebar} />
         <main className="main-content w-100">
           <div className="content-wrapper w-100">
-            <div className="d-flex flex-column flex-md-row gap-4 w-100">
+            <div className="d-flex flex-column  gap-4 w-100">
               <section className="w-100 w-md-50">
                 <h2>Categorias</h2>
                 <hr />
@@ -73,7 +73,7 @@ export function CategoriaRazas() {
                 <hr />
                 <TablaRazaAnimal
                   razasData={razas}
-                  onDataUpdate={handleDataUpdate} 
+                  onDataUpdate={handleDataUpdate}
                 />
               </section>
             </div>

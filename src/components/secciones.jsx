@@ -1,5 +1,5 @@
 import "../assets/css/main.css"
-import {useState, useEffect} from "react"
+import { useState, useEffect } from "react"
 import axios from "axios";
 
 const RUTAJAVA = import.meta.env.VITE_RUTAJAVA;
@@ -12,15 +12,15 @@ export function Secciones() {
 
         const fetchTotal = async () => {
             try {
-               const  response = await axios.get(`${RUTAJAVA}/api/sumaDelSistema/conteoSistema`)
+                const response = await axios.get(`${RUTAJAVA}/api/sumaDelSistema/conteoSistema`)
                 SetTotal(response.data)
-                console.log("Total",response.data)
+                console.log("Total", response.data)
             } catch (error) {
                 console.log(error)
             }
         };
         fetchTotal();
-    },[])
+    }, [])
 
 
 
@@ -114,9 +114,8 @@ export function Secciones() {
                 </div>
 
                 <div className="farm-illustration">
-                    <div className="farm-scene">
-                        <div className="farmer-character">👨‍🌾</div>
-                        <div className="plants">🌱🌱🌱</div>
+                    <div className="farm-scene d-flex align-items-center justify-content-center p-0 ">
+                        <img className="img-fluid w-50" src="../public/img/IA.png" alt="IA" />
                     </div>
                 </div>
             </div>

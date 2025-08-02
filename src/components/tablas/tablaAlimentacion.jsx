@@ -37,13 +37,13 @@ export default function AlimentacionList() {
           Authorization: `Bearer ${auth.token}`
         }
       });
-  
+
       console.log("Alimento eliminado correctamente: ", id_alimento);
       setAlimentos(prev => prev.filter(alimento => alimento.id_alimento !== id_alimento));
-  
+
     } catch (error) {
       console.error("Error al eliminar:", error);
-  
+
       if (error.response && error.response.status === 400 && error.response.data.includes("historial")) {
         if (confirm("Este alimento tiene historial de movimientos. ¿Deseas inactivarlo?")) {
           handleToggleEstado(id_alimento, "ACTIVO"); // Lo inactivas directamente
@@ -53,12 +53,12 @@ export default function AlimentacionList() {
       }
     }
   };
-  
+
   const handleToggleEstado = async (id_alimento, estadoActual) => {
     const nuevoEstado = estadoActual === "ACTIVO" ? "INACTIVO" : "ACTIVO";
-  
+
     try {
-      await axios.put(`${RUTAJAVA}/api/alimentacion/${id_alimento}/estado`, 
+      await axios.put(`${RUTAJAVA}/api/alimentacion/${id_alimento}/estado`,
         { estado: nuevoEstado },
         {
           headers: {
@@ -66,21 +66,21 @@ export default function AlimentacionList() {
           }
         }
       );
-  
-      const alimentosActualizados = alimentos.map(alimento => 
+
+      const alimentosActualizados = alimentos.map(alimento =>
         alimento.id_alimento === id_alimento
           ? { ...alimento, estado: nuevoEstado }
           : alimento
       );
-  
+
       setAlimentos(alimentosActualizados);
-  
+
     } catch (error) {
       console.error("Error al cambiar estado:", error);
       alert("No se pudo cambiar el estado. Inténtalo nuevamente.");
     }
   };
-  
+
 
   const columns = [
     {
@@ -147,8 +147,8 @@ export default function AlimentacionList() {
         const alimento = info.row.original;
         return (
           <label className="toggle-switch">
-            <input 
-              type="checkbox" 
+            <input
+              type="checkbox"
               checked={alimento.estado === "ACTIVO"}
               onChange={() => handleToggleEstado(alimento.id_alimento, alimento.estado)}
             />
@@ -157,7 +157,7 @@ export default function AlimentacionList() {
         );
       }
     },
-    
+
     {
       header: "ACCIÓN",
       enableSorting: false,
@@ -192,10 +192,10 @@ export default function AlimentacionList() {
   ];
 
   return (
-    <div className="container mt-0 mb-4">
-      <div className="d-flex justify-content-between mb-2">
+    <div className="container mt-0 mb-4 w-100">
+      <div className="d-flex justify-content-between mb-2 w-100">
         <h2>Lista de Alimentos</h2>
-        
+
       </div>
       <hr />
       <TablaGenerica

@@ -1,82 +1,108 @@
 import '../assets/css/reportes.css'
 import axios from 'axios'
-import {useState} from 'react'
+import { useState } from 'react'
 const RUTAJAVA = import.meta.env.VITE_RUTAJAVA;
 
 
-export function SeccionReportes () {
+export function SeccionReportes() {
 
-    const [cargandoKey, setCargandoKey] = useState(null);
+  const [cargandoKey, setCargandoKey] = useState(null);
 
-    const reportes = [
-        {key: 0,titulo: "Reporte de Categorias", url: `${RUTAJAVA}/api/reporteCategorias`, filename: 'reporteCategorias.pdf'},
-        {key: 1,titulo: 'Reporte de Razas', url: `${RUTAJAVA}/api/reporteRazas`, filename: 'reporteRazas.pdf'},
-        {key: 2,titulo: 'Reporte de Lotes', url: `${RUTAJAVA}/api/reporteLotes`, filename: 'reporteLotes.pdf'},
-        {key: 3,titulo: 'Reporte de Productos', url: `${RUTAJAVA}/api/reporteProductos`, filename: 'reporteProductos.pdf'},
-        {key: 4,titulo: 'Reporte de Citas', url: `${RUTAJAVA}/api/reporteCitas`, filename: 'reporteCitas.pdf'},
-        {key: 5,titulo: 'Reporte de Alimentos', url: `${RUTAJAVA}/api/reporteAlimentos`, filename: 'reporteAlimentos.pdf'}
-    ]
+  const reportes = [
+    { key: 0, titulo: "Reporte de Categorias", url: `${RUTAJAVA}/api/reporteCategorias`, filename: 'reporteCategorias.pdf' },
+    { key: 1, titulo: 'Reporte de Razas', url: `${RUTAJAVA}/api/reporteRazas`, filename: 'reporteRazas.pdf' },
+    { key: 2, titulo: 'Reporte de Lotes', url: `${RUTAJAVA}/api/reporteLotes`, filename: 'reporteLotes.pdf' },
+    { key: 3, titulo: 'Reporte de Productos', url: `${RUTAJAVA}/api/reporteProductos`, filename: 'reporteProductos.pdf' },
+    { key: 4, titulo: 'Reporte de Citas', url: `${RUTAJAVA}/api/reporteCitas`, filename: 'reporteCitas.pdf' },
+    { key: 5, titulo: 'Reporte de Alimentos', url: `${RUTAJAVA}/api/reporteAlimentos`, filename: 'reporteAlimentos.pdf' }
+  ]
 
-    const handlePdf = async (reporte) => {
-        setCargandoKey(reporte.key); // Activa el estado de carga para este botón
-    
-        try {
-          // Llamamos al endpoint correcto y especificamos el tipo de respuesta 'blob'
-          const response = await axios.get(reporte.url, {
-            responseType: 'blob',
-          });
-    
-          // Lógica de descarga que vimos antes
-          const url = window.URL.createObjectURL(new Blob([response.data]));
-          const link = document.createElement('a');
-          link.href = url;
-          link.setAttribute('download', reporte.filename); // Usamos el nombre de archivo correcto
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-          window.URL.revokeObjectURL(url);
-    
-        } catch (error) {
-          console.error('Error al descargar el reporte:', error);
-          // Aquí podrías mostrar una notificación de error al usuario
-        } finally {
-          setCargandoKey(null); // Desactiva el estado de carga
-        }
-      };
-    
+  const handlePdf = async (reporte) => {
+    setCargandoKey(reporte.key);
 
-    
-    return (
-        <>
-<main>
-      <h1>GENERAR REPORTE</h1>
-      <hr />
-      <section className='d-flex justify-content-center gap-4 flex-wrap'>
+    try {
+      const response = await axios.get(reporte.url, {
+        responseType: 'blob',
+      });
+
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', reporte.filename);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+
+    } catch (error) {
+      console.error('Error al descargar el reporte:', error);
+      // Aquí podrías mostrar una notificación de error al usuario
+    } finally {
+      setCargandoKey(null);
+    }
+  };
+
+  const handleExcel = async (url) => {
+    try {
+      const excelUrl = url.replace('.pdf', '.xlsx');
+      const filename = url.split('/').pop().replace('.pdf', '.xlsx');
+
+      const response = await axios.get(excelUrl, {
+        responseType: 'blob',
+      });
+
+      const urlExcel = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = urlExcel;
+      link.setAttribute('download', filename);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(urlExcel);
+
+    } catch (error) {
+      console.error('Error al descargar el reporte Excel:', error);
+      // Aquí podrías mostrar una notificación de error al usuario
+    }
+  };
+
+
+
+  return (
+    <div className="reportes-container">
+      <h1 className="reportes-title">Generador de Reportes</h1>
+
+      <div className="reportes-grid">
         {reportes.map((reporte) => (
-          <article key={reporte.key} className="articleReportes">
-            <strong>{reporte.titulo}</strong>
-            <hr />
-            <div className="d-flex justify-content-center gap-4 flex-wrap">
-              <button
-                // Pasamos el objeto 'reporte' completo
-                onClick={() => handlePdf(reporte)}
-                className="btn btn-danger"
-                // Deshabilitamos el botón si está cargando
-                disabled={cargandoKey === reporte.key}
-              >
-                {cargandoKey === reporte.key ? 'Cargando...' : 'PDF'}
-              </button>
-              <button
-                onClick={() => handleExcel(reporte.url)}
-                className="btn btn-success"
-              >
-                Excel
-              </button>
+          <div key={reporte.key} className="reporte-card">
+            <div className="reporte-header">
+              <h3 className="reporte-title">{reporte.titulo}</h3>
             </div>
-          </article>
+            <div className="reporte-body">
+              <p className="mb-4">Descarga el reporte en el formato que prefieras</p>
+              <div className="reporte-actions">
+                <button
+                  onClick={() => handlePdf(reporte)}
+                  className={`btn-reporte btn-pdf ${cargandoKey === reporte.key ? 'loading' : ''}`}
+                  disabled={cargandoKey === reporte.key}
+                  title="Descargar PDF"
+                >
+                  <i className="bi bi-file-earmark-pdf"></i>
+                  {cargandoKey === reporte.key ? 'Generando...' : 'PDF'}
+                </button>
+                <button
+                  onClick={() => handleExcel(reporte.url)}
+                  className="btn-reporte btn-excel"
+                  title="Descargar Excel"
+                >
+                  <i className="bi bi-file-earmark-excel"></i>
+                  <span>Excel</span>
+                </button>
+              </div>
+            </div>
+          </div>
         ))}
-      </section>
-    </main>
-        </>
-    )
+      </div>
+    </div>
+  )
 }

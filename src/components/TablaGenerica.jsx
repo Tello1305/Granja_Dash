@@ -26,6 +26,7 @@ export default function TablaGenerica({
 }) {
   const [columnFilters, setColumnFilters] = useState([]);
   const [globalFilter, setGlobalFilter] = useState("");
+  const [isSearchExpanded, setIsSearchExpanded] = useState(false);
 
   const table = useReactTable({
     data,
@@ -52,52 +53,68 @@ export default function TablaGenerica({
   return (
     <div className="modern-table-container">
       <div className="modern-table-controls">
-        <div className="search-section">
+        <div className={`search-section ${isSearchExpanded ? 'expanded' : ''}`}>
           {showSearch && !customSearch && (
-            <input
-              type="text"
-              placeholder="Buscar..."
-              className="modern-search-input"
-              value={globalFilter ?? ''}
-              onChange={(e) => setGlobalFilter(e.target.value)}
-            />
+            <div className="input-group">
+              <span 
+                className="input-group-text" 
+                onClick={() => setIsSearchExpanded(!isSearchExpanded)}
+              >
+                <i className="bi bi-search"></i>
+              </span>
+              <input
+                type="text"
+                placeholder="Buscar..."
+                className="form-control"
+                value={globalFilter ?? ''}
+                onChange={(e) => setGlobalFilter(e.target.value)}
+                onBlur={() => {
+                  if (!globalFilter) {
+                    setIsSearchExpanded(false);
+                  }
+                }}
+              />
+            </div>
           )}
+          {customSearch && customSearch}
         </div>
         <div className="actions-section">
           {showtock && (
             <button
-              className="modern-btn modern-btn-primary"
+              className="btn btn-outline-warning btn-sm"
+              style={{ '--bs-btn-hover-bg': 'var(--light-orange)', '--bs-btn-hover-border-color': 'var(--light-orange)' }}
               data-bs-toggle="modal"
               data-bs-target={stockModalId}
               onClick={onStock}
             >
-              Ver Stock
+              <i className="bi bi-box-seam me-1"></i> Stock
             </button>
           )}
           {showButton && (
             <button
-              className="modern-btn modern-btn-primary"
+              className="btn btn-primary btn-sm"
               data-bs-toggle="modal"
               data-bs-target={createModalId}
               onClick={onCreate}
             >
-              <i className="bi bi-plus-lg"></i>
+              <i className="bi bi-plus-lg me-1"></i> Nuevo
             </button>
           )}
         </div>
       </div>
 
       <div className="modern-table-responsive">
-        <table className="modern-table">
-          <thead>
+        <table className="table table-hover modern-table">
+          <thead className="table-light">
             {table.getHeaderGroups().map((headerGroup) => (
               <tr key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
                   <th
                     key={header.id}
-                    className="modern-table-header"
+                    className="align-middle"
                     onClick={header.column.getToggleSortingHandler()}
                     style={{
+                      minWidth: header.column.columnDef.minWidth || 'auto',
                       cursor: header.column.getCanSort() ? 'pointer' : 'default',
                       userSelect: 'none',
                     }}
@@ -121,9 +138,18 @@ export default function TablaGenerica({
           </thead>
           <tbody>
             {table.getRowModel().rows.map((row) => (
-              <tr key={row.id} className="modern-table-row">
+              <tr key={row.id} className="align-middle">
                 {row.getVisibleCells().map((cell) => (
-                  <td key={cell.id} className="modern-table-cell">
+                  <td 
+                    key={cell.id} 
+                    className="p-2"
+                    style={{
+                      whiteSpace: 'nowrap',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      maxWidth: '200px'
+                    }}
+                  >
                     {flexRender(cell.column.columnDef.cell || cell.getValue(), {
                       ...cell.getContext(),
                       onDelete,
@@ -138,52 +164,69 @@ export default function TablaGenerica({
       </div>
 
       {showPagination && table.getPageCount() > 1 && (
-        <div className="modern-pagination">
-          <div className="modern-pagination-info">
-            Mostrando {table.getRowModel().rows.length} de {data.length} registros
+        <div className="d-flex flex-column flex-md-row justify-content-between align-items-center gap-3 mt-3 p-3 bg-light rounded">
+          <div className="text-muted small">
+            Mostrando <strong>{table.getState().pagination.pageIndex * table.getState().pagination.pageSize + 1}</strong> a{' '}
+            <strong>
+              {Math.min(
+                (table.getState().pagination.pageIndex + 1) * table.getState().pagination.pageSize,
+                table.getFilteredRowModel().rows.length
+              )}
+            </strong> de <strong>{table.getFilteredRowModel().rows.length}</strong> registros
           </div>
-          <div className="modern-pagination-controls">
-            <button
-              className="modern-pagination-btn"
-              onClick={() => table.setPageIndex(0)}
-              disabled={!table.getCanPreviousPage()}
-            >
-              «
-            </button>
-            <button
-              className="modern-pagination-btn"
-              onClick={() => table.previousPage()}
-              disabled={!table.getCanPreviousPage()}
-            >
-              ‹
-            </button>
-            <span className="modern-pagination-current">
-              Página {table.getState().pagination.pageIndex + 1} de {table.getPageCount()}
-            </span>
-            <button
-              className="modern-pagination-btn"
-              onClick={() => table.nextPage()}
-              disabled={!table.getCanNextPage()}
-            >
-              ›
-            </button>
-            <button
-              className="modern-pagination-btn"
-              onClick={() => table.setPageIndex(table.getPageCount() - 1)}
-              disabled={!table.getCanNextPage()}
-            >
-              »
-            </button>
-          </div>
+          
           <div className="d-flex align-items-center gap-2">
-            <span style={{ fontSize: 'var(--font-size-sm)', color: 'var(--text-light)' }}>Ir a página:</span>
+            <div className="btn-group">
+              <button
+                className="btn btn-outline-secondary btn-sm"
+                onClick={() => table.firstPage()}
+                disabled={!table.getCanPreviousPage()}
+                title="Primera página"
+              >
+                <i className="bi bi-chevron-bar-left"></i>
+              </button>
+              <button
+                className="btn btn-outline-secondary btn-sm"
+                onClick={() => table.previousPage()}
+                disabled={!table.getCanPreviousPage()}
+                title="Página anterior"
+              >
+                <i className="bi bi-chevron-left"></i>
+              </button>
+              <span className="px-3 d-flex align-items-center">
+                {table.getState().pagination.pageIndex + 1} / {table.getPageCount()}
+              </span>
+              <button
+                className="btn btn-outline-secondary btn-sm"
+                onClick={() => table.nextPage()}
+                disabled={!table.getCanNextPage()}
+                title="Siguiente página"
+              >
+                <i className="bi bi-chevron-right"></i>
+              </button>
+              <button
+                className="btn btn-outline-secondary btn-sm"
+                onClick={() => table.lastPage()}
+                disabled={!table.getCanNextPage()}
+                title="Última página"
+              >
+                <i className="bi bi-chevron-bar-right"></i>
+              </button>
+            </div>
+          </div>
+          
+          <div className="d-flex align-items-center gap-2">
+            <span className="small">Ir a:</span>
             <input
               type="number"
-              className="modern-pagination-input"
+              className="form-control form-control-sm"
+              style={{ width: '70px' }}
+              min={1}
+              max={table.getPageCount()}
               value={table.getState().pagination.pageIndex + 1}
               onChange={(e) => {
                 const page = e.target.value ? Number(e.target.value) - 1 : 0;
-                table.setPageIndex(page);
+                table.setPageIndex(Math.min(Math.max(0, page), table.getPageCount() - 1));
               }}
             />
           </div>

@@ -1,6 +1,6 @@
 import { Header } from '../components/header.jsx';
 import { Nav } from '../components/nav.jsx';
-import {Historial} from '../components/historial.jsx';
+import { Historial } from '../components/historial.jsx';
 import '../assets/css/layout.css'; // Importamos los nuevos estilos
 import { useState } from 'react';
 export function HistorialProductos() {

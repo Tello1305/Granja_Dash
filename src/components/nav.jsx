@@ -65,9 +65,8 @@ export function Nav({ isOpen, onClose }) {
       {isOpen && <div className="sidebar-overlay" onClick={onClose}></div>}
       <nav className={`sidebar ${isOpen ? 'sidebar-open' : ''}`} >
         <div className="nav-brand">
-          <h3 className="nav-brand-text">Granja Dash</h3>
+          <img className="img-fluid w-50" src="../public/img/logo.png" alt="Logo" />
         </div>
-
         <div className="nav-menu">
           {links.map((link, index) => (
             <div key={index} className="nav-item">

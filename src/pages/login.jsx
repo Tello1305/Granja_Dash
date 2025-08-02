@@ -1,4 +1,5 @@
 import "../assets/css/login.css";
+import { CarruselLogin } from "../components/carruselLogin.jsx";
 import { FormLogin } from "../components/form/formLogin.jsx";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -10,16 +11,15 @@ const RUTAJAVA = import.meta.env.VITE_RUTAJAVA;
 export function AppLogin() {
 
   //const [form, setForm] = useState()
-  
+
   const navigate = useNavigate();
   const { login } = useAuth();
-
   const onSubmit = async (data) => {
     try {
       const response = await axios.post(`${RUTAJAVA}/api/auth/login`, data);
 
-      const { token, nombre, id_rol } = response.data; 
-      login(token, nombre, id_rol); 
+      const { token, nombre, id_rol } = response.data;
+      login(token, nombre, id_rol);
 
       alert("Login exitoso");
       navigate("/GranjaDash/ingresosTotales");

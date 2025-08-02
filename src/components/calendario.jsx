@@ -16,9 +16,9 @@ const localizer = dateFnsLocalizer({
   locales,
 });
 const messages = {
-    allDay: "Todo el día", previous: "Anterior", next: "Siguiente", today: "Hoy",
-    month: "Mes", week: "Semana", day: "Día", agenda: "Agenda", date: "Fecha",
-    time: "Hora", event: "Evento", noEventsInRange: "Sin eventos"
+  allDay: "Todo el día", previous: "Anterior", next: "Siguiente", today: "Hoy",
+  month: "Mes", week: "Semana", day: "Día", agenda: "Agenda", date: "Fecha",
+  time: "Hora", event: "Evento", noEventsInRange: "Sin eventos"
 };
 
 export function Calendario() {
@@ -68,7 +68,7 @@ export function Calendario() {
   };
 
   return (
-    <div style={{ width: "95vw", height: "95vh" }}>
+    <div className="calendar-container" style={{ width: '100%', height: '100%', minHeight: '600px' }}>
       <Calendar
         localizer={localizer}
         events={events}
@@ -84,6 +84,11 @@ export function Calendario() {
         onNavigate={setDate}
         view={view}
         onView={setView}
+        style={{
+          height: '100%',
+          width: '100%',
+          margin: '0 auto'
+        }}
       />
 
       {/* Solo necesitamos un botón oculto que apunte a un solo ID de modal */}

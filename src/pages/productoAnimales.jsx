@@ -22,10 +22,11 @@ export function ProductoAnimales() {
         <Header onToggleSidebar={toggleSidebar} />
         <div className="main-layout w-100">
           <Nav isOpen={sidebarOpen} onClose={closeSidebar} />
-          <main className="main-content w-100">
-            <div className="content-wrapper">
+          <main className="main-content w-100 ">
+            <div className="content-wrapper w-100 ">
               <TablaProductos />
             </div>
+
           </main>
         </div>
       </div>

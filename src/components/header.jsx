@@ -14,27 +14,13 @@ export function Header({ onToggleSidebar }) {
                         >
                             <i className="bi bi-list"></i>
                         </button>
-                        <div className="header-brand">
-                            <h1 className="brand-title">GRANJA DASH</h1>
-                        </div>
-                    </div>
-
-                    <div className="header-search">
-                        <div className="search-container">
-                            <i className="bi bi-search search-icon"></i>
-                            <input
-                                type="text"
-                                className="search-input"
-                                placeholder="Buscar plantas aquí..."
-                            />
-                        </div>
                     </div>
 
                     <div className="header-profile">
                         <div className="profile-info">
                             <div className="profile-text">
                                 <span className="profile-name">{auth.nombre}</span>
-                                <span className="profile-role">Administrador</span>
+                                <span className="profile-role ">Administrador</span>
                             </div>
                             <div className="profile-avatar">
                                 <img
@@ -44,10 +30,7 @@ export function Header({ onToggleSidebar }) {
                                 />
                             </div>
                         </div>
-                        <div className="profile-actions">
-                            <i className="bi bi-bell notification-icon"></i>
-                            <i className="bi bi-chevron-down dropdown-icon"></i>
-                        </div>
+
                     </div>
                 </div>
             </header>

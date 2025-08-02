@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import "../assets/css/historial.css";
 
 const RUTAJAVA = import.meta.env.VITE_RUTAJAVA;
 
@@ -100,11 +101,10 @@ export function Historial() {
     filtros.busqueda;
 
   return (
-    <div className="container mt-4">
+    <div className="container py-4 historial-container">
       <h1>HISTORIAL</h1>
       <hr />
       <section className="row d-flex justify-content-center">
-        
 
         <div className="col-md-6 w-50">
           {isLoading ? (
@@ -155,10 +155,10 @@ export function Historial() {
           )}
         </div>
 
-        <div className="card mb-4 w-50">
+        <div className="col-md-6 card mb-4 w-50 ">
           <div className="card-body">
             <h5 className="card-title">Investigar en la Bitácora</h5>
-            <div className="row g-3 mb-3">
+            <form className="row g-3 mb-3">
               <div className="col-md-3">
                 <label>Desde</label>
                 <input
@@ -179,9 +179,7 @@ export function Historial() {
                   onChange={handleInputChange}
                 />
               </div>
-              
-            </div>
-            <div className="col-md-6">
+              <div className="col-md-6">
                 <label>Palabra Clave</label>
                 <input
                   type="text"
@@ -192,36 +190,40 @@ export function Historial() {
                   onChange={handleInputChange}
                 />
               </div>
-            <h6 className="card-title mt-3">Filtrar por Tema</h6>
-            <div className=" gap-3">
-              {TEMAS_FILTRO.map((tema) => (
-                <div key={tema.value} className="form-check">
-                  <input
-                    className="form-check-input"
-                    type="checkbox"
-                    id={`check-${tema.value}`}
-                    value={tema.value}
-                    onChange={handleCheckboxChange}
-                    checked={filtros.temas.includes(tema.value)}
-                  />
-                  <label
-                    className="form-check-label"
-                    htmlFor={`check-${tema.value}`}
-                  >
-                    {tema.label}
-                  </label>
+              <div className="historial-filtros">
+                <h5 className="section-title">Filtros de Búsqueda</h5>
+                <div className="d-flex gap-3 flex-wrap align-items-center justify-content-start">
+                  {TEMAS_FILTRO.map((tema) => (
+                    <div key={tema.value} className="form-check">
+                      <input
+                        className="form-check-input"
+                        type="checkbox"
+                        id={`check-${tema.value}`}
+                        value={tema.value}
+                        onChange={handleCheckboxChange}
+                        checked={filtros.temas.includes(tema.value)}
+                      />
+                      <label
+                        className="form-check-label"
+                        htmlFor={`check-${tema.value}`}
+                      >
+                        {tema.label}
+                      </label>
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
-            <div className="mt-3">
-              {/* AHORA SOLO HAY EL BOTÓN DE LIMPIAR */}
-              <button
-                className="btn btn-secondary"
-                onClick={handleClearFilters}
-              >
-                Limpiar Filtros
-              </button>
-            </div>
+              </div>
+              <div className="col-12">
+                {/* AHORA SOLO HAY EL BOTÓN DE LIMPIAR */}
+                <button
+                  className="btn btn-orange w-100"
+                  onClick={handleClearFilters}
+                >
+                  <i className="bi bi-arrow-counterclockwise me-2"></i>
+                  Limpiar Filtros
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       </section>

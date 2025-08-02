@@ -41,7 +41,7 @@
   .content-wrapper {
     padding: var(--spacing-md);
   }
-  
+
   .charts-section {
     padding: var(--spacing-lg);
     margin-top: var(--spacing-lg);
@@ -74,23 +74,25 @@ body {
 
 /* Scrollbar personalizado */
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 3px !important;
+  height: 3px !important;
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
   background: var(--light-orange);
-  border-radius: 3px;
+  border-radius: 20px !important;
+  border: 3px solid transparent;
 }
 
 ::-webkit-scrollbar-thumb:hover {
   background: var(--secondary-orange);
 }
-* Ajustes adicionales para tablas y formularios */
-.content-wrapper .table-responsive {
+
+* Ajustes adicionales para tablas y formularios */ .content-wrapper .table-responsive {
   background: var(--bg-white);
   border-radius: var(--border-radius-lg);
   box-shadow: var(--shadow-md);
@@ -105,7 +107,7 @@ body {
 }
 
 .content-wrapper .btn-primary {
-  background-color: var(--primary-orange);
+  background-color: var(--primary-orange) !important;
   border-color: var(--primary-orange);
   transition: all var(--transition-fast);
 }
@@ -143,6 +145,7 @@ body {
     opacity: 0;
     transform: translateY(10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);

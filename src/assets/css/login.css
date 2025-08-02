@@ -1,50 +1,370 @@
+:root {
+  --primary: #FF6B35;
+  --primary-light: #FF9F1C;
+  --secondary: #2EC4B6;
+  --dark: #011627;
+  --light: #FDFFFC;
+  --gray: #E5E7EB;
+  --success: #2EC4B6;
+  --error: #E71D36;
+  --shadow: 0 10px 30px -15px rgba(0, 0, 0, 0.1);
+  --glass: rgba(255, 255, 255, 0.1);
+  --glass-border: rgba(255, 255, 255, 0.2);
+  --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+  color: var(--dark);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Login Container */
 .contenLogin {
-    height: 100vh;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  position: relative;
+  overflow: hidden;
 }
 
+/* Background Animation */
+.contenLogin::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, var(--primary) 0%, transparent 70%);
+  opacity: 0.1;
+  animation: rotate 30s linear infinite;
+  z-index: 0;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Login Card */
 .sectionLogin {
-    width: 35%;
+  width: 100%;
+  max-width: 420px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 2.5rem;
+  box-shadow: var(--shadow);
+  position: relative;
+  z-index: 1;
+  border: 1px solid var(--glass-border);
+  transform: translateY(0);
+  transition: var(--transition);
+  overflow: hidden;
 }
 
+.sectionLogin::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 6px;
+  background: linear-gradient(90deg, var(--primary), var(--primary-light));
+}
+
+.sectionLogin:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.15);
+}
+
+/* Header */
+.sectionLogin>div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+}
+
+.sectionLogin h1 {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: var(--dark);
+  margin: 0;
+  background: linear-gradient(90deg, var(--primary), var(--primary-light));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  position: relative;
+  display: inline-block;
+  line-height: 1.2;
+}
+
+.sectionLogin h1::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 0;
+  width: 40px;
+  height: 4px;
+  background: linear-gradient(90deg, var(--primary), var(--primary-light));
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+
+.sectionLogin:hover h1::after {
+  width: 80px;
+}
+
+.sectionLogin img {
+  width: 60px;
+  height: auto;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+  transition: var(--transition);
+}
+
+.sectionLogin img:hover {
+  transform: scale(1.1) rotate(5deg);
+  filter: drop-shadow(0 6px 8px rgba(0, 0, 0, 0.15));
+}
+
+/* Carousel */
 .contenCarrusel {
-    width: 100%;
-    max-width: 800px;
-    height: 500px;
-    margin: 0 auto;
+  width: 100%;
+  max-width: 600px;
+  height: 600px;
+  margin: 0 0 0 4rem;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  position: relative;
+  z-index: 1;
+  border: 1px solid var(--glass-border);
+  transition: var(--transition);
+}
+
+.contenCarrusel:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.2);
 }
 
 .carousel-inner {
-    height: 100%;
-    border-radius: 10px;
-    overflow: hidden;
+  height: 100%;
+  border-radius: 20px;
+  overflow: hidden;
 }
 
 .carousel-item {
-    height: 100%;
+  height: 100%;
+  position: relative;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .carousel-item img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.carousel-item:hover img {
+  transform: scale(1.05);
 }
 
 .carousel-control-prev,
 .carousel-control-next {
-    width: 5%;
+  width: 44px;
+  height: 44px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0;
+  transition: var(--transition);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  border: 1px solid var(--glass-border);
+}
+
+.carousel:hover .carousel-control-prev,
+.carousel:hover .carousel-control-next {
+  opacity: 1;
+}
+
+.carousel-control-prev {
+  left: 20px;
+}
+
+.carousel-control-next {
+  right: 20px;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  filter: invert(0.5);
+  width: 1.5rem;
+  height: 1.5rem;
 }
 
 .carousel-indicators {
-    margin-bottom: 1rem;
+  bottom: 30px;
+  margin: 0;
+  padding: 0 20px;
+  justify-content: flex-start;
+  z-index: 2;
+}
+
+.carousel-indicators [data-bs-target] {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.5);
+  margin: 0 6px;
+  transition: var(--transition);
+  border: none;
+  opacity: 1;
+}
+
+.carousel-indicators .active {
+  background-color: var(--light);
+  transform: scale(1.3);
+  width: 30px;
+  border-radius: 5px;
 }
 
 .carousel-caption {
-    background-color: rgba(0, 0, 0, 0.5);
-    border-radius: 10px;
-    padding: 15px;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 90%;
+  background: linear-gradient(transparent, rgba(1, 22, 39, 0.9));
+  border-radius: 0 0 20px 20px;
+  padding: 2rem;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  text-align: left;
+  transform: none;
+  width: 100%;
+  z-index: 1;
 }
 
+.carousel-caption h5 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: var(--light);
+}
+
+.carousel-caption p {
+  font-size: 0.9rem;
+  margin: 0;
+  opacity: 0.9;
+  color: var(--gray);
+  line-height: 1.6;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .contenLogin {
+    padding: 1.5rem;
+  }
+
+  .contenCarrusel {
+    height: 500px;
+  }
+}
+
+@media (max-width: 992px) {
+  .contenLogin {
+    flex-direction: column;
+    gap: 2rem;
+    padding: 1.5rem;
+  }
+
+  .sectionLogin {
+    max-width: 100%;
+    margin-bottom: 0;
+  }
+
+  .contenCarrusel {
+    max-width: 100%;
+    height: 400px;
+    margin: 0;
+  }
+
+  .sectionLogin h1 {
+    font-size: 1.5rem;
+  }
+
+  .sectionLogin img {
+    width: 50px;
+  }
+}
+
+@media (max-width: 576px) {
+  .sectionLogin {
+    padding: 1.5rem;
+  }
+
+  .sectionLogin h1 {
+    font-size: 1.4rem;
+  }
+
+  .carousel-caption {
+    padding: 1.25rem;
+  }
+
+  .carousel-caption h5 {
+    font-size: 1.1rem;
+  }
+
+  .carousel-caption p {
+    font-size: 0.8rem;
+  }
+}
+
+/* Animation Classes */
+.fade-in {
+  animation: fadeIn 0.6s ease-out forwards;
+}
+
+.slide-up {
+  animation: slideUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
