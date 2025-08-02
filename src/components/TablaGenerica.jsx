@@ -1,3 +1,5 @@
+import { useAuth } from "../auth/authContext";
+
 import {
   useReactTable,
   getCoreRowModel,
@@ -27,6 +29,7 @@ export default function TablaGenerica({
   const [columnFilters, setColumnFilters] = useState([]);
   const [globalFilter, setGlobalFilter] = useState("");
   const [isSearchExpanded, setIsSearchExpanded] = useState(false);
+  const { auth } = useAuth();
 
   const table = useReactTable({
     data,
@@ -79,7 +82,7 @@ export default function TablaGenerica({
           {customSearch && customSearch}
         </div>
         <div className="actions-section">
-          {showtock && (
+          {showtock && auth.id_rol === 1 &&  (
             <button
               className="btn btn-outline-warning btn-sm"
               style={{ '--bs-btn-hover-bg': 'var(--light-orange)', '--bs-btn-hover-border-color': 'var(--light-orange)' }}

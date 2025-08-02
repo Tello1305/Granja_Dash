@@ -7,10 +7,9 @@ export function AuthRoute({ children, roles }) {
   if (loading) return null;
 
   const token = auth.token;
-  const nombre = auth.nombre;
   const id_rol = auth.id_rol;
 
-  const UsuarioAutenticado = token && nombre && id_rol;
+  const UsuarioAutenticado = token && id_rol;
 
   if (!UsuarioAutenticado || !roles.includes(id_rol)) {
     return <Navigate to="/" />;

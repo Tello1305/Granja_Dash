@@ -1,21 +1,24 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import "../assets/css/historial.css";
+import "../assets/css/historial.css"; // Asegúrate de que esta ruta a tu CSS sea correcta
 
 const RUTAJAVA = import.meta.env.VITE_RUTAJAVA;
 
+// Define los temas de filtro disponibles
 const TEMAS_FILTRO = [
   { label: "Citas", value: "CITA" },
   { label: "Alimentos", value: "ALIMENTO" },
   { label: "Productos", value: "PRODUCTO" },
   { label: "Lotes", value: "LOTE" },
   { label: "Reportes", value: "REPORTE" },
+  { label: "Categorias", value: "CATEGORIA" },
+  { label: "Razas", value: "RAZA" },
 ];
 
 export function Historial() {
   const [resumenes, setResumenes] = useState([]);
   const [actividades, setActividades] = useState([]);
-  const [isLoading, setIsLoading] = useState(false); // Cambiado a false para la carga inicial
+  const [isLoading, setIsLoading] = useState(false);
 
   const [filtros, setFiltros] = useState({
     fechaDesde: "",
@@ -34,8 +37,7 @@ export function Historial() {
       .finally(() => setIsLoading(false));
   }, []);
 
-  // --- LÓGICA DE BÚSQUEDA AUTOMÁTICA ---
-  // Este useEffect ahora vigila el estado 'filtros'. Si cambia, hace una nueva búsqueda.
+  // Lógica de búsqueda automática que se activa cuando cambian los filtros
   useEffect(() => {
     const filtrosEstanActivos =
       filtros.fechaDesde ||
@@ -43,9 +45,8 @@ export function Historial() {
       filtros.temas.length > 0 ||
       filtros.busqueda;
 
-    // Si los filtros están activos, busca. Si no, no hace nada para mantener la vista de resúmenes.
+    // Si los filtros están activos, busca. Si no, no hace nada.
     if (filtrosEstanActivos) {
-      // Usamos un timeout para no hacer una petición por cada letra que se escribe (debounce)
       const timer = setTimeout(() => {
         const fetchActividadesFiltradas = async () => {
           try {
@@ -53,14 +54,17 @@ export function Historial() {
             const params = {
               fechaDesde: filtros.fechaDesde || undefined,
               fechaHasta: filtros.fechaHasta || undefined,
-              temas:
-                filtros.temas.length > 0 ? filtros.temas.join(",") : undefined,
+              temas: filtros.temas.length > 0 ? filtros.temas.join(",") : undefined,
               busqueda: filtros.busqueda || undefined,
             };
+            
+            // --- CORRECCIÓN APLICADA AQUÍ ---
+            // Se envuelve el objeto 'params' dentro de un objeto de configuración.
             const response = await axios.get(
               `${RUTAJAVA}/api/historial/bitacora`,
-              params
+              { params }
             );
+
             setActividades(response.data);
           } catch (error) {
             console.error("Error al cargar actividades:", error);
@@ -69,11 +73,11 @@ export function Historial() {
           }
         };
         fetchActividadesFiltradas();
-      }, 500); // Espera medio segundo antes de buscar
+      }, 500); // Espera 500ms antes de buscar
 
       return () => clearTimeout(timer); // Limpia el timer si el usuario sigue interactuando
     }
-  }, [filtros]); // La dependencia clave es 'filtros'
+  }, [filtros]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -92,6 +96,7 @@ export function Historial() {
 
   const handleClearFilters = () => {
     setFiltros({ fechaDesde: "", fechaHasta: "", temas: [], busqueda: "" });
+    setActividades([]); // Limpia también los resultados de actividades
   };
 
   const mostrarVistaDetallada =
@@ -105,7 +110,7 @@ export function Historial() {
       <h1>HISTORIAL</h1>
       <hr />
       <section className="row d-flex justify-content-center">
-
+        {/* Columna de resultados */}
         <div className="col-md-6 w-50">
           {isLoading ? (
             <p>Buscando...</p>
@@ -124,9 +129,7 @@ export function Historial() {
                   </div>
                 ))
               ) : (
-                <div className="alert alert-info">
-                  No se encontraron actividades.
-                </div>
+                <div className="alert alert-info">No se encontraron actividades.</div>
               )}
             </>
           ) : (
@@ -138,14 +141,7 @@ export function Historial() {
                     <strong>Periodo: {reporte.periodo}</strong>
                   </div>
                   <div className="card-body">
-                    <pre
-                      className="card-text"
-                      style={{
-                        fontFamily: "inherit",
-                        fontSize: "inherit",
-                        margin: 0,
-                      }}
-                    >
+                    <pre className="card-text" style={{ fontFamily: "inherit", fontSize: "inherit", margin: 0 }}>
                       {reporte.resumen_texto}
                     </pre>
                   </div>
@@ -155,70 +151,36 @@ export function Historial() {
           )}
         </div>
 
+        {/* Columna de filtros */}
         <div className="col-md-6 card mb-4 w-50 ">
           <div className="card-body">
             <h5 className="card-title">Investigar en la Bitácora</h5>
             <form className="row g-3 mb-3">
-              <div className="col-md-3">
+              <div className="col-md-6">
                 <label>Desde</label>
-                <input
-                  type="date"
-                  name="fechaDesde"
-                  className="form-control"
-                  value={filtros.fechaDesde}
-                  onChange={handleInputChange}
-                />
-              </div>
-              <div className="col-md-3">
-                <label>Hasta</label>
-                <input
-                  type="date"
-                  name="fechaHasta"
-                  className="form-control"
-                  value={filtros.fechaHasta}
-                  onChange={handleInputChange}
-                />
+                <input type="date" name="fechaDesde" className="form-control" value={filtros.fechaDesde} onChange={handleInputChange} />
               </div>
               <div className="col-md-6">
-                <label>Palabra Clave</label>
-                <input
-                  type="text"
-                  name="busqueda"
-                  className="form-control"
-                  placeholder="Buscar..."
-                  value={filtros.busqueda}
-                  onChange={handleInputChange}
-                />
+                <label>Hasta</label>
+                <input type="date" name="fechaHasta" className="form-control" value={filtros.fechaHasta} onChange={handleInputChange} />
               </div>
-              <div className="historial-filtros">
+              <div className="col-md-12">
+                <label>Palabra Clave</label>
+                <input type="text" name="busqueda" className="form-control" placeholder="Buscar..." value={filtros.busqueda} onChange={handleInputChange} />
+              </div>
+              <div className="historial-filtros mt-3">
                 <h5 className="section-title">Filtros de Búsqueda</h5>
                 <div className="d-flex gap-3 flex-wrap align-items-center justify-content-start">
                   {TEMAS_FILTRO.map((tema) => (
                     <div key={tema.value} className="form-check">
-                      <input
-                        className="form-check-input"
-                        type="checkbox"
-                        id={`check-${tema.value}`}
-                        value={tema.value}
-                        onChange={handleCheckboxChange}
-                        checked={filtros.temas.includes(tema.value)}
-                      />
-                      <label
-                        className="form-check-label"
-                        htmlFor={`check-${tema.value}`}
-                      >
-                        {tema.label}
-                      </label>
+                      <input className="form-check-input" type="checkbox" id={`check-${tema.value}`} value={tema.value} onChange={handleCheckboxChange} checked={filtros.temas.includes(tema.value)} />
+                      <label className="form-check-label" htmlFor={`check-${tema.value}`}>{tema.label}</label>
                     </div>
                   ))}
                 </div>
               </div>
-              <div className="col-12">
-                {/* AHORA SOLO HAY EL BOTÓN DE LIMPIAR */}
-                <button
-                  className="btn btn-orange w-100"
-                  onClick={handleClearFilters}
-                >
+              <div className="col-12 mt-3">
+                <button type="button" className="btn btn-orange w-100" onClick={handleClearFilters}>
                   <i className="bi bi-arrow-counterclockwise me-2"></i>
                   Limpiar Filtros
                 </button>

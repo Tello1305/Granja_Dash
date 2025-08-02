@@ -5,6 +5,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../auth/authContext";
 //import {useState} from "react"
+//import {jwtDecode} from "jwt-decode";
 
 const RUTAJAVA = import.meta.env.VITE_RUTAJAVA;
 
@@ -18,8 +19,8 @@ export function AppLogin() {
     try {
       const response = await axios.post(`${RUTAJAVA}/api/auth/login`, data);
 
-      const { token, nombre, id_rol } = response.data;
-      login(token, nombre, id_rol);
+      const { token } = response.data;
+      login(token);
 
       alert("Login exitoso");
       navigate("/GranjaDash/ingresosTotales");

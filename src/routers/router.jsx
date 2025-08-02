@@ -14,7 +14,7 @@ import { HistorialProductos } from '../pages/historialProductos.jsx'
 export function RouterSystem() {
     return (
         <Routes>
-            {/* <Route path='/' element={<AppLogin />} />
+            {/*<Route path='/' element={<AppLogin />} />
             <Route path='/GranjaDash/ingresosTotales'
                 element={<AuthRoute roles={[1, 2]}> <IngresosTotales /> </AuthRoute>} />
             <Route path='/GranjaDash/alimentacionRecursos'
@@ -24,12 +24,17 @@ export function RouterSystem() {
             <Route path='/GranjaDash/categorias'
                 element={<AuthRoute roles={[1, 2]}><Categorias /></AuthRoute>} />
             <Route path='/GranjaDash/categoriaRazas'
-                element={<AuthRoute roles={[1, 2]}><CategoriaRazas /></AuthRoute>} />
+                element={<AuthRoute roles={[1]}><CategoriaRazas /></AuthRoute>} />
             <Route path='/GranjaDash/LoteAnimales'
                 element={<AuthRoute roles={[1, 2]}><LoteAnimales /></AuthRoute>} />
             <Route path='/GranjaDash/ProductoAnimales'
-                element={<AuthRoute roles={[1, 2]}><ProductoAnimales /></AuthRoute>} /> */}
-
+                element={<AuthRoute roles={[1, 2]}><ProductoAnimales /></AuthRoute>} />
+            <Route path='/GranjaDash/Reportes'
+                element={<AuthRoute roles={[1]}><Reportes /></AuthRoute>} />
+            <Route path='/GranjaDash/Bitacora'
+                element={<AuthRoute roles={[1]}><HistorialProductos /></AuthRoute>} />*/}
+  
+    
             <Route path='/' element={<AppLogin />} />
             <Route path='/GranjaDash/ingresosTotales' element={<IngresosTotales />} />
             <Route path='/GranjaDash/alimentacionRecursos' element={<AlimentacionRecursos />} />

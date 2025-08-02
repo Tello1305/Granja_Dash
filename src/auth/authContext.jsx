@@ -1,46 +1,59 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import { jwtDecode } from 'jwt-decode'; // 1. Importa la librería
 
 const authContext = createContext();
 
 export function ContextoAuth({ children }) {
-
-  const [auth, setAuth] = useState({ token: null, nombre: null, id_rol: null });
+  const [auth, setAuth] = useState({ token: null });
   const [loading, setLoading] = useState(true);
 
+  // 2. Modifica el useEffect para que lea y decodifique solo el token
   useEffect(() => {
     const token = localStorage.getItem("token");
-    const nombre = localStorage.getItem("nombre");
-    const id_rol = localStorage.getItem("id_rol");
+    if (token) {
+      try {
+        const decodedToken = jwtDecode(token);
+        setAuth({ 
+            token, 
+            rol: decodedToken.roles, 
+            usuario: decodedToken.usuario,
+            id_rol: decodedToken.id_rol,
+          });
+        } catch (error) {
+          localStorage.removeItem("token");
+          setAuth({ token: null });
+        }
+      }
+      setLoading(false);
+    }, []);
 
-    if (token && nombre && id_rol) {
-      setAuth({ token, nombre, id_rol: Number(id_rol) });
-    } else {
-      localStorage.removeItem("token");
-      localStorage.removeItem("nombre");
-      localStorage.removeItem("id_rol");
-      setAuth({ token: null, nombre: null, id_rol: null });
-    }
-    setLoading(false);
-  }, []);
+  
 
-  const login = (token, nombre, id_rol) => {
+
+  // 3. Modifica la función de login
+  const login = (token) => {
+    // Guarda SOLO el token en localStorage
     localStorage.setItem("token", token);
-    localStorage.setItem("nombre", nombre);
-    localStorage.setItem("id_rol", id_rol);
-    setAuth({ token, nombre, id_rol: Number(id_rol) });
+    const decodedToken = jwtDecode(token);
+    setAuth({ 
+      token, 
+      rol: decodedToken.roles, 
+      usuario: decodedToken.usuario,
+      id_rol: decodedToken.id_rol 
+    });
+
   };
 
+  // 4. La función de logout solo necesita quitar el token
   const logout = () => {
     localStorage.removeItem("token");
-    localStorage.removeItem("nombre");
-    localStorage.removeItem("id_rol");
-    setAuth({ token: null, nombre: null, id_rol: null });
+    setAuth({ token: null });
   };
 
   if (loading) return null;
 
   return (
-    <authContext.Provider value={{ auth, setAuth, login, logout }}>
+    <authContext.Provider value={{ auth, login, logout }}>
       {children}
     </authContext.Provider>
   );

@@ -1,6 +1,8 @@
 import "../assets/css/main.css"
+import gallinaImg from "../assets/img/Gallina.png";
 import { useState, useEffect } from "react"
 import axios from "axios";
+import "../assets/css/secciones.css"
 
 const RUTAJAVA = import.meta.env.VITE_RUTAJAVA;
 
@@ -114,8 +116,8 @@ export function Secciones() {
                 </div>
 
                 <div className="farm-illustration">
-                    <div className="farm-scene d-flex align-items-center justify-content-center p-0 ">
-                        <img className="img-fluid w-50" src="../public/img/IA.png" alt="IA" />
+                    <div className="farm-scene d-flex align-items-center justify-content-center p-0 position-relative">
+                        <img className="img-fluid w-50 imagenGallina " src={gallinaImg} alt="GALLINA" />
                     </div>
                 </div>
             </div>
