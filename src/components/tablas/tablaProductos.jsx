@@ -1,5 +1,6 @@
 import TablaGenerica from "../TablaGenerica";
 import { useState, useEffect } from "react";
+import Swal from "sweetalert2";
 import axios from "axios";
 import { useAuth } from '../../auth/authContext';
 import '../../assets/css/ToggleSwitch.css';
@@ -31,27 +32,55 @@ export default function TablaProductos() {
     }, []);
 
 
-    const handleDelete = async (id_producto) => {
-        try {
-            await axios.delete(`${RUTAJAVA}/api/productoAnimales/${id_producto}`, {
-                headers: {
-                    Authorization: `Bearer ${auth.token}`
+    const handleDelete = (id_producto) => {
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: "¡No podrás revertir esto!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, ¡bórralo!',
+            cancelButtonText: 'Cancelar'
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                try {
+                    await axios.delete(`${RUTAJAVA}/api/productoAnimales/${id_producto}`, {
+                        headers: {
+                            Authorization: `Bearer ${auth.token}`
+                        }
+                    });
+                    setProductos(prev => prev.filter(p => p.id_producto !== id_producto));
+                    Swal.fire(
+                        '¡Eliminado!',
+                        'El producto ha sido eliminado.',
+                        'success'
+                    );
+                } catch (error) {
+                    console.error("Error al eliminar:", error);
+                    if (error.response && error.response.status === 400 && error.response.data.includes("historial de stock")) {
+                        Swal.fire({
+                            title: 'No se puede eliminar',
+                            text: "Este producto tiene historial de stock. ¿Deseas inactivarlo en su lugar?",
+                            icon: 'question',
+                            showCancelButton: true,
+                            confirmButtonText: 'Sí, inactivar',
+                            cancelButtonText: 'No'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                handleToggleEstado(id_producto, "ACTIVO");
+                            }
+                        });
+                    } else {
+                        Swal.fire(
+                            '¡Error!',
+                            'No se pudo eliminar el producto. Intente nuevamente.',
+                            'error'
+                        );
+                    }
                 }
-            });
-            console.log("Producto eliminado correctamente: ", id_producto);
-            setProductos(prev => prev.filter(p => p.id_producto !== id_producto));
-
-        } catch (error) {
-
-            console.error("Error al eliminar:", error);
-            if (error.response && error.response.status === 400 && error.response.data.includes("historial de stock")) {
-                if (confirm("Este producto tiene historial de stock y no puede ser eliminado. ¿Deseas inactivarlo en su lugar?")) {
-                    handleToggleEstado(id_producto, "ACTIVO");
-                }
-            } else {
-                alert("No se pudo eliminar el producto. Intente nuevamente.");
             }
-        }
+        });
     };
 
     const handleToggleEstado = async (id_producto, estadoActual) => {

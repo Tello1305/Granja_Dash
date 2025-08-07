@@ -48,6 +48,19 @@ export function Secciones() {
             value: total.Raza
         },
     ]
+
+    const today = new Date();
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    const dateParts = new Intl.DateTimeFormat('es-ES', options).formatToParts(today);
+
+    const dayName = dateParts.find(part => part.type === 'weekday').value;
+    const day = dateParts.find(part => part.type === 'day').value;
+    const month = dateParts.find(part => part.type === 'month').value;
+    const year = dateParts.find(part => part.type === 'year').value;
+
+    const formattedDate = `${day} de ${month}, ${year}`;
+    const capitalizedDayName = dayName.charAt(0).toUpperCase() + dayName.slice(1);
+
     return (
         <>
 
@@ -55,9 +68,9 @@ export function Secciones() {
                 <div className="weather-card">
                     <div className="weather-info">
                         <div className="weather-day">
-                            <span className="weather-label">Weather's today</span>
-                            <h2 className="weather-title">Monday</h2>
-                            <span className="weather-date">10th Apr, 2023</span>
+                            <span className="weather-label">Clima de Hoy</span>
+                            <h2 className="weather-title">{capitalizedDayName}</h2>
+                            <span className="weather-date">{formattedDate}</span>
                         </div>
                         <div className="weather-temp">
                             <div className="temp-circle">
@@ -67,24 +80,24 @@ export function Secciones() {
                     </div>
                     <div className="weather-stats">
                         <div className="stat-item">
-                            <i className="bi bi-cloud-drizzle"></i>
-                            <span>0km/h</span>
+                            <i className="bi bi-wind"></i>
+                            <span>15km/h</span>
                         </div>
                         <div className="stat-item">
                             <i className="bi bi-droplet"></i>
-                            <span>89%</span>
+                            <span>87%</span>
                         </div>
                         <div className="stat-item">
-                            <i className="bi bi-thermometer"></i>
-                            <span>1001hPa</span>
+                            <i className="bi bi-thermometer-half"></i>
+                            <span>1012hPa</span>
                         </div>
                     </div>
                 </div>
 
                 <div className="growth-activity-card">
                     <div className="card-header">
-                        <h3>Plant growth activity</h3>
-                        <span className="period-badge">Weekly</span>
+                        <h3>Producción de Huevos en General</h3>
+                        <span className="period-badge">Semanal</span>
                     </div>
                     <div className="growth-chart">
                         <div className="growth-line">
@@ -102,15 +115,15 @@ export function Secciones() {
                     <div className="growth-legend">
                         <div className="legend-item">
                             <span className="legend-dot seed"></span>
-                            <span>Seed Phase (95%)</span>
+                            <span>Producción Alta (95%)</span>
                         </div>
                         <div className="legend-item">
                             <span className="legend-dot fruit"></span>
-                            <span>Fruit Growth (89%)</span>
+                            <span>Producción Media (89%)</span>
                         </div>
                         <div className="legend-item">
                             <span className="legend-dot vegetation"></span>
-                            <span>Vegetation (76%)</span>
+                            <span>Producción Baja (76%)</span>
                         </div>
                     </div>
                 </div>

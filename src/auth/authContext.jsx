@@ -31,7 +31,6 @@ export function ContextoAuth({ children }) {
 
   
   const login = (token) => {
-    // Guarda SOLO el token en localStorage
     localStorage.setItem("token", token);
     const decodedToken = jwtDecode(token);
     setAuth({ 

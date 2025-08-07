@@ -1,25 +1,37 @@
-
 import FormRaza from "../form/formRaza.jsx";
 import { useState } from "react";
 import axios from "axios";
+import Swal from 'sweetalert2';
+import { useAuth } from "../../auth/authContext.jsx";
 
 const RUTAJAVA = import.meta.env.VITE_RUTAJAVA;
 
 export default function ModalCrearRaza({ onUpdated, mostrarCancelar = true }) {
+    const { auth } = useAuth();
     const [formKey, setFormKey] = useState(0);
 
     const handleCrear = async (form) => {
-        const response = await axios.post(`${RUTAJAVA}/api/razaAnimales`, 
-            {
-                nombre: form.nombre,
-                id_categoria: form.id_categoria,
-            }
-        );
+        try {
+            const response = await axios.post(`${RUTAJAVA}/api/razaAnimales`, 
+                {
+                    nombre: form.nombre,
+                    id_categoria: form.id_categoria,
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${auth.token}`
+                    }
+                }
+            );
             if (onUpdated) onUpdated();
             setFormKey(prevKey => prevKey + 1); // Reinicia el formulario
-            console.log(response.data);
-            alert("Raza creada correctamente")
-            
+            Swal.fire({
+                position: 'center',
+                icon: 'success',
+                title: 'Raza creada con éxito',
+                showConfirmButton: false,
+                timer: 1500
+            });
             const closeButton = document.querySelector(
                 "#ModalCrearTablaRaza .btn-close"
               );
@@ -29,6 +41,14 @@ export default function ModalCrearRaza({ onUpdated, mostrarCancelar = true }) {
               if (document.activeElement) {
                 document.activeElement.blur();
               }
+        } catch (error) {
+            console.error("Error al crear la raza:", error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error al crear',
+                text: 'Hubo un problema al crear la raza.',
+            });
+        }
     }
     
     return (

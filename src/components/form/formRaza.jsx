@@ -47,17 +47,7 @@ export default function FormRaza({ onSubmit, mostrarCancelar }) {
           required
         />
       </div>
-      <div className="mb-2">
-        <label htmlFor="descripcion">Descripcion</label>
-        <input
-          type="text"
-          id="descripcion"
-          className="form-control"
-          value={form.descripcion}
-          onChange={handleChange}
-          required
-        />
-      </div>
+      
       <div className="mb-2">
         <label htmlFor="id_categoria">Categoria</label>
         <select

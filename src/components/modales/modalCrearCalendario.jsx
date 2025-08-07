@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useAuth } from '../../auth/authContext';
+import Swal from 'sweetalert2';
 import FormCalendario from "../form/formCalendario";
 
 const RUTAJAVA = import.meta.env.VITE_RUTAJAVA;
@@ -32,7 +33,11 @@ export default function ModalCita({ slotInfo, eventoSeleccionado, onCitaGuardada
   const handleSubmit = async () => {
     // ESTA ES LA VALIDACIÓN CORREGIDA
     if (!esEdicion && (!slotInfo || !slotInfo.start)) {
-        alert("Error: No se seleccionó un espacio de tiempo válido en el calendario.");
+        Swal.fire({
+            icon: 'error',
+            title: 'Error de selección',
+            text: 'No se seleccionó un espacio de tiempo válido en el calendario.'
+        });
         return;
     }
 
@@ -48,12 +53,24 @@ export default function ModalCita({ slotInfo, eventoSeleccionado, onCitaGuardada
             await axios.put(`${RUTAJAVA}/api/citasAnimales/${form.id}`, datosParaEnviar, {
                 headers: { Authorization: `Bearer ${auth.token}` }
             });
-            alert("Cita actualizada correctamente");
+            Swal.fire({
+                position: 'center',
+                icon: 'success',
+                title: 'Cita actualizada con éxito',
+                showConfirmButton: false,
+                timer: 1500
+            });
         } else {
             await axios.post(`${RUTAJAVA}/api/citasAnimales`, datosParaEnviar, {
                 headers: { Authorization: `Bearer ${auth.token}` }
             });
-            alert("Cita creada correctamente");
+            Swal.fire({
+                position: 'center',
+                icon: 'success',
+                title: 'Cita creada con éxito',
+                showConfirmButton: false,
+                timer: 1500
+            });
         }
         
         onCitaGuardada();
@@ -63,7 +80,11 @@ export default function ModalCita({ slotInfo, eventoSeleccionado, onCitaGuardada
 
     } catch (error) {
         console.error("Error al guardar:", error);
-        alert("Error al guardar la cita.");
+        Swal.fire({
+            icon: 'error',
+            title: 'Error al guardar',
+            text: 'Hubo un problema al guardar la cita.'
+        });
     }
 };
 

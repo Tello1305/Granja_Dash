@@ -19,7 +19,8 @@ export function Historial() {
   const [resumenes, setResumenes] = useState([]);
   const [actividades, setActividades] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(6); 
   const [filtros, setFiltros] = useState({
     fechaDesde: "",
     fechaHasta: "",
@@ -97,6 +98,7 @@ export function Historial() {
   const handleClearFilters = () => {
     setFiltros({ fechaDesde: "", fechaHasta: "", temas: [], busqueda: "" });
     setActividades([]); // Limpia también los resultados de actividades
+    setCurrentPage(1); // Resetea a la primera página
   };
 
   const mostrarVistaDetallada =
@@ -104,6 +106,14 @@ export function Historial() {
     filtros.fechaHasta ||
     filtros.temas.length > 0 ||
     filtros.busqueda;
+
+  // Lógica de paginación
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = actividades.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(actividades.length / itemsPerPage);
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
     <div className="container py-4 historial-container">
@@ -118,16 +128,38 @@ export function Historial() {
             <>
               <h4>Resultados de la Investigación ({actividades.length})</h4>
               {actividades.length > 0 ? (
-                actividades.map((actividad) => (
-                  <div key={actividad.id_actividad} className="card mb-2">
-                    <div className="card-body py-2">
-                      <p className="card-text mb-0">{actividad.descripcion}</p>
-                      <small className="text-muted">
-                        {new Date(actividad.fechaHora).toLocaleString("es-PE")}
-                      </small>
+                <>
+                  {currentItems.map((actividad) => (
+                    <div key={actividad.id_actividad} className="card mb-2">
+                      <div className="card-body py-2">
+                        <p className="card-text mb-0">{actividad.descripcion}</p>
+                        <small className="text-muted">
+                          {new Date(actividad.fechaHora).toLocaleString("es-PE")}
+                        </small>
+                      </div>
                     </div>
-                  </div>
-                ))
+                  ))}
+                  {/* Controles de Paginación */}
+                  {totalPages > 1 && (
+                    <nav className="mt-3">
+                      <ul className="pagination justify-content-center">
+                        <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
+                          <button className="page-link" onClick={() => paginate(currentPage - 1)}>&laquo;</button>
+                        </li>
+                        {[...Array(totalPages).keys()].map(number => (
+                          <li key={number + 1} className={`page-item ${currentPage === number + 1 ? 'active' : ''}`}>
+                            <button onClick={() => paginate(number + 1)} className='page-link'>
+                              {number + 1}
+                            </button>
+                          </li>
+                        ))}
+                        <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
+                          <button className="page-link" onClick={() => paginate(currentPage + 1)}>&raquo;</button>
+                        </li>
+                      </ul>
+                    </nav>
+                  )}
+                </>
               ) : (
                 <div className="alert alert-info">No se encontraron actividades.</div>
               )}

@@ -4,6 +4,7 @@ import { FormLogin } from "../components/form/formLogin.jsx";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../auth/authContext";
+import Swal from 'sweetalert2';
 //import {useState} from "react"
 //import {jwtDecode} from "jwt-decode";
 
@@ -22,15 +23,30 @@ export function AppLogin() {
       const { token } = response.data;
       login(token);
 
-      alert("Login exitoso");
+      Swal.fire({
+        icon: 'success',
+        title: 'BIENVENIDO',
+        showConfirmButton: false,
+        timer: 1500
+      })
       navigate("/GranjaDash/ingresosTotales");
 
     } catch (error) {
 
       if (error.response && error.response.status === 403) {
-        alert("Credenciales incorrectas");
+        Swal.fire({
+          icon: 'error',
+          title: 'Credenciales incorrectas',
+          showConfirmButton: false,
+          timer: 1500
+        })
       } else {
-        alert("Error al iniciar sesión");
+        Swal.fire({
+          icon: 'error',
+          title: 'Error al iniciar sesión',
+          showConfirmButton: false,
+          timer: 1500
+        })
       }
 
     }

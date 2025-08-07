@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import Swal from 'sweetalert2';
 import axios from 'axios';
 import { useAuth } from '../../auth/authContext';
 import FormCalendario from "../form/formCalendario";
@@ -40,11 +41,11 @@ export default function ModalEditarCalendario({ slotInfo, eventoSeleccionado, on
   const handleSubmit = async () => {
     const datosBase = esEdicion ? eventoSeleccionado : slotInfo;
     if (!datosBase || !datosBase.start) {
-      alert("Error: No hay una fecha válida para guardar.");
+      Swal.fire("Error", "No hay una fecha válida para guardar.", "error");
       return;
     }
 
-    const datosParaEnviar = {
+    const datosCalendario = {
       ...form,
       start: datosBase.start.toISOString(),
       end: datosBase.end.toISOString(),
@@ -53,35 +54,69 @@ export default function ModalEditarCalendario({ slotInfo, eventoSeleccionado, on
 
     try {
       if (esEdicion) {
-        await axios.put(`${RUTAJAVA}/api/citasAnimales/${form.id}`, datosParaEnviar, { headers: { Authorization: `Bearer ${auth.token}` } });
-        alert("Cita actualizada correctamente");
+        await axios.put(`${RUTAJAVA}/api/citasAnimales/${form.id}`, datosCalendario, { headers: { Authorization: `Bearer ${auth.token}` } });
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: '¡Actualizada!',
+          text: 'La cita ha sido actualizada correctamente.',
+          showConfirmButton: false,
+          timer: 1500
+        });
       } else {
-        await axios.post(`${RUTAJAVA}/api/citasAnimales`, datosParaEnviar, { headers: { Authorization: `Bearer ${auth.token}` } });
-        alert("Cita creada correctamente");
+        await axios.post(`${RUTAJAVA}/api/citasAnimales`, datosCalendario, { headers: { Authorization: `Bearer ${auth.token}` } });
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: '¡Creada!',
+          text: 'La cita ha sido creada correctamente.',
+          showConfirmButton: false,
+          timer: 1500
+        });
       }
       onCitaGuardada();
       closeModal();
     } catch (error) {
       console.error("Error al guardar:", error);
-      alert("Error al guardar la cita.");
+      Swal.fire("¡Error!", "Error al guardar la cita.", "error");
     }
   };
 
-  const handleDelete = async () => {
-    if (!esEdicion || !window.confirm("¿Estás seguro de que deseas eliminar esta cita?")) {
-      return;
-    }
-    try {
-      await axios.delete(`${RUTAJAVA}/api/citasAnimales/${eventoSeleccionado.id}`, {
-        headers: { Authorization: `Bearer ${auth.token}` }
-      });
-      alert("Cita eliminada correctamente");
-      onCitaGuardada();
-      closeModal();
-    } catch (error) {
-      console.error("Error al eliminar:", error);
-      alert("Error al eliminar la cita.");
-    }
+  const handleDelete = () => {
+    if (!esEdicion) return;
+
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: "¡No podrás revertir esto!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí, ¡bórrala!',
+      cancelButtonText: 'Cancelar'
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          await axios.delete(`${RUTAJAVA}/api/citasAnimales/${eventoSeleccionado.id}`, {
+            headers: { Authorization: `Bearer ${auth.token}` }
+          });
+          Swal.fire(
+            '¡Eliminada!',
+            'La cita ha sido eliminada.',
+            'success'
+          );
+          onCitaGuardada();
+          closeModal();
+        } catch (error) {
+          console.error("Error al eliminar:", error);
+          Swal.fire(
+            '¡Error!',
+            'No se pudo eliminar la cita.',
+            'error'
+          );
+        }
+      }
+    });
   };
 
   return (

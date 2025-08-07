@@ -25,6 +25,7 @@
     "react-dom": "^19.1.0",
     "react-router-dom": "^7.6.2",
     "recharts": "^2.15.3",
+    "sweetalert2": "^11.22.2",
     "zod": "^3.25.56"
   },
   "devDependencies": {

@@ -1,7 +1,7 @@
 import { Header } from "../components/header.jsx";
 import { Nav } from "../components/nav.jsx";
 import { Secciones } from "../components/secciones.jsx";
-import GraficoClima from "../components/graficos/graficosCategorias.jsx";
+import GraficoHorizontalSeparado from "../components/graficos/graficosCategorias.jsx";
 import { useState } from "react";
 
 
@@ -23,9 +23,9 @@ export function Categorias() {
           <Nav isOpen={sidebarOpen} onClose={closeSidebar} />
           <main className="main-content w-100">
             <div className="content-wrapper">
-              <Secciones dataGeneral="1000" />
+              <Secciones />
               <div className="charts-section">
-                <GraficoClima />
+                <GraficoHorizontalSeparado />
               </div>
             </div>
           </main>

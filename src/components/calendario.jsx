@@ -1,13 +1,17 @@
+
+
 import { useState, useEffect, useRef, useCallback } from "react";
 import { Calendar, dateFnsLocalizer } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import { format, parse, startOfWeek, getDay } from "date-fns";
+import { format, parse, startOfWeek, getDay, differenceInCalendarDays } from "date-fns";
 import esES from "date-fns/locale/es";
 import axios from "axios";
 import ModalCita from "./modales/modalCita.jsx";
+import '../assets/css/Calendario.css'; // Importa los nuevos estilos
 
 const RUTAJAVA = import.meta.env.VITE_RUTAJAVA;
 const locales = { es: esES };
+
 const localizer = dateFnsLocalizer({
   format,
   parse,
@@ -15,11 +19,40 @@ const localizer = dateFnsLocalizer({
   getDay,
   locales,
 });
+
 const messages = {
   allDay: "Todo el día", previous: "Anterior", next: "Siguiente", today: "Hoy",
   month: "Mes", week: "Semana", day: "Día", agenda: "Agenda", date: "Fecha",
   time: "Hora", event: "Evento", noEventsInRange: "Sin eventos"
 };
+
+// --- Lógica de proximidad y componente personalizado ---
+
+const getProximityClass = (eventDate) => {
+  const hoy = new Date();
+  const diasFaltantes = differenceInCalendarDays(eventDate, hoy);
+
+  if (diasFaltantes < 0) return 'prox-pasada';
+  if (diasFaltantes <= 2) return 'prox-urgente';
+  if (diasFaltantes <= 5) return 'prox-cercana';
+  if (diasFaltantes <= 10) return 'prox-media';
+  if (diasFaltantes <= 15) return 'prox-lejana';
+  
+  return 'prox-muy-lejana';
+};
+
+const CustomEvent = ({ event }) => {
+  const proximityClass = getProximityClass(event.start);
+
+  return (
+    <div className="custom-event-container">
+      <span className={`event-dot ${proximityClass}`}></span>
+      <span className="event-title">{event.title}</span>
+    </div>
+  );
+};
+
+// --- Componente principal del Calendario ---
 
 export function Calendario() {
   const [events, setEvents] = useState([]);
@@ -66,6 +99,10 @@ export function Calendario() {
     setSlotInfo(null);
     setEventoSeleccionado(event);
   };
+  
+  const components = {
+    event: CustomEvent,
+  };
 
   return (
     <div className="calendar-container" style={{ width: '100%', height: '100%', minHeight: '600px' }}>
@@ -84,6 +121,7 @@ export function Calendario() {
         onNavigate={setDate}
         view={view}
         onView={setView}
+        components={components} // Prop para personalizar el renderizado
         style={{
           height: '100%',
           width: '100%',
@@ -91,10 +129,8 @@ export function Calendario() {
         }}
       />
 
-      {/* Solo necesitamos un botón oculto que apunte a un solo ID de modal */}
       <button ref={triggerModal} style={{ display: "none" }} data-bs-toggle="modal" data-bs-target="#ModalCita"></button>
 
-      {/* Renderizamos nuestro único modal inteligente */}
       <ModalCita
         slotInfo={slotInfo}
         eventoSeleccionado={eventoSeleccionado}

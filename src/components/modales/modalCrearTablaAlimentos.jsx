@@ -2,6 +2,7 @@ import FormularioAlimento from "../form/formAlimentos.jsx";
 import axios from "axios";
 import { useState } from "react";
 import { useAuth } from "../../auth/authContext.jsx";
+import Swal from "sweetalert2";
 
 
 const RUTAJAVA = import.meta.env.VITE_RUTAJAVA;
@@ -31,12 +32,14 @@ export default function ModalAlimentos({ onUpdated, mostrarCancelar = true }) {
       );
 
       if (onUpdated) onUpdated();
-
-      setFormKey(prevKey => prevKey + 1); 
-
-      console.log(response.data);
-      
-      alert("Alimento creado correctamente");
+      setFormKey(prevKey => prevKey + 1);
+      Swal.fire({
+        position: 'center',
+        icon: 'success',
+        title: 'Alimento creado con éxito',
+        showConfirmButton: false,
+        timer: 1500
+      });
 
       
       const closeButton = document.querySelector(
@@ -51,8 +54,12 @@ export default function ModalAlimentos({ onUpdated, mostrarCancelar = true }) {
       
 
     } catch (error) {
-      console.log(error);
-      alert("Error al crear el alimento");
+      console.error("Error al crear:", error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error al crear',
+        text: 'Hubo un problema al crear el alimento.'
+      });
     }
   };
 

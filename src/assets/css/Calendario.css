@@ -1,0 +1,42 @@
+
+.custom-event-container {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+/* Estilo base para el punto de color */
+.event-dot {
+  min-width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 6px;
+  background-color: #ccc; /* Color por defecto */
+}
+
+/* Clases de color según la proximidad */
+.event-dot.prox-muy-lejana {
+  background-color: #1e90ff; /* Azul (Más de 15 días) */
+}
+.event-dot.prox-lejana {
+  background-color: #28a745; /* Verde (11-15 días) */
+}
+.event-dot.prox-media {
+  background-color: #ffc107; /* Amarillo (6-10 días) */
+}
+.event-dot.prox-cercana {
+  background-color: #fd7e14; /* Naranja (3-5 días) */
+}
+.event-dot.prox-urgente {
+  background-color: #dc3545; /* Rojo (0-2 días) */
+}
+.event-dot.prox-pasada {
+  background-color: #6c757d; /* Gris (Ya pasó) */
+}
+
+/* Estilos para el título del evento */
+.event-title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

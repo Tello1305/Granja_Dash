@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
+import Swal from "sweetalert2";
 import axios from "axios";
 import TablaGenerica from "../TablaGenerica";
 import ModalEditarTablaAlimentos from "../modales/modalEditarTablaAlimentos";
 import ModalCrearTablaAlimentos from "../modales/modalCrearTablaAlimentos";
 import StockAlimentos from "../tablaModales/StockAlimentos";
-import ModalStockAlimentos from "../modales/modalCrearStock";
+//import ModalStockAlimentos from "../modales/modalCrearStock";
 import { useAuth } from '../../auth/authContext.jsx';
 import '../../assets/css/ToggleSwitch.css';
 
@@ -30,28 +31,55 @@ export default function AlimentacionList() {
     fetchAlimentos();
   }, []);
 
-  const handleDelete = async (id_alimento) => {
-    try {
-      await axios.delete(`${RUTAJAVA}/api/alimentacion/${id_alimento}`, {
-        headers: {
-          Authorization: `Bearer ${auth.token}`
+  const handleDelete = (id_alimento) => {
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: "¡No podrás revertir esto!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí, ¡bórralo!',
+      cancelButtonText: 'Cancelar'
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          await axios.delete(`${RUTAJAVA}/api/alimentacion/${id_alimento}`, {
+            headers: {
+              Authorization: `Bearer ${auth.token}`
+            }
+          });
+          setAlimentos(prev => prev.filter(alimento => alimento.id_alimento !== id_alimento));
+          Swal.fire(
+            '¡Eliminado!',
+            'El alimento ha sido eliminado.',
+            'success'
+          );
+        } catch (error) {
+          console.error("Error al eliminar:", error);
+          if (error.response && error.response.status === 400 && error.response.data.includes("historial")) {
+            Swal.fire({
+              title: 'No se puede eliminar',
+              text: "Este alimento tiene historial de movimientos. ¿Deseas inactivarlo en su lugar?",
+              icon: 'question',
+              showCancelButton: true,
+              confirmButtonText: 'Sí, inactivar',
+              cancelButtonText: 'No'
+            }).then((result) => {
+              if (result.isConfirmed) {
+                handleToggleEstado(id_alimento, "ACTIVO");
+              }
+            });
+          } else {
+            Swal.fire(
+              '¡Error!',
+              'No se pudo eliminar el alimento. Intente nuevamente.',
+              'error'
+            );
+          }
         }
-      });
-
-      console.log("Alimento eliminado correctamente: ", id_alimento);
-      setAlimentos(prev => prev.filter(alimento => alimento.id_alimento !== id_alimento));
-
-    } catch (error) {
-      console.error("Error al eliminar:", error);
-
-      if (error.response && error.response.status === 400 && error.response.data.includes("historial")) {
-        if (confirm("Este alimento tiene historial de movimientos. ¿Deseas inactivarlo?")) {
-          handleToggleEstado(id_alimento, "ACTIVO"); // Lo inactivas directamente
-        }
-      } else {
-        alert("No se pudo eliminar el alimento. Intente nuevamente.");
       }
-    }
+    });
   };
 
   const handleToggleEstado = async (id_alimento, estadoActual) => {
@@ -74,10 +102,19 @@ export default function AlimentacionList() {
       );
 
       setAlimentos(alimentosActualizados);
+      Swal.fire(
+        '¡Estado cambiado!',
+        `El alimento ahora está ${nuevoEstado.toLowerCase()}.`,
+        'success'
+      );
 
     } catch (error) {
       console.error("Error al cambiar estado:", error);
-      alert("No se pudo cambiar el estado. Inténtalo nuevamente.");
+      Swal.fire(
+        '¡Error!',
+        'No se pudo cambiar el estado. Inténtalo nuevamente.',
+        'error'
+      );
     }
   };
 

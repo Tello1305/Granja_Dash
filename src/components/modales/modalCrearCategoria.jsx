@@ -1,5 +1,6 @@
 import FormularioCategoria from "../form/formCategoria.jsx";
 import { useState} from "react";
+import Swal from "sweetalert2";
 import axios from "axios";
 import { useAuth } from "../../auth/authContext.jsx";
 
@@ -27,7 +28,13 @@ export default function ModalCrearCategoria({ onUpdated, mostrarCancelar = true 
         if (onUpdated) onUpdated();
         setFormKey(prevKey => prevKey + 1); // Reinicia el formulario
         console.log(response.data);
-        alert("Categoria creada correctamente");
+        Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: 'Categoría creada con éxito',
+            showConfirmButton: false,
+            timer: 1500
+        });
   
         
         const closeButton = document.querySelector(
@@ -43,7 +50,11 @@ export default function ModalCrearCategoria({ onUpdated, mostrarCancelar = true 
   
       } catch (error) {
         console.log(error);
-        alert("Error al crear la categoria");
+        Swal.fire({
+            icon: 'error',
+            title: 'Error al crear',
+            text: 'Hubo un problema al crear la categoría.'
+        });
       }
     };
 

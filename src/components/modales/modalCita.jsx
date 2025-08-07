@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import Swal from 'sweetalert2';
 import axios from 'axios';
 import { useAuth } from '../../auth/authContext';
 import FormCalendario from "../form/formCalendario";
@@ -38,8 +39,8 @@ export default function ModalCita({ slotInfo, eventoSeleccionado, onCitaGuardada
 
   const handleSubmit = async () => {
     const datosBase = esEdicion ? eventoSeleccionado : slotInfo;
-    if (!datosBase || !datosBase.start) {
-      alert("Error: No hay una fecha válida para guardar.");
+    if (!form.titulo || !form.id_lote) {
+      alert("El título y el lote son obligatorios");
       return;
     }
 
@@ -53,32 +54,53 @@ export default function ModalCita({ slotInfo, eventoSeleccionado, onCitaGuardada
     try {
       if (esEdicion) {
         await axios.put(`${RUTAJAVA}/api/citasAnimales/${form.id}`, datosParaEnviar, { headers: { Authorization: `Bearer ${auth.token}` } });
+        alert("Cita actualizada correctamente");
       } else {
         await axios.post(`${RUTAJAVA}/api/citasAnimales`, datosParaEnviar, { headers: { Authorization: `Bearer ${auth.token}` } });
+        alert("Cita guardada correctamente");
       }
-      alert(`Cita ${esEdicion ? 'actualizada' : 'creada'} correctamente`);
       onCitaGuardada();
       closeModal();
     } catch (error) {
       console.error("Error al guardar:", error);
-      alert("Error al guardar la cita.");
+      alert("No se pudo guardar la cita.");
     }
   };
 
   const handleDelete = async () => {
-    if (!esEdicion || !window.confirm("¿Estás seguro de que deseas eliminar esta cita?")) {
-      return;
-    }
-    try {
-      await axios.delete(`${RUTAJAVA}/api/citasAnimales/${eventoSeleccionado.id}`, {
-        headers: { Authorization: `Bearer ${auth.token}` }
-      });
-      alert("Cita eliminada correctamente");
-      onCitaGuardada();
-      closeModal();
-    } catch (error) {
-      console.error("Error al eliminar:", error);
-      alert("Error al eliminar la cita.");
+    if (!esEdicion) return;
+
+    const result = await Swal.fire({
+      title: '¿Estás seguro?',
+      text: "¡No podrás revertir esto!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí, ¡bórrala!',
+      cancelButtonText: 'Cancelar'
+    });
+
+    if (result.isConfirmed) {
+      try {
+        await axios.delete(`${RUTAJAVA}/api/citasAnimales/${eventoSeleccionado.id}`, {
+          headers: { Authorization: `Bearer ${auth.token}` }
+        });
+        Swal.fire(
+          '¡Eliminada!',
+          'La cita ha sido eliminada.',
+          'success'
+        );
+        onCitaGuardada();
+        closeModal();
+      } catch (error) {
+        console.error("Error al eliminar:", error);
+        Swal.fire(
+          '¡Error!',
+          'No se pudo eliminar la cita.',
+          'error'
+        );
+      }
     }
   };
 

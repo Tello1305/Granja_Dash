@@ -1,3 +1,6 @@
+import {useState, useEffect} from "react";
+import axios from "axios";
+
 import { Bar, Line } from 'react-chartjs-2'
 import {
   Chart as ChartJS,
@@ -11,38 +14,6 @@ import {
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 
-const data = {
-  labels: ['Maíz', 'Alfalfa', 'Concentrado', 'Trigo', 'Vitaminas'],
-  datasets: [
-    {
-      label: 'Consumo (kg)',
-      data: [40, 35, 50, 25, 20],
-      backgroundColor: 'rgba(54, 162, 235, 0.6)',
-      borderColor: 'rgba(54, 162, 235, 1)',
-      borderWidth: 1,
-      barThickness: 20, // 👈 Esto controla el grosor
-    },
-  ],
-}
-
-const options = {
-  indexAxis: 'y', // horizontal
-  responsive: true,
-  plugins: {
-    legend: {
-      position: 'top',
-    },
-    title: {
-      display: true,
-      text: 'Raza de animales',
-    },
-  },
-  scales: {
-    x: {
-      beginAtZero: true,
-    },
-  },
-}
 
 const lineData = {
   labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
@@ -76,33 +47,85 @@ const lineOptions = {
   }
 };
 
+const RUTAJAVA = import.meta.env.VITE_RUTAJAVA;
+
 export default function GraficoHorizontalSeparado() {
+  const [chartData, setChartData] = useState(null); 
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const options = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top',
+      },
+      title: {
+        display: true,
+        text: 'Registros por Tabla',
+      },
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+      },
+    },
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`${RUTAJAVA}/api/sumaDelSistema/conteoTablas`);
+        const apiData = response.data;
+      
+        setChartData({
+          labels: ['Categoria', 'Raza', 'Lote', 'Producto', 'Alimento'],
+          datasets: [
+            {
+              label: 'Cantidad de Registros',
+              data: [apiData.Categoria, apiData.Raza, apiData.Lote, apiData.Producto, apiData.Alimento],
+              backgroundColor: 'rgba(54, 162, 235, 0.6)',
+              borderColor: 'rgba(54, 162, 235, 1)',
+              borderWidth: 1,
+              barThickness: 20,
+            },
+          ],
+        });
+
+      } catch (err) {
+        console.error("Error al cargar los datos del gráfico:", err);
+        setError(err.message);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <div className="container-fluid p-0">
             <div className="row g-3">
-                <div className="col-12 col-lg-6">
+                <div className="col-12 col-lg-12">
                     <div className="card h-100 shadow-sm">
                         <div className="card-header bg-white border-0">
-                            <h5 className="card-title mb-0">Resumen Semanal</h5>
+                            <h5 className="card-title mb-0">Cantidad de Registros por Tabla</h5>
                         </div>
                         <div className="card-body p-2" >
                          
-                            {data && <Bar data={data} options={options} />}
+                            {isLoading ? (
+                              <p>Cargando gráfico...</p>
+                            ) : error ? (
+                              <div className="alert alert-danger">Error: {error}</div>
+                            ) : chartData ? (
+                              <Bar data={chartData} options={options} />
+                            ) : (
+                              <p>No hay datos para mostrar.</p>
+                            )}
                         </div>
                     </div>
-                </div>
-                <div className="col-12 col-lg-6">
-                    <div className="card h-100 shadow-sm">
-                        <div className="card-header bg-white border-0">
-                            <h5 className="card-title mb-0">Proyección de Ganancias</h5>
-                        </div>
-                        <div className="card-body p-2" >
-                           
-                            <Line data={lineData} options={lineOptions} />
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+                </div>  
+          </div>
+    </div>
   )
 }

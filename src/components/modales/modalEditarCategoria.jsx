@@ -1,9 +1,12 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import Swal from "sweetalert2";
+import { useAuth } from "../../auth/authContext.jsx";
 
 const RUTAJAVA = import.meta.env.VITE_RUTAJAVA;
 
 export default function ModalEditarCategoria({ categoria, onUpdated }) {
+    const { auth } = useAuth();
 
     const [form, setForm] = useState({
         nombre: "",
@@ -34,10 +37,23 @@ export default function ModalEditarCategoria({ categoria, onUpdated }) {
             {
                 nombre: form.nombre,
                 descripcion: form.descripcion,
+            },
+            {
+                headers: {
+                    Authorization: `Bearer ${auth.token}`
+                }
             }
         );
         console.log(response.data);
         if (onUpdated) onUpdated();
+
+        Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: 'Categoría actualizada con éxito',
+            showConfirmButton: false,
+            timer: 1500
+        });
   
         // Cerrar el modal simulando un clic en el botón de cerrar
         const closeButton = document.querySelector(
@@ -48,11 +64,11 @@ export default function ModalEditarCategoria({ categoria, onUpdated }) {
         }
       } catch (error) {
         console.error("Error al actualizar:", error);
-        alert(
-          `Ocurrió un error al actualizar:\n${
-            error?.response?.data?.message || error.message
-          }`
-        );
+        Swal.fire({
+            icon: 'error',
+            title: 'Error al actualizar',
+            text: `Ocurrió un error al actualizar: ${error?.response?.data?.message || error.message}`
+        });
       }
     };
     

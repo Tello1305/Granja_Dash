@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import Swal from "sweetalert2";
 import axios from "axios";
 import TablaGenerica from "../TablaGenerica.jsx";
 import ModalEditarLote from "../modales/modalEditarLote.jsx";
@@ -28,23 +29,40 @@ export default function TablaLotesAnimales() {
     fetchLotes();
   }, []);
 
-  const handleDelete = async (id_lote) => {
-  
-      try {
-        const response = await axios.delete(`${RUTAJAVA}/api/lotesDeAnimales/${id_lote}`,
-          {
+  const handleDelete = (id_lote) => {
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: "¡No podrás revertir esto!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí, ¡bórralo!',
+      cancelButtonText: 'Cancelar'
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          await axios.delete(`${RUTAJAVA}/api/lotesDeAnimales/${id_lote}`, {
             headers: {
               Authorization: `Bearer ${auth.token}`
             }
-          }
-        );
-        setLotes(prev => prev.filter(lote => lote.id_lote !== id_lote));
-        console.log(response.data);
-      } catch (error) {
-        console.error("Error al eliminar:", error);
-        alert("No se pudo eliminar la raza. Intente nuevamente.");
+          });
+          setLotes(prev => prev.filter(lote => lote.id_lote !== id_lote));
+          Swal.fire(
+            '¡Eliminado!',
+            'El lote ha sido eliminado.',
+            'success'
+          );
+        } catch (error) {
+          console.error("Error al eliminar:", error);
+          Swal.fire(
+            '¡Error!',
+            'No se pudo eliminar el lote. Intente nuevamente.',
+            'error'
+          );
+        }
       }
-    
+    });
   };
 
   const columns = [

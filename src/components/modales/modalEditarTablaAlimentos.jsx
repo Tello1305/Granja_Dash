@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
+import Swal from "sweetalert2";
+import { useAuth } from "../../auth/authContext";
 import axios from "axios";
 import "bootstrap/dist/js/bootstrap.bundle.min.js"; // Mantén esta línea si Bootstrap está funcionando en otros lugares
 
 const RUTAJAVA = import.meta.env.VITE_RUTAJAVA;
 
 export default function ModalEditarTablaAlimentos({ alimento, onUpdated }) {
+  const { auth } = useAuth();
   const [form, setForm] = useState({
     nombre: "",
     imagen: null,
@@ -48,9 +51,21 @@ export default function ModalEditarTablaAlimentos({ alimento, onUpdated }) {
     }
 
     try {
-      const response = await axios.put(`${RUTAJAVA}/api/alimentacion/${alimento.id_alimento}`,data);
+      const response = await axios.put(`${RUTAJAVA}/api/alimentacion/${alimento.id_alimento}`, data, {
+        headers: {
+          Authorization: `Bearer ${auth.token}`,
+        },
+      });
       console.log(response.data);
       if (onUpdated) onUpdated();
+
+      Swal.fire({
+        position: 'center',
+        icon: 'success',
+        title: 'Alimento actualizado con éxito',
+        showConfirmButton: false,
+        timer: 1500
+      });
 
       // Cerrar el modal simulando un clic en el botón de cerrar
       const closeButton = document.querySelector(
@@ -61,11 +76,13 @@ export default function ModalEditarTablaAlimentos({ alimento, onUpdated }) {
       }
     } catch (error) {
       console.error("Error al actualizar:", error);
-      alert(
-        `Ocurrió un error al actualizar:\n${
+      Swal.fire({
+        icon: 'error',
+        title: 'Error al actualizar',
+        text: `Ocurrió un error al actualizar: ${
           error?.response?.data?.message || error.message
         }`
-      );
+      });
     }
   };
 

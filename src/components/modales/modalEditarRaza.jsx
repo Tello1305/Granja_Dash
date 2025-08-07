@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import Swal from "sweetalert2";
 import { useAuth } from "../../auth/authContext.jsx";
 
 const RUTAJAVA = import.meta.env.VITE_RUTAJAVA;
@@ -50,6 +51,14 @@ export default function ModalEditarRaza({raza, onUpdated}) {
             console.log(response.data);
             if (onUpdated) onUpdated();
 
+            Swal.fire({
+                position: 'center',
+                icon: 'success',
+                title: 'Raza actualizada con éxito',
+                showConfirmButton: false,
+                timer: 1500
+            });
+
             // Cerrar el modal simulando un clic en el botón de cerrar
             const closeButton = document.querySelector(
               "#ModalEditarRaza .btn-close"
@@ -59,11 +68,11 @@ export default function ModalEditarRaza({raza, onUpdated}) {
             }
           } catch (error) {
             console.error("Error al actualizar:", error);
-            alert(
-              `Ocurrió un error al actualizar:\n${
-                error?.response?.data?.message || error.message
-              }`
-            );
+            Swal.fire({
+              icon: 'error',
+              title: 'Error al actualizar',
+              text: `Ocurrió un error al actualizar: ${error?.response?.data?.message || error.message}`,
+            });
           }
         
     }
@@ -72,7 +81,11 @@ export default function ModalEditarRaza({raza, onUpdated}) {
 
         const fetchCategorias = async () => {
             try{
-                const response = await axios.get(`${RUTAJAVA}/api/CategoriaProductos`);
+                const response = await axios.get(`${RUTAJAVA}/api/CategoriaProductos`, {
+                    headers: {
+                        Authorization: `Bearer ${auth.token}`
+                    }
+                });
                 setCategoria(response.data);
                 console.log(response.data);
             }catch (error){

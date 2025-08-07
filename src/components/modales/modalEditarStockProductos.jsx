@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useAuth } from "../../auth/authContext";
+import Swal from "sweetalert2";
 import FormStockProductos from "../form/formStockProductos";
 
 const RUTAJAVA = import.meta.env.VITE_RUTAJAVA;
@@ -55,10 +56,20 @@ export default function ModalStockEditarProducto({ onUpdated, stockSeleccionado,
       console.log(response.data);
 
       if (onUpdated) onUpdated();
-      alert("Stock editado correctamente");
+      Swal.fire({
+        position: 'center',
+        icon: 'success',
+        title: 'Stock actualizado con éxito',
+        showConfirmButton: false,
+        timer: 1500
+      });
     } catch (error) {
       console.error("Error al editar stock:", error);
-      alert("Error al editar el stock");
+      Swal.fire({
+        icon: 'error',
+        title: 'Error al actualizar',
+        text: error.response?.data?.message || 'Hubo un problema al editar el stock.'
+      });
     }
 
     const closeButton = document.querySelector("#modalStockEditarProducto .btn-close");

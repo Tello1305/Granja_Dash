@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useAuth } from "../../auth/authContext";
+import Swal from 'sweetalert2';
 import {FormProducto} from "../form/formProducto";
 
 const RUTAJAVA = import.meta.env.VITE_RUTAJAVA;
@@ -53,7 +54,13 @@ export function ModalEditarProducto({ producto, onUpdated }) {
                 }
             });
             console.log(response.data);
-            alert("Producto editado correctamente");
+            Swal.fire({
+                position: 'center',
+                icon: 'success',
+                title: 'Producto actualizado con éxito',
+                showConfirmButton: false,
+                timer: 1500
+            });
             setFormKey(prevKey => prevKey + 1); 
             if (onUpdated) onUpdated();
             setFormEdit({
@@ -64,7 +71,11 @@ export function ModalEditarProducto({ producto, onUpdated }) {
 
         } catch (error) {
             console.log(error);
-            alert("Error al editar el producto");
+            Swal.fire({
+                icon: 'error',
+                title: 'Error al actualizar',
+                text: 'Hubo un problema al editar el producto.'
+            });
         }
 
         const closeButton = document.querySelector(

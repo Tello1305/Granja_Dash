@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import Swal from "sweetalert2";
 import axios from "axios";
 import { useAuth } from "../../auth/authContext.jsx";
 import FormStock from "../form/formStock.jsx";
@@ -22,69 +23,71 @@ export default function ModalStockCrearAlimentos({ onUpdated, onUpdateStock, ali
     setForm((prev) => ({ ...prev, [key]: value }));
   };
 
-  const handleCrear = async (e) => {
+  const handleCrear = (e) => {
     e.preventDefault();
 
-    // VALIDACIONES FRONTEND
     if (!form.id_alimento || !form.tipo || !form.cantidad) {
-      alert("Debes completar Alimento, Tipo y Cantidad");
+      Swal.fire({ icon: 'error', title: 'Campos incompletos', text: 'Debes completar Alimento, Tipo y Cantidad.' });
       return;
     }
-
     if (form.tipo === "ENTRADA" && !form.costo) {
-      alert("El costo es obligatorio en una entrada.");
+      Swal.fire({ icon: 'error', title: 'Campo requerido', text: 'El costo es obligatorio en una entrada.' });
       return;
     }
-
     if (form.tipo === "SALIDA" && !form.id_raza) {
-      alert("Debes seleccionar una raza en la salida.");
+      Swal.fire({ icon: 'error', title: 'Campo requerido', text: 'Debes seleccionar una raza en la salida.' });
       return;
     }
 
-    // ARMAR JSON según el tipo
-    const data = {
-      id_alimento: form.id_alimento,
-      tipo: form.tipo,
-      cantidad: parseInt(form.cantidad),
-      costo: form.tipo === "ENTRADA" ? parseFloat(form.costo) : null,
-      id_raza: form.tipo === "SALIDA" ? form.id_raza : null
-    };
+    const actionText = form.tipo === 'ENTRADA' ? 'agregar' : 'quitar';
+    const confirmationTitle = `¿Estás seguro de ${actionText} ${form.cantidad} unidades?`;
 
-    try {
-      const response = await axios.post(`${RUTAJAVA}/api/stockAlimentos`, data, {
-        headers: {
-          Authorization: `Bearer ${auth.token}`,
-        },
-      });
+    Swal.fire({
+      title: confirmationTitle,
+      text: "¡Esta acción afectará el inventario!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: `Sí, ¡${actionText}!`, 
+      cancelButtonText: 'Cancelar'
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const data = {
+          id_alimento: form.id_alimento,
+          tipo: form.tipo,
+          cantidad: parseInt(form.cantidad),
+          costo: form.tipo === "ENTRADA" ? parseFloat(form.costo) : null,
+          id_raza: form.tipo === "SALIDA" ? form.id_raza : null
+        };
 
-      if (onUpdated) onUpdated();
+        try {
+          await axios.post(`${RUTAJAVA}/api/stockAlimentos`, data, {
+            headers: { Authorization: `Bearer ${auth.token}` },
+          });
 
-      alert("Stock creado correctamente");
-      console.log(response.data);
+          if (onUpdated) onUpdated();
+          Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: '¡Éxito!',
+            text: 'El stock ha sido actualizado correctamente.',
+            showConfirmButton: false,
+            timer: 1500
+          });
 
-      // Limpiar formulario
-      setForm({
-        id_alimento: "",
-        tipo: "ENTRADA",
-        cantidad: "",
-        costo: "",
-        id_raza: ""
-      });
+          setForm({ id_alimento: "", tipo: "ENTRADA", cantidad: "", costo: "", id_raza: "" });
 
-    } catch (error) {
-      console.error(error);
-      alert("Error al crear el stock");
-    }
+          const closeButton = document.querySelector("#modalStockCrearAlimentos .btn-close");
+          if (closeButton) closeButton.click();
+          if (document.activeElement) document.activeElement.blur();
 
-    const closeButton = document.querySelector(
-      "#modalStockCrearAlimentos .btn-close"
-    );
-    if (closeButton) {
-      closeButton.click();
-    }
-    if (document.activeElement) {
-      document.activeElement.blur();
-    }
+        } catch (error) {
+          console.error(error);
+          Swal.fire('¡Error!', error.response?.data?.message || 'Error al actualizar el stock.', 'error');
+        }
+      }
+    });
   };
 
   return (

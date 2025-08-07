@@ -20,6 +20,7 @@ export function Nav({ isOpen, onClose }) {
     { to: "/GranjaDash/comidaAnimales", label: "Comida", icon: "bi bi-egg-fried", rol: [1, 2] },
     { to: "/GranjaDash/Reportes", label: "Reportes", icon: "bi bi-file-text", rol: [1] },
     { to: "/GranjaDash/Bitacora", label: "Bitacora", icon: "bi bi-file-text", rol: [1] },
+    { to: "/GranjaDash/Usuarios", label: "Usuarios", icon: "bi bi-file-text", rol: [1] },
     { type: 'logout', label: "Cerrar Sesión", icon: "bi bi-box-arrow-right", rol: [1, 2] } // Botón de logout tratado como un link
   ];
   
@@ -41,7 +42,7 @@ export function Nav({ isOpen, onClose }) {
       
       <nav className={`sidebar ${isOpen ? 'sidebar-open' : ''}`}>
         <div className="nav-brand">
-          <h3 className="nav-brand-text">Granja Dash</h3>
+                  <img src="/img/logo.png" alt=" Logo-gallina" />
         </div>
 
         <div className="nav-menu">

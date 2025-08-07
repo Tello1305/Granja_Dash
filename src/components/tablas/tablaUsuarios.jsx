@@ -1,18 +1,37 @@
-import { useState } from "react";
+
+import { useState, useEffect} from "react";
 import Swal from "sweetalert2";
 import axios from "axios";
 import TablaGenerica from "../TablaGenerica.jsx";
-import ModalEditarRaza from "../modales/modalEditarRaza.jsx";
-import ModalCrearRaza from "../modales/modalCrearRaza.jsx";
+import ModalCrearUsuario from "../modales/modalCrearUsuario.jsx";
+import ModalEditarUsuario from "../modales/modalEditarUsuario.jsx";
 import { useAuth } from "../../auth/authContext";
+
 
 const RUTAJAVA = import.meta.env.VITE_RUTAJAVA;
 
-export default function TablaRazaAnimal({ razasData, onDataUpdate }) {
+export default function UsuariosList({ onDataUpdate }) {
   const { auth } = useAuth();
-  const [razaSeleccionada, setRazaSeleccionada] = useState(null);
+  const [usuarioSeleccionado, setUsuarioSeleccionado] = useState(null);
+  const [usuarios, setUsuario] = useState();
 
-  const handleDelete = (id_raza) => {
+
+  const fetchUsuarios = async () => {
+    try {
+      const response = await axios.get(`${RUTAJAVA}/api/usuarios`);
+      setUsuario(response.data);
+    } catch (error) {
+      console.error("Error al obtener los usuarios:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchUsuarios();
+  }, []);
+
+
+
+  const handleDelete = (id_usuario) => {
     Swal.fire({
       title: '¿Estás seguro?',
       text: "¡No podrás revertir esto!",
@@ -25,22 +44,22 @@ export default function TablaRazaAnimal({ razasData, onDataUpdate }) {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          await axios.delete(`${RUTAJAVA}/api/razaAnimales/${id_raza}`, {
+          await axios.delete(`${RUTAJAVA}/api/usuarios/${id_usuario}`, {
             headers: {
               Authorization: `Bearer ${auth.token}`
             }
           });
-          onDataUpdate();
+          fetchUsuarios();
           Swal.fire(
             '¡Eliminado!',
-            'La raza ha sido eliminada.',
+            'El usuario ha sido eliminado.',
             'success'
           )
         } catch (error) {
           console.error("Error al eliminar:", error);
           Swal.fire(
             '¡Error!',
-            'No se pudo eliminar la raza. Intente nuevamente.',
+            'No se pudo eliminar el usuario. Intente nuevamente.',
             'error'
           )
         }
@@ -62,20 +81,25 @@ export default function TablaRazaAnimal({ razasData, onDataUpdate }) {
       enableSorting: true
     },
     {
-      header: "CATEGORIA",
-      accessorKey: "categoriaNombre", 
+      header: "USUARIO",
+      accessorKey: "usuario", 
       enableSorting: true,
     },
     {
-      header: "DISPOSICIÓN",
-      accessorKey: "enUso", 
-      enableSorting: true,
-      cell: (info) => (
-        <span className={`badge ${info.row.original.enUso ? 'bg-warning text-dark' : 'bg-success'}`}>
-          {info.row.original.enUso ? "En uso" : "Sin uso"}
-        </span>
-      )
+      header: "CLAVE",
+      accessorKey: "clave", 
+      enableSorting: false,
+      cell: () => "********",
+      
+      
     },
+    {
+        header: "ROL",
+        accessorKey: "rolNombre", 
+        enableSorting: true,
+        
+        
+      },    
     {
       header: "ACCIÓN",
       enableSorting: false,
@@ -84,9 +108,8 @@ export default function TablaRazaAnimal({ razasData, onDataUpdate }) {
           <button
             type="button"
             className="btn btn-danger btn-sm "
-            onClick={() => handleDelete(info.row.original.id_raza)}
+            onClick={() => handleDelete(info.row.original.id_usuario)}
             disabled={info.row.original.enUso}
-
           >
             Eliminar
           </button>
@@ -94,8 +117,8 @@ export default function TablaRazaAnimal({ razasData, onDataUpdate }) {
             type="button"
             className="btn btn-warning btn-sm"
             data-bs-toggle="modal"
-            data-bs-target="#ModalEditarRaza"
-            onClick={() => setRazaSeleccionada(info.row.original)}
+            data-bs-target="#modalEditarUsuario"
+            onClick={() => setUsuarioSeleccionado(info.row.original)}
           >
             Editar
           </button>
@@ -107,19 +130,24 @@ export default function TablaRazaAnimal({ razasData, onDataUpdate }) {
   return (
     <div className="container mt-0 mb-4">
       <TablaGenerica
-        data={razasData}
+        data={usuarios}
         columns={columns}
         showSearch={true}
         showPagination={true}
         itemsPerPage={10}
-        createModalId="#ModalCrearTablaRaza"
+        createModalId="#modalCrearUsuario"
         onCreate={() => document.activeElement.blur()}
       />
-      <ModalEditarRaza
-        raza={razaSeleccionada}
-        onUpdated={onDataUpdate}
+
+      <ModalCrearUsuario
+        //usuario={usuarioSeleccionada}
+        onUpdated={fetchUsuarios}
       />
-      <ModalCrearRaza onUpdated={onDataUpdate} />
+      <ModalEditarUsuario
+        usuarios={usuarioSeleccionado}
+        onUpdated={fetchUsuarios}
+      />
+      
     </div>
   )
 }

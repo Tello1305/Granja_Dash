@@ -10,11 +10,12 @@ import { Routes, Route } from "react-router-dom";
 import { AuthRoute } from "../auth/protectedRouter";
 import { Reportes } from '../pages/reportesSistema.jsx'
 import { HistorialProductos } from '../pages/historialProductos.jsx'
+import { Usuarios } from '../pages/usuarios.jsx'
 
 export function RouterSystem() {
     return (
         <Routes>
-            {/*<Route path='/' element={<AppLogin />} />
+            <Route path='/' element={<AppLogin />} />
             <Route path='/GranjaDash/ingresosTotales'
                 element={<AuthRoute roles={[1, 2]}> <IngresosTotales /> </AuthRoute>} />
             <Route path='/GranjaDash/alimentacionRecursos'
@@ -32,10 +33,13 @@ export function RouterSystem() {
             <Route path='/GranjaDash/Reportes'
                 element={<AuthRoute roles={[1]}><Reportes /></AuthRoute>} />
             <Route path='/GranjaDash/Bitacora'
-                element={<AuthRoute roles={[1]}><HistorialProductos /></AuthRoute>} />*/}
+                element={<AuthRoute roles={[1]}><HistorialProductos /></AuthRoute>} />
+            <Route path='/GranjaDash/Usuarios'
+                element={<AuthRoute roles={[1]}><Usuarios /></AuthRoute>} />
+            
   
     
-            <Route path='/' element={<AppLogin />} />
+            {/*<Route path='/' element={<AppLogin />} />
             <Route path='/GranjaDash/ingresosTotales' element={<IngresosTotales />} />
             <Route path='/GranjaDash/alimentacionRecursos' element={<AlimentacionRecursos />} />
             <Route path='/GranjaDash/comidaAnimales' element={<ComidaAnimales />} />
@@ -45,6 +49,7 @@ export function RouterSystem() {
             <Route path='/GranjaDash/ProductoAnimales' element={<ProductoAnimales />} />
             <Route path='/GranjaDash/Reportes' element={<Reportes />} />
             <Route path='/GranjaDash/Bitacora' element={<HistorialProductos />} />
+            <Route path='/GranjaDash/Usuarios' element={<Usuarios />} />*/}
         </Routes>
     )
 }

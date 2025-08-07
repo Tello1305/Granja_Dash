@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import {FormProducto} from "../form/formProducto.jsx";
-import axios from 'axios'
+import axios from 'axios';
 import { useAuth } from "../../auth/authContext";
+import Swal from 'sweetalert2';
 const RUTAJAVA = import.meta.env.VITE_RUTAJAVA;
 
 export function ModalCrearProducto({onUpdated}) {
@@ -37,12 +38,22 @@ export function ModalCrearProducto({onUpdated}) {
                 }
             );
             console.log(response.data);
-            alert("Producto creado correctamente");
-            setFormKey(prevKey => prevKey + 1); 
             if (onUpdated) onUpdated();
+            setFormKey(prevKey => prevKey + 1);
+            Swal.fire({
+                position: 'center',
+                icon: 'success',
+                title: 'Producto creado con éxito',
+                showConfirmButton: false,
+                timer: 1500
+            });
         } catch (error) {
-            console.log(error);
-            alert("Error al crear el producto");
+            console.error("Error al crear:", error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error al crear',
+                text: 'Hubo un problema al crear el producto.'
+            });
         }
 
         const closeButton = document.querySelector(

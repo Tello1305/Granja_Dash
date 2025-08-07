@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";        
+import { useEffect, useState } from "react";
+import Swal from "sweetalert2";        
 import axios from "axios";  
 import TablaGenerica from "../TablaGenerica";
 import ModalEditarCategoria from "../modales/modalEditarCategoria";
@@ -11,25 +12,42 @@ export default function TablaCategoria({ categoriasData, onDataUpdate }) {
     const { auth } = useAuth();
     const [categoriaSeleccionada, setCategoriaSeleccionada] = useState(null);
 
-    console.log('categoriasDataaaaas', categoriasData)
+    
 
-    const handleDelete = async (id_categoria) => {
-        
-            try {
-                const response = await axios.delete(`${RUTAJAVA}/api/CategoriaProductos/${id_categoria}`,
-                    {
+    const handleDelete = (id_categoria) => {
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: "¡No podrás revertir esto!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, ¡bórrala!',
+            cancelButtonText: 'Cancelar'
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                try {
+                    await axios.delete(`${RUTAJAVA}/api/CategoriaProductos/${id_categoria}`, {
                         headers: {
                             Authorization: `Bearer ${auth.token}`
                         }
-                    }
-                );
-                onDataUpdate();
-                console.log(response.data);
-            } catch (error) {
-                console.error("Error al eliminar:", error);
-                alert("No se pudo eliminar la categoria. Intente nuevamente.");
+                    });
+                    onDataUpdate();
+                    Swal.fire(
+                        '¡Eliminada!',
+                        'La categoría ha sido eliminada.',
+                        'success'
+                    );
+                } catch (error) {
+                    console.error("Error al eliminar:", error);
+                    Swal.fire(
+                        '¡Error!',
+                        'No se pudo eliminar la categoría. Intente nuevamente.',
+                        'error'
+                    );
+                }
             }
-        
+        });
     };
 
     const columns = [
