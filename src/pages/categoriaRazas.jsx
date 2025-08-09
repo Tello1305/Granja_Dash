@@ -61,7 +61,7 @@ export function CategoriaRazas() {
           <div className="content-wrapper w-100">
             <div className="d-flex flex-column  gap-4 w-100">
               <section className="container-fluid w-100 w-md-50">
-                <h2>Categorias</h2>
+                <h2 className ="concert-one-regular">Categorias</h2>
                 <hr />
                 <TablaCategoria
                   categoriasData={categorias}
@@ -69,7 +69,7 @@ export function CategoriaRazas() {
                 />
               </section>
               <section className="container-fluid w-100 w-md-50">
-                <h2>Razas</h2>
+                <h2 className="concert-one-regular">Razas</h2>
                 <hr />
                 <TablaRazaAnimal
                   razasData={razas}

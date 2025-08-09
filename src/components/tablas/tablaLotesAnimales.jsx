@@ -5,6 +5,7 @@ import TablaGenerica from "../TablaGenerica.jsx";
 import ModalEditarLote from "../modales/modalEditarLote.jsx";
 import ModalCrearLote from "../modales/modalCrearLote.jsx";
 import { useAuth } from "../../auth/authContext.jsx";
+import '../../assets/css/tipografia.css';
 
 const RUTAJAVA = import.meta.env.VITE_RUTAJAVA;
 
@@ -150,7 +151,7 @@ export default function TablaLotesAnimales() {
   ];
     return (
         <section className="container mt-0 mb-4">
-          <h2>Lotes de Animales</h2>
+          <h2 className="concert-one-regular">Lotes de Animales</h2>
           <hr />
           <TablaGenerica
         data={lotes}

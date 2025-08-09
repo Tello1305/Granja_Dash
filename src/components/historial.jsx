@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "../assets/css/historial.css"; // Asegúrate de que esta ruta a tu CSS sea correcta
-
+import '../assets/css/tipografia.css';
 const RUTAJAVA = import.meta.env.VITE_RUTAJAVA;
 
 // Define los temas de filtro disponibles
@@ -117,7 +117,7 @@ export function Historial() {
 
   return (
     <div className="container py-4 historial-container">
-      <h1>HISTORIAL</h1>
+      <h1 className="concert-one-regular">HISTORIAL</h1>
       <hr />
       <section className="row d-flex justify-content-center">
         {/* Columna de resultados */}

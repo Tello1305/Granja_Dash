@@ -84,10 +84,10 @@ export default function GraficoHorizontalSeparado() {
             {
               label: 'Cantidad de Registros',
               data: [apiData.Categoria, apiData.Raza, apiData.Lote, apiData.Producto, apiData.Alimento],
-              backgroundColor: 'rgba(54, 162, 235, 0.6)',
-              borderColor: 'rgba(54, 162, 235, 1)',
-              borderWidth: 1,
-              barThickness: 20,
+              backgroundColor: 'rgba(241, 131, 40, 0.6)',
+              borderColor: 'rgb(238, 113, 10)',
+              borderWidth: 2,
+              barThickness: 80,
             },
           ],
         });

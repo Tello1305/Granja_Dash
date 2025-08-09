@@ -1,6 +1,12 @@
 /* Modern Navigation - Responsive Sidebar */
-
+@import url('https://fonts.googleapis.com/css2?family=Boogaloo&family=Concert+One&family=Mogra&family=Oswald:wght@200..700&display=swap');
 /* Sidebar Container */
+
+.concert-one-regular {
+    font-family: "Concert One", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+  }
 .sidebar {
     width: 260px;
     height: 100vh;

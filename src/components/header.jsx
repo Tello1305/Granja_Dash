@@ -27,7 +27,7 @@ export function Header({ onToggleSidebar }) {
                             </div>
                             <div className="profile-avatar">
                                 <img
-                                    src="https://png.pngtree.com/png-vector/20230408/ourmid/pngtree-black-hen-logo-vector-png-image_6681063.png"
+                                    src="https://www.citypng.com/public/uploads/preview/hd-man-user-illustration-icon-transparent-png-701751694974843ybexneueic.png"
                                     alt="Profile"
                                     className="avatar-img"
                                 />

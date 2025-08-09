@@ -8,6 +8,7 @@ import StockAlimentos from "../tablaModales/StockAlimentos";
 //import ModalStockAlimentos from "../modales/modalCrearStock";
 import { useAuth } from '../../auth/authContext.jsx';
 import '../../assets/css/ToggleSwitch.css';
+import '../../assets/css/tipografia.css';
 
 const RUTAJAVA = import.meta.env.VITE_RUTAJAVA;
 
@@ -231,7 +232,7 @@ export default function AlimentacionList() {
   return (
     <div className="container mt-0 mb-4 w-100">
       <div className="d-flex justify-content-between mb-2 w-100">
-        <h2>Lista de Alimentos</h2>
+        <h2 className="concert-one-regular">Lista de Alimentos</h2>
 
       </div>
       <hr />

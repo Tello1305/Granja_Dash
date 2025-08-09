@@ -34,13 +34,13 @@ export default function GraficosAlimentacion() {
       const cantidades = apiData.map((item) => item.cantidad);
 
       const backgroundColors = [
-        'rgba(255, 99, 132, 0.6)',  // rojo
-        'rgba(54, 162, 235, 0.6)',  // azul
+        'rgba(255, 148, 99, 0.6)',  // rojo
+        'rgba(255, 123, 35, 0.6)',  // azul
       ];
 
       const borderColors = [
-        'rgba(255, 99, 132, 1)',
-        'rgba(54, 162, 235, 1)',
+        'rgb(241, 105, 42)',
+        'rgb(224, 107, 39)',
       ];
 
       setData({

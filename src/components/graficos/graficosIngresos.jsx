@@ -35,12 +35,12 @@ export default function Graficos() {
             {
               label: 'Entradas',
               data: entradas,
-              backgroundColor: 'rgba(54, 162, 235, 0.7)',
+              backgroundColor: 'rgba(241, 94, 8, 0.7)',
             },
             {
               label: 'Salidas',
               data: salidas,
-              backgroundColor: 'rgba(255, 99, 132, 0.7)',
+              backgroundColor: 'rgba(231, 152, 78, 0.7)',
             },
           ],
         });
@@ -72,11 +72,11 @@ export default function Graficos() {
               label: 'Registros en Bitácora',
               data: cantidades,
               fill: false,
-              borderColor: 'rgb(75, 192, 192)',
-              backgroundColor: 'rgba(75, 192, 192, 0.2)',
+              borderColor: 'rgb(255, 51, 0)',
+              backgroundColor: 'rgba(235, 97, 18, 0.2)',
               tension: 0.3,
               pointRadius: 5,
-              pointHoverRadius: 7,
+              pointHoverRadius: 10,
             },
           ],
         });

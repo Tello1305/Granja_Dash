@@ -54,8 +54,6 @@ export default function FormularioAlimento({ onSubmit, mostrarCancelar }) {
           required
         ></textarea>
       </div>
-      </section>
-      <section>
       <div className="mb-2">
         <label htmlFor="imagen">Imagen</label>
         <input
@@ -65,6 +63,9 @@ export default function FormularioAlimento({ onSubmit, mostrarCancelar }) {
           onChange={handleChange}
         />
       </div>
+      </section>
+      <section>
+      
 
       <div className="mb-1 w-100 text-center d-flex justify-content-center">
         <div className="contenImagenPrevia d-flex align-items-center justify-content-center" 

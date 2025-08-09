@@ -3,6 +3,7 @@ import { Nav } from '../components/nav.jsx';
 //import AlimentacionList from '../components/tablas/tablaAlimentacion.jsx';
 import UsuariosList from '../components/tablas/tablaUsuarios.jsx';
 
+import '../assets/css/tipografia.css';
 import { useState } from 'react';
 export function Usuarios() {
     const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -21,7 +22,7 @@ export function Usuarios() {
                 <Nav isOpen={sidebarOpen} onClose={closeSidebar} />
                 <main className="main-content w-100">
                     <div className="content-wrapper w-100">
-                        <h1>Gestion de Usuarios</h1>
+                        <h2 className="concert-one-regular">Gestion de Usuarios</h2>
                         <hr />
                         <UsuariosList />
                     </div>

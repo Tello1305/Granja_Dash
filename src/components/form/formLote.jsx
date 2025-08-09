@@ -48,7 +48,6 @@ export function FormLote({ onSubmit, mostrarCancelar }) {
   return (
     <form onSubmit={handleSubmit}>
       <div className="row">
-        {/* Columna izquierda - Información básica */}
         <div className="col-md-6">
           <div className="mb-3">
             <label htmlFor="nombre" className="form-label">Nombre del Lote</label>
@@ -96,7 +95,6 @@ export function FormLote({ onSubmit, mostrarCancelar }) {
           </div>
         </div>
 
-        {/* Columna derecha - Imagen */}
         <div className="col-md-6">
           <div className="mb-3">
             <label htmlFor="imagen" className="form-label">Imagen del Lote</label>

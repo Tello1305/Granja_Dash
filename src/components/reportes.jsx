@@ -2,6 +2,7 @@ import '../assets/css/reportes.css'
 import axios from 'axios'
 import React, { useState } from 'react'
 import Swal from 'sweetalert2'
+import '../assets/css/tipografia.css';
 
 // --- Componente del Modal (ahora dentro del mismo archivo) ---
 // Se encarga de la interfaz para seleccionar las fechas.
@@ -192,9 +193,9 @@ export function SeccionReportes() {
 
   return (
     <div className="reportes-container">
-      <div className="text-center mb-4">
-        <h1 className="reportes-title">Sistema de Reportes Empresariales</h1>
-        <p className="text-muted fs-5">Genere y descargue reportes detallados del sistema</p>
+      <div className="text-center mb-2">
+        <h1 className="reportes-title concert-one-regular ">Sistema de Reportes Empresariales</h1>
+       
       </div>
 
       <div className="reportes-grid">
@@ -207,8 +208,7 @@ export function SeccionReportes() {
               <h3 className="reporte-title">{reporte.titulo}</h3>
             </div>
             <div className="reporte-body">
-              <p>Genere reportes completos con datos actualizados del sistema. Disponible filtrado por fechas para análisis específicos.</p>
-
+             
               {reporte.dateFilter && (
                 <button
                   className="btn-reporte btn-filter"

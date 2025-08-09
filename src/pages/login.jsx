@@ -62,9 +62,10 @@ export function AppLogin() {
             </article>
             <article className="ms-auto">
               <img
-                className="w-25 "
-                src="https://png.pngtree.com/png-vector/20230408/ourmid/pngtree-black-hen-logo-vector-png-image_6681063.png"
+                className="w-50 d-flex justify-content-start"
+                src="../../public/img/Logo.png"
                 alt=""
+                style={{ marginLeft: "50px" }}
               />
             </article>
           </div>

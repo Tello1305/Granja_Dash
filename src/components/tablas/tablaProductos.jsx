@@ -7,6 +7,7 @@ import '../../assets/css/ToggleSwitch.css';
 import { ModalCrearProducto } from "../modales/modalCrearProducto.jsx";
 import { ModalEditarProducto } from "../modales/modalEditarProducto.jsx";
 import StockProductos from "../tablaModales/StockProductos"
+import '../../assets/css/tipografia.css';
 
 const RUTAJAVA = import.meta.env.VITE_RUTAJAVA;
 
@@ -199,7 +200,7 @@ export default function TablaProductos() {
     return (
         <div className="container mt-0 mb-4 w-100">
             <div className="d-flex justify-content-between mb-2">
-                <h2>Lista de Productos</h2>
+                <h2 className="concert-one-regular">Lista de Productos</h2>
 
             </div>
             <hr />
