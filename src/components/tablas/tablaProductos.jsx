@@ -180,7 +180,7 @@ export default function TablaProductos() {
                             onClick={() => setProductoSeleccionado(producto)}
                             disabled={isInactive}
                         >
-                            Editar
+                            <i className="bi bi-pencil-square"></i>
                         </button>
                         <button
                             type="button"
@@ -188,7 +188,7 @@ export default function TablaProductos() {
                             onClick={() => handleDelete(producto.id_producto)}
                             disabled={isInactive}
                         >
-                            Eliminar
+                            <i className="bi bi-trash-fill"></i>
                         </button>
                     </div>
                 );

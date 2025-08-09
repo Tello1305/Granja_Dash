@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
-import Swal from "sweetalert2";        
-import axios from "axios";  
+import { useState } from "react";
+import Swal from "sweetalert2";
+import axios from "axios";
 import TablaGenerica from "../TablaGenerica";
 import ModalEditarCategoria from "../modales/modalEditarCategoria";
 import ModalCrearCategoria from "../modales/modalCrearCategoria";
@@ -12,7 +12,7 @@ export default function TablaCategoria({ categoriasData, onDataUpdate }) {
     const { auth } = useAuth();
     const [categoriaSeleccionada, setCategoriaSeleccionada] = useState(null);
 
-    
+
 
     const handleDelete = (id_categoria) => {
         Swal.fire({
@@ -70,10 +70,10 @@ export default function TablaCategoria({ categoriasData, onDataUpdate }) {
         },
         {
             header: "DISPOSICIÓN",
-            accessorKey: "enUso", 
+            accessorKey: "enUso",
             enableSorting: true,
             cell: (info) => (
-                <span className={`badge ${info.row.original.enUso ? 'bg-warning text-dark' : 'bg-success'}`}>
+                <span className={`badge ${info.row.original.enUso ? 'bg-warning text-white' : 'bg-success'}`}>
                     {info.row.original.enUso ? "En uso" : "Sin uso"}
                 </span>
             )
@@ -85,11 +85,11 @@ export default function TablaCategoria({ categoriasData, onDataUpdate }) {
                 <div className="d-flex gap-2">
                     <button
                         type="button"
-                        className="btn btn-danger btn-sm "
+                        className="btn btn-danger btn-sm"
                         onClick={() => handleDelete(info.row.original.id_categoria)}
                         disabled={info.row.original.enUso}
                     >
-                        Eliminar
+                        <i className="bi bi-trash-fill"></i>
                     </button>
                     <button
                         type="button"
@@ -98,7 +98,7 @@ export default function TablaCategoria({ categoriasData, onDataUpdate }) {
                         data-bs-target="#ModalEditarTablaCategoria"
                         onClick={() => setCategoriaSeleccionada(info.row.original)}
                     >
-                        Editar
+                        <i className="bi bi-pencil-square text-gray"></i>
                     </button>
                 </div>
             )

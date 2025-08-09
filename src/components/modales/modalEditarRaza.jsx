@@ -12,6 +12,7 @@ export default function ModalEditarRaza({raza, onUpdated}) {
 
     const [form, setForm] = useState({
         nombre: "",
+        dueno: "",
         id_categoria: "",
         id_raza: "",
     });
@@ -20,6 +21,7 @@ export default function ModalEditarRaza({raza, onUpdated}) {
         if (raza) {
           setForm({
             nombre: raza.nombre || "",
+            dueno: raza.dueno || "",
             id_categoria: raza.id_categoria || "",
             id_raza: raza.id_raza || "",
           });
@@ -40,6 +42,7 @@ export default function ModalEditarRaza({raza, onUpdated}) {
             const response = await axios.put(`${RUTAJAVA}/api/razaAnimales/${raza.id_raza}`,
                 {
                     nombre: form.nombre,
+                    dueno: form.dueno,
                     id_categoria: form.id_categoria,
                 },
                 {
@@ -129,7 +132,17 @@ export default function ModalEditarRaza({raza, onUpdated}) {
                                     required
                                 />
                             </div>
-                            
+                            <div className="mb-2">
+                                <label htmlFor="dueno">Dueño</label>
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    id="dueno"
+                                    value={form.dueno}
+                                    onChange={handleChange}
+                                    required
+                                />
+                            </div>
                             <div className="mb-2">
                                 <label htmlFor="id_categoria">Categoria</label>
                                 <select

@@ -79,6 +79,9 @@ export default function ModalCrearLote({ onUpdated }) {
                         ></button>
                     </div>
                     <div className="modal-body">
+                        <div className="mb-3">
+                            <img src="#" alt="Vista previa" className="img-thumbnail w-100" />
+                        </div>
                         <FormLote onSubmit={handleSubmit} mostrarCancelar={true} key={formKey} />
                     </div>
                 </div>

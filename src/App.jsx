@@ -6,13 +6,16 @@ import "./assets/css/main.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import "./assets/css/variables.css";
 import { ContextoAuth } from "./auth/authContext";
+import { NotificationProvider } from "./contexts/NotificationContext";
 
 export function App() {
     return (
         <>
             <BrowserRouter>
                 <ContextoAuth>
-                    <RouterSystem />
+                    <NotificationProvider>
+                        <RouterSystem />
+                    </NotificationProvider>
                 </ContextoAuth>
             </BrowserRouter>
         </>

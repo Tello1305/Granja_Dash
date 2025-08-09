@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import "../assets/css/header.css"; // Asegúrate de que esta ruta a tu CSS sea correcta
+import "../assets/css/modern-nav.css";
 import { useAuth } from "../auth/authContext";
 import { useNavigate } from "react-router-dom";
 
@@ -11,21 +11,21 @@ export function Nav({ isOpen, onClose }) {
 
   // 1. Define la lista de todos los links y el botón de logout
   const links = [
-    { to: "/GranjaDash/ingresosTotales", label: "Dashboard", icon: "bi bi-speedometer2", rol: [1, 2] },
-    { to: "/GranjaDash/categorias", label: "Categorías", icon: "bi bi-tags", rol: [1, 2] },
-    { to: "/GranjaDash/alimentacionRecursos", label: "Alimentación", icon: "bi bi-cup-straw", rol: [1, 2] },
-    { to: "/GranjaDash/categoriaRazas", label: "Razas", icon: "bi bi-collection", rol: [1] },
-    { to: "/GranjaDash/LoteAnimales", label: "Lotes", icon: "bi bi-grid-3x3", rol: [1, 2] },
-    { to: "/GranjaDash/ProductoAnimales", label: "Productos", icon: "bi bi-box-seam", rol: [1, 2] },
-    { to: "/GranjaDash/comidaAnimales", label: "Comida", icon: "bi bi-egg-fried", rol: [1, 2] },
-    { to: "/GranjaDash/Reportes", label: "Reportes", icon: "bi bi-file-text", rol: [1] },
-    { to: "/GranjaDash/Bitacora", label: "Bitacora", icon: "bi bi-file-text", rol: [1] },
-    { to: "/GranjaDash/Usuarios", label: "Usuarios", icon: "bi bi-file-text", rol: [1] },
-    { type: 'logout', label: "Cerrar Sesión", icon: "bi bi-box-arrow-right", rol: [1, 2] } // Botón de logout tratado como un link
+    { to: "/GranjaDash/ingresosTotales", label: "Dashboard", icon: "bi bi-house-door", rol: [1, 2] },
+    { to: "/GranjaDash/categorias", label: "Categorías", icon: "bi bi-bookmark", rol: [1, 2] },
+    { to: "/GranjaDash/alimentacionRecursos", label: "Alimentación", icon: "bi bi-droplet", rol: [1, 2] },
+    { to: "/GranjaDash/categoriaRazas", label: "Razas", icon: "bi bi-award", rol: [1] },
+    { to: "/GranjaDash/LoteAnimales", label: "Lotes", icon: "bi bi-grid", rol: [1, 2] },
+    { to: "/GranjaDash/ProductoAnimales", label: "Productos", icon: "bi bi-box", rol: [1, 2] },
+    { to: "/GranjaDash/comidaAnimales", label: "Comida", icon: "bi bi-egg", rol: [1, 2] },
+    { to: "/GranjaDash/Reportes", label: "Reportes", icon: "bi bi-bar-chart", rol: [1] },
+    { to: "/GranjaDash/Bitacora", label: "Bitacora", icon: "bi bi-journal-text", rol: [1] },
+    { to: "/GranjaDash/Usuarios", label: "Usuarios", icon: "bi bi-people", rol: [1] },
+    { type: 'logout', label: "Cerrar Sesión", icon: "bi bi-power", rol: [1, 2] } // Botón de logout tratado como un link
   ];
-  
+
   // 2. Filtra los links basándose en el rol del usuario
-  const linksVisibles = links.filter(link => 
+  const linksVisibles = links.filter(link =>
     auth.id_rol && link.rol.includes(auth.id_rol)
   );
 
@@ -39,10 +39,10 @@ export function Nav({ isOpen, onClose }) {
     <>
       {/* Overlay para cerrar el menú al hacer clic fuera */}
       {isOpen && <div className="sidebar-overlay" onClick={onClose}></div>}
-      
+
       <nav className={`sidebar ${isOpen ? 'sidebar-open' : ''}`}>
         <div className="nav-brand">
-                  <img src="/img/logo.png" alt=" Logo-gallina" />
+          <img src="/img/logo.png" alt=" Logo-gallina" />
         </div>
 
         <div className="nav-menu">

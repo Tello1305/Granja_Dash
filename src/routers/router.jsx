@@ -36,20 +36,10 @@ export function RouterSystem() {
                 element={<AuthRoute roles={[1]}><HistorialProductos /></AuthRoute>} />
             <Route path='/GranjaDash/Usuarios'
                 element={<AuthRoute roles={[1]}><Usuarios /></AuthRoute>} />
-            
-  
-    
-            {/*<Route path='/' element={<AppLogin />} />
-            <Route path='/GranjaDash/ingresosTotales' element={<IngresosTotales />} />
-            <Route path='/GranjaDash/alimentacionRecursos' element={<AlimentacionRecursos />} />
-            <Route path='/GranjaDash/comidaAnimales' element={<ComidaAnimales />} />
-            <Route path='/GranjaDash/categorias' element={<Categorias />} />
-            <Route path='/GranjaDash/categoriaRazas' element={<CategoriaRazas />} />
-            <Route path='/GranjaDash/LoteAnimales' element={<LoteAnimales />} />
-            <Route path='/GranjaDash/ProductoAnimales' element={<ProductoAnimales />} />
-            <Route path='/GranjaDash/Reportes' element={<Reportes />} />
-            <Route path='/GranjaDash/Bitacora' element={<HistorialProductos />} />
-            <Route path='/GranjaDash/Usuarios' element={<Usuarios />} />*/}
+
+
+
+
         </Routes>
     )
 }

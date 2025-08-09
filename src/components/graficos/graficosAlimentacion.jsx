@@ -91,10 +91,10 @@ export default function GraficosAlimentacion() {
   return (
     <div className="container">
       <div className="d-flex flex-wrap justify-content-center gap-4">
-        <fieldset className="border p-3 rounded-3" style={{ height: "350px", flex: "1 1 600px", overflowX: "auto" }}>
+        <fieldset className="border p-3 rounded-3" >
           <legend className="float-none w-auto px-2 fs-5 fw-semibold">Usuarios</legend>
           <div className="p-2">
-            <div style={{ height: "300px", width: "600px", minWidth: "600px" }}>
+            <div>
               <Doughnut data={data} options={options} />
             </div>
           </div>

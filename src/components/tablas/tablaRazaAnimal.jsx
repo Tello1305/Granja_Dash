@@ -67,6 +67,11 @@ export default function TablaRazaAnimal({ razasData, onDataUpdate }) {
       enableSorting: true,
     },
     {
+      header: "DUEÑO",
+      accessorKey: "dueno", 
+      enableSorting: true,
+    },
+    {
       header: "DISPOSICIÓN",
       accessorKey: "enUso", 
       enableSorting: true,
@@ -83,12 +88,11 @@ export default function TablaRazaAnimal({ razasData, onDataUpdate }) {
         <div className="d-flex gap-2">
           <button
             type="button"
-            className="btn btn-danger btn-sm "
+            className="btn btn-danger btn-sm"
             onClick={() => handleDelete(info.row.original.id_raza)}
             disabled={info.row.original.enUso}
-
           >
-            Eliminar
+            <i className="bi bi-trash-fill"></i>
           </button>
           <button
             type="button"
@@ -97,7 +101,7 @@ export default function TablaRazaAnimal({ razasData, onDataUpdate }) {
             data-bs-target="#ModalEditarRaza"
             onClick={() => setRazaSeleccionada(info.row.original)}
           >
-            Editar
+            <i className="bi bi-pencil-square"></i>
           </button>
         </div>
       )

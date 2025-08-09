@@ -1,5 +1,6 @@
 import "../assets/css/header.css"
 import { useAuth } from "../auth/authContext";
+import { NotificationCenter } from "./NotificationCenter";
 export function Header({ onToggleSidebar }) {
     const { auth } = useAuth();
     return (
@@ -7,10 +8,18 @@ export function Header({ onToggleSidebar }) {
             <header className="modern-header">
                 <div className="header-content">
                     <div className="header-left">
+                        <button
+                            className="sidebar-toggle"
+                            onClick={onToggleSidebar}
+                            title="Abrir/Cerrar menú"
+                        >
+                            <i className="bi bi-list"></i>
+                        </button>
                         <h1 style={{ color: "black" }}>Granja Dash</h1>
                     </div>
 
                     <div className="header-profile">
+                        <NotificationCenter />
                         <div className="profile-info">
                             <div className="profile-text">
                                 <span className="profile-name">{auth.usuario}</span>

@@ -189,7 +189,6 @@
 .farm-illustration {
     background: linear-gradient(135deg, var(--light-orange) 0%, var(--accent-orange) 100%);
     border-radius: var(--border-radius-xl);
-    padding: var(--spacing-lg);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -198,9 +197,28 @@
 }
 
 .farm-scene {
+    width: 100% !important;
+    height: 100% !important;
     text-align: center;
     color: var(--text-white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    position: relative;
+    z-index: 2;
 }
+
+.farm-scene img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 200vw !important;
+    height: 100% !important;
+    object-fit: cover;
+    z-index: 1;
+}
+
 
 .farmer-character {
     font-size: 3rem;
@@ -304,7 +322,12 @@
     }
 
     .farm-illustration {
+
+        height: 250px !important;
+        grid-row: 1 / -1;
         grid-column: 1 / -1;
+        object-fit: cover !important;
+
     }
 }
 

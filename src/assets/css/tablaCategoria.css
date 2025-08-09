@@ -1,0 +1,148 @@
+/* Estilos para la tabla de categorías */
+.tabla-categoria {
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.tabla-categoria .table {
+    margin-bottom: 0;
+}
+
+.tabla-categoria .table thead th {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-bottom: 2px solid #dee2e6;
+    font-weight: 600;
+    color: #495057;
+    padding: 12px 8px;
+    vertical-align: middle;
+}
+
+.tabla-categoria .table tbody td {
+    padding: 12px 8px;
+    vertical-align: middle;
+    border-bottom: 1px solid #f1f3f4;
+}
+
+.tabla-categoria .table tbody tr:hover {
+    background-color: #f8f9fa;
+    transition: background-color 0.2s ease;
+}
+
+/* Iconos de categoría */
+.categoria-icon {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-size: 14px;
+}
+
+/* Badges mejorados */
+.badge-estado {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+/* Botones de acción responsivos */
+.acciones-categoria {
+    min-width: 120px;
+}
+
+.acciones-categoria .btn {
+    border-radius: 6px;
+    font-size: 12px;
+    padding: 6px 12px;
+    transition: all 0.2s ease;
+}
+
+.acciones-categoria .btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .tabla-categoria .table thead th,
+    .tabla-categoria .table tbody td {
+        padding: 8px 4px;
+        font-size: 13px;
+    }
+    
+    .categoria-icon {
+        width: 28px;
+        height: 28px;
+        font-size: 12px;
+    }
+    
+    .acciones-categoria .btn {
+        padding: 4px 8px;
+        font-size: 11px;
+    }
+    
+    /* Ocultar texto en móviles, solo mostrar iconos */
+    .btn-text-mobile {
+        display: none;
+    }
+}
+
+@media (max-width: 576px) {
+    .tabla-categoria {
+        font-size: 12px;
+    }
+    
+    .tabla-categoria .table thead th,
+    .tabla-categoria .table tbody td {
+        padding: 6px 2px;
+    }
+    
+    .acciones-categoria {
+        min-width: 80px;
+    }
+    
+    .acciones-categoria .btn {
+        padding: 3px 6px;
+        min-width: 32px;
+    }
+}
+
+/* Mejoras para truncado de texto */
+.text-truncate-custom {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 150px;
+}
+
+@media (max-width: 768px) {
+    .text-truncate-custom {
+        max-width: 100px;
+    }
+}
+
+@media (max-width: 576px) {
+    .text-truncate-custom {
+        max-width: 80px;
+    }
+}
+
+/* Animaciones suaves */
+.fade-in {
+    animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

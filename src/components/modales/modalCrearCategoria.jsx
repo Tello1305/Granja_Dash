@@ -1,94 +1,66 @@
-import FormularioCategoria from "../form/formCategoria.jsx";
-import { useState} from "react";
-import Swal from "sweetalert2";
-import axios from "axios";
-import { useAuth } from "../../auth/authContext.jsx";
+import { useState } from "react";
+import ModalBase from "./ModalBase";
+import FormBoton from "../form/formBoton";
+import { useCategoriaModal } from "../../hooks/useCategoriaModal";
 
-const RUTAJAVA = import.meta.env.VITE_RUTAJAVA;
+export default function ModalCrearCategoria({ onUpdated }) {
+    const { loading, crearCategoria } = useCategoriaModal(onUpdated);
+    
+    const [form, setForm] = useState({
+        nombre: "",
+        descripcion: "",
+    });
 
-export default function ModalCrearCategoria({ onUpdated, mostrarCancelar = true }) {
-
-    const [formKey, setFormKey] = useState(0);
-    const { auth } = useAuth();
-
-    const handleCrear = async (form) => {
-        try {
-        const response = await axios.post(`${RUTAJAVA}/api/CategoriaProductos`,
-          {
-            nombre: form.nombre,
-            descripcion: form.descripcion,
-          }
-          ,
-          {
-            headers: {
-              Authorization: `Bearer ${auth.token}`
-            }
-          }
-        );
-        if (onUpdated) onUpdated();
-        setFormKey(prevKey => prevKey + 1); // Reinicia el formulario
-        console.log(response.data);
-        Swal.fire({
-            position: 'center',
-            icon: 'success',
-            title: 'Categoría creada con éxito',
-            showConfirmButton: false,
-            timer: 1500
-        });
-  
-        
-        const closeButton = document.querySelector(
-          "#ModalCrearTablaCategoria .btn-close"
-        );
-        if (closeButton) {
-          closeButton.click(); // Dispara el evento de cerrar
-        }
-        if (document.activeElement) {
-          document.activeElement.blur();
-        }
-        
-  
-      } catch (error) {
-        console.log(error);
-        Swal.fire({
-            icon: 'error',
-            title: 'Error al crear',
-            text: 'Hubo un problema al crear la categoría.'
-        });
-      }
+    const handleChange = (e) => {
+        const { id, value } = e.target;
+        setForm((prev) => ({ ...prev, [id]: value }));
     };
 
-
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            await crearCategoria(form);
+            // Limpiar formulario después de crear exitosamente
+            setForm({
+                nombre: "",
+                descripcion: "",
+            });
+        } catch (error) {
+            // El error ya se maneja en el hook
+        }
+    };
 
     return (
-        <div
-        className="modal fade"
-        id="ModalCrearTablaCategoria"
-        tabIndex="-1"
-        aria-labelledby="exampleModalLabel"
-        aria-hidden="true"
-      >
-        <div className="modal-dialog">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h1 className="modal-title fs-5" id="exampleModalLabel">
-                Crear Categoria
-              </h1>
-              <button
-                type="button"
-                className="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
-            </div>
-            <div className="modal-body">
-              <FormularioCategoria key={formKey} onSubmit={handleCrear} mostrarCancelar={mostrarCancelar} />
-            </div>
-          </div>
-        </div>
-      </div>
-    )
-
+        <ModalBase
+            id="ModalCrearTablaCategoria"
+            title="Crear Categoría"
+            onSubmit={handleSubmit}
+            submitText={loading ? "Creando..." : "Crear categoría"}
+            isForm={true}
+        >
+            <FormBoton
+                id="nombre"
+                label="Nombre"
+                type="text"
+                value={form.nombre}
+                onChange={handleChange}
+                placeholder="Ingrese el nombre"
+                required
+                disabled={loading}
+            />
+            
+            <FormBoton
+                id="descripcion"
+                label="Descripción"
+                type="text"
+                value={form.descripcion}
+                onChange={handleChange}
+                placeholder="Ingrese la descripción"
+                required
+                disabled={loading}
+            />
+        </ModalBase>
+    );
 }
 
     

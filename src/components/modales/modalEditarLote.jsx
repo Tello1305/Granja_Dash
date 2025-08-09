@@ -48,7 +48,7 @@ export default function ModalEditarLote({ lote, onUpdated }) {
         const valorSumar = Number(sumar) || 0;
         const valorRestar = Number(restar) || 0;
         const nuevoTotal = cantidadBase + valorSumar - valorRestar;
-        
+
         // Actualiza el campo 'cantidad' en el estado principal del formulario
         setForm((prev) => ({ ...prev, cantidad: nuevoTotal }));
     }, [sumar, restar, cantidadBase]);
@@ -117,82 +117,67 @@ export default function ModalEditarLote({ lote, onUpdated }) {
 
     return (
         <div className="modal fade" id="ModalEditarTablaLote" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div className="modal-dialog">
+            <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
                 <div className="modal-content">
                     <form onSubmit={handleSubmit}>
                         <div className="modal-header">
                             <h1 className="modal-title fs-5" id="exampleModalLabel">Editar Lote</h1>
                             <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" />
                         </div>
-                        <div className="modal-body">
-                            {/* Campo Nombre */}
-                            <div className="mb-2">
-                                <label htmlFor="nombre">Nombre</label>
-                                <input type="text" className="form-control" id="nombre" value={form.nombre} onChange={handleChange} required />
-                            </div>
-
-                            {/* --- SECCIÓN DE CANTIDAD MEJORADA --- */}
-                            <div className="row mb-2 align-items-end">
-                                <div className="col-md-4">
-                                    <label htmlFor="cantidad">Cantidad Total</label>
-                                    <input
-                                        type="number"
-                                        className="form-control"
-                                        id="cantidad"
-                                        value={form.cantidad}
-                                        readOnly
-                                        style={{ backgroundColor: '#e9ecef' }}
-                                    />
+                        <div className="modal-body row gx-5">
+                            <div className="col-md-6">
+                                {/* Campo Nombre */}
+                                <div className="mb-3">
+                                    <label htmlFor="nombre">Nombre</label>
+                                    <input type="text" className="form-control" id="nombre" value={form.nombre} onChange={handleChange} required />
                                 </div>
-                                <div className="col-md-4">
-                                    <label htmlFor="sumar">Añadir (+)</label>
-                                    <input
-                                        type="number"
-                                        className="form-control"
-                                        id="sumar"
-                                        value={sumar}
-                                        onChange={(e) => { setSumar(e.target.value); if (Number(e.target.value) > 0) setRestar(""); }}
-                                        min="0"
-                                    />
+                                {/* Campo Raza */}
+                                <div className="mb-3">
+                                    <label htmlFor="id_raza">Raza</label>
+                                    <select className="form-control" id="id_raza" value={form.id_raza} onChange={handleChange} required>
+                                        <option value="">Seleccionar</option>
+                                        {razas.map((raza) => (
+                                            <option key={raza.id_raza} value={raza.id_raza}>{raza.nombre}</option>
+                                        ))}
+                                    </select>
                                 </div>
-                                <div className="col-md-4">
-                                    <label htmlFor="restar">Quitar (-)</label>
-                                    <input
-                                        type="number"
-                                        className="form-control"
-                                        id="restar"
-                                        value={restar}
-                                        onChange={(e) => { setRestar(e.target.value); if (Number(e.target.value) > 0) setSumar(""); }}
-                                        min="0"
-                                        max={cantidadBase}
-                                    />
-                                </div>
-                            </div>
-
-                            {/* Campo Raza */}
-                            <div className="mb-2">
-                                <label htmlFor="id_raza">Raza</label>
-                                <select className="form-control" id="id_raza" value={form.id_raza} onChange={handleChange} required>
-                                    <option value="">Seleccionar</option>
-                                    {razas.map((raza) => (
-                                        <option key={raza.id_raza} value={raza.id_raza}>{raza.nombre}</option>
-                                    ))}
-                                </select>
-                            </div>
-
-                            {/* Campo Imagen y Vista Previa */}
-                            <div className="mb-2">
-                                <label htmlFor="imagen">Cambiar Imagen</label>
-                                <input type="file" id="imagen" className="form-control" onChange={handleChange} />
-                            </div>
-                            {preview && (
-                                <div className="mb-1 text-center">
-                                    <label className="form-label">Vista previa:</label>
-                                    <div>
-                                        <img src={preview} alt="Vista previa" style={{ maxWidth: "200px", height: "auto", maxHeight: "200px" }} />
+                                {/* Campo Cantidad */}
+                                <div className="mb-3">
+                                    <label>Cantidad</label>
+                                    <div className="input-group">
+                                        <input
+                                            type="number"
+                                            className="form-control"
+                                            id="sumar"
+                                            value={sumar}
+                                            onChange={(e) => { setSumar(e.target.value); if (Number(e.target.value) > 0) setRestar(""); }}
+                                            min="0"
+                                            placeholder="Añadir (+)"
+                                        />
+                                        <span className="input-group-text">+</span>
+                                        <input
+                                            type="number"
+                                            className="form-control"
+                                            id="restar"
+                                            value={restar}
+                                            onChange={(e) => { setRestar(e.target.value); if (Number(e.target.value) > 0) setSumar(""); }}
+                                            min="0"
+                                            max={cantidadBase}
+                                            placeholder="Quitar (-)"
+                                        />
                                     </div>
                                 </div>
-                            )}
+                            </div>
+                            <div className="col-md-6 text-center">
+                                {/* Campo Imagen y Vista Previa */}
+                                <label htmlFor="imagen">Cambiar Imagen</label>
+                                <input type="file" id="imagen" className="form-control" onChange={handleChange} />
+                                {preview && (
+                                    <div className="mt-3">
+                                        <img src={preview} alt="Vista previa" style={{ width: "300px", height: "200px", objectFit: "cover" }} className="img-fluid rounded" />
+                                    </div>
+                                )}
+                            </div>
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>

@@ -1,5 +1,5 @@
 
-import { useState, useEffect} from "react";
+import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import axios from "axios";
 import TablaGenerica from "../TablaGenerica.jsx";
@@ -82,24 +82,24 @@ export default function UsuariosList({ onDataUpdate }) {
     },
     {
       header: "USUARIO",
-      accessorKey: "usuario", 
+      accessorKey: "usuario",
       enableSorting: true,
     },
     {
       header: "CLAVE",
-      accessorKey: "clave", 
+      accessorKey: "clave",
       enableSorting: false,
       cell: () => "********",
-      
-      
+
+
     },
     {
-        header: "ROL",
-        accessorKey: "rolNombre", 
-        enableSorting: true,
-        
-        
-      },    
+      header: "ROL",
+      accessorKey: "rolNombre",
+      enableSorting: true,
+
+
+    },
     {
       header: "ACCIÓN",
       enableSorting: false,
@@ -107,11 +107,11 @@ export default function UsuariosList({ onDataUpdate }) {
         <div className="d-flex gap-2">
           <button
             type="button"
-            className="btn btn-danger btn-sm "
+            className="btn btn-danger btn-sm"
             onClick={() => handleDelete(info.row.original.id_usuario)}
             disabled={info.row.original.enUso}
           >
-            Eliminar
+            <i className="bi bi-trash-fill"></i>
           </button>
           <button
             type="button"
@@ -120,7 +120,7 @@ export default function UsuariosList({ onDataUpdate }) {
             data-bs-target="#modalEditarUsuario"
             onClick={() => setUsuarioSeleccionado(info.row.original)}
           >
-            Editar
+            <i className="bi bi-pencil-square"></i>
           </button>
         </div>
       )
@@ -147,7 +147,7 @@ export default function UsuariosList({ onDataUpdate }) {
         usuarios={usuarioSeleccionado}
         onUpdated={fetchUsuarios}
       />
-      
+
     </div>
   )
 }

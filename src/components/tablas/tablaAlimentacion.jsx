@@ -212,7 +212,7 @@ export default function AlimentacionList() {
               onClick={() => setAlimentoSeleccionado(alimento)}
               disabled={isInactive}
             >
-              Editar
+              <i className="bi bi-pencil-square"></i>
             </button>
             <button
               type="button"
@@ -220,7 +220,7 @@ export default function AlimentacionList() {
               onClick={() => handleDelete(alimento.id_alimento)}
               disabled={isInactive}
             >
-              Eliminar
+              <i className="bi bi-trash-fill"></i>
             </button>
           </div>
         );

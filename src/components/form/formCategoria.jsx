@@ -3,11 +3,13 @@
 import { useState } from "react";
 import FormBoton from "./formBoton";
 
-export default function FormularioCategoria({ onSubmit }) {
-    const [form, setForm] = useState({
-        nombre: "",
-        descripcion: "",
-    });
+export default function FormularioCategoria({ 
+    onSubmit, 
+    initialData = { nombre: "", descripcion: "" },
+    submitText = "Guardar",
+    showFooter = true 
+}) {
+    const [form, setForm] = useState(initialData);
 
     const handleChange = (e) => {
         const { id, value } = e.target;
@@ -40,21 +42,21 @@ export default function FormularioCategoria({ onSubmit }) {
                 required
             />
 
-            <div className="modal-footer">
-              <button
-                type="button"
-                className="btn btn-secondary"
-                data-bs-dismiss="modal"
-                onClick={() => document.activeElement.blur()}
-              >
-                Cancelar
-              </button>
-              <button type="submit" className="btn btn-primary">
-                Guardar cambios
-              </button>
-            </div>
-
-            
+            {showFooter && (
+                <div className="modal-footer">
+                    <button
+                        type="button"
+                        className="btn btn-secondary"
+                        data-bs-dismiss="modal"
+                        onClick={() => document.activeElement?.blur()}
+                    >
+                        Cancelar
+                    </button>
+                    <button type="submit" className="btn btn-primary">
+                        {submitText}
+                    </button>
+                </div>
+            )}
         </form>
     );
 }

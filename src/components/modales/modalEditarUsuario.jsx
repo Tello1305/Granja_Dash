@@ -17,7 +17,7 @@ export default function ModalEditarUsuario({ onUpdated, usuarios, roles }) {
     id_rol: "",
   });
 
-  
+
 
   useEffect(() => {
     if (usuarios) {
